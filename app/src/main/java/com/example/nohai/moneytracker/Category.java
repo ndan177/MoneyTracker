@@ -3,6 +3,7 @@ package com.example.nohai.moneytracker;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.graphics.Bitmap;
 
 @Entity
 public class Category {
@@ -16,7 +17,6 @@ public class Category {
 
     public Category(String name) {
         this.name = name;
-
     }
 
     public int getId() {

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@color/dark"
@@ -5,7 +6,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="Month View"
+        android:text="Year View"
         android:layout_gravity="center"
         android:textSize="25sp"
         android:textStyle="bold"

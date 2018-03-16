@@ -6,10 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Page3  extends Fragment {
+public class Page_3 extends Fragment {
 
     //Constructor default
-    public Page3(){};
+    public Page_3(){};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
