@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        MyTabs = (TabLayout)findViewById(R.id.MyTabs);
-        MyPage = (ViewPager)findViewById(R.id.MyPage);
+        MyTabs = findViewById(R.id.MyTabs);
+        MyPage = findViewById(R.id.MyPage);
 
         MyTabs.setupWithViewPager(MyPage);
         SetUpViewPager(MyPage);
@@ -154,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
+
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        // Handle action bar item clicks here. The action bar will
@@ -169,3 +172,4 @@ public class MainActivity extends AppCompatActivity {
 //        return super.onOptionsItemSelected(item);
 //    }
 }
+

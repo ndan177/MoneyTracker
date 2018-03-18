@@ -4,19 +4,20 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
-@Entity
+
+@Entity(tableName = "category_table")
 public class Category {
-
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "name")
-    String name;
+    @NonNull
+    @ColumnInfo(name = "category")
+    private String mCategory;
 
-
-    public Category(String name) {
-        this.name = name;
+    public Category( @NonNull String mCategory) {
+        this.mCategory = mCategory;
     }
 
     public int getId() {
@@ -27,13 +28,5 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
+    public String getCategory(){return this.mCategory;}
 }

@@ -1,24 +1,36 @@
 package com.example.nohai.moneytracker;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.text.DateFormatSymbols;
-
+import java.util.List;
 public class Page_1 extends Fragment {
+    private CategoryViewModel mCategoryViewModel;
     static EditText dob;
+
+
+
     public static String getMonthName(int month) {
 
         return new DateFormatSymbols().getMonths()[month-1];
@@ -47,6 +59,7 @@ public class Page_1 extends Fragment {
     //Constructor default
     public Page_1(){};
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View PageOne = inflater.inflate(R.layout.page1, container, false);
@@ -68,6 +81,41 @@ public class Page_1 extends Fragment {
         });
 
 
+        RecyclerView recyclerView = PageOne.findViewById(R.id.recyclerview);
+        final CategoryListAdapter adapter = new CategoryListAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),4));
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+
+                        Intent intent = new Intent(getActivity(), NewExpense.class);
+                        startActivity(intent);
+                        Toast.makeText(getActivity(), position+" ", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
+
+
+
+        // Get a new or existing ViewModel from the ViewModelProvider.
+        mCategoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
+
+        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // The onChanged() method fires when the observed data changes and the activity is
+        // in the foreground.
+        mCategoryViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(@Nullable final List<Category> categories) {
+                // Update the cached copy of the words in the adapter.
+                adapter.setCategories(categories);
+            }
+        });
 
         return PageOne;
     }

@@ -1,9 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.nohai.moneytracker.NewExpense">
+    android:fitsSystemWindows="true">
 
-</android.support.constraint.ConstraintLayout>
+    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/Base.AlertDialog.AppCompat.Light"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:tabIndicatorColor="@color/white"
+            app:tabMode="fixed" />
+
+
+        <EditText
+            android:id="@+id/myNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:editable="false"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="none"
+            android:labelFor="@+id/sum"
+            app:layout_constraintBottom_toTopOf="@+id/numberKeyboard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.davidmiguel.numberkeyboard.NumberKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:keyboard="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/numberKeyboard"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            keyboard:keyboardType="decimal"
+            keyboard:layout_constraintBottom_toBottomOf="parent"
+            keyboard:layout_constraintEnd_toEndOf="parent"
+            keyboard:layout_constraintHorizontal_bias="0.0"
+            keyboard:layout_constraintStart_toStartOf="parent"
+            keyboard:numberKeyTextColor="@color/blue" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_view"
+        />
+
+
+
+</android.support.v4.widget.DrawerLayout>
