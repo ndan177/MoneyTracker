@@ -1,8 +1,10 @@
-package com.example.nohai.moneytracker;
+package com.example.nohai.moneytracker.Database;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+
+import com.example.nohai.moneytracker.CategoryDao;
 
 import java.util.List;
 

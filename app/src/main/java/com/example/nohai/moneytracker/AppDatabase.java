@@ -1,4 +1,4 @@
-package com.example.nohai.moneytracker;
+package com.example.nohai.moneytracker.Database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -8,8 +8,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.example.nohai.moneytracker.Category;
+import com.example.nohai.moneytracker.CategoryDao;
 
-@Database(entities = {Category.class}, version = 4)
+
+@Database(entities = {Category.class}, version = 5)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CategoryDao categoryDao();

@@ -1,4 +1,4 @@
-package com.example.nohai.moneytracker;
+package com.example.nohai.moneytracker.Database;
 
 /**
  * Created by nohai on 3/16/2018.
@@ -7,6 +7,9 @@ package com.example.nohai.moneytracker;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+
+import com.example.nohai.moneytracker.Database.Category;
+import com.example.nohai.moneytracker.Database.CategoryRepository;
 
 import java.util.List;
 
@@ -17,7 +20,7 @@ import java.util.List;
 
 public class CategoryViewModel extends AndroidViewModel {
 
-    private CategoryRepository mCategory;
+    public CategoryRepository mCategory;
     // Using LiveData and caching what getAlphabetizedWords returns has several benefits:
     // - We can put an observer on the data (instead of polling for changes) and only update the
     //   the UI when the data actually changes.
@@ -33,4 +36,5 @@ public class CategoryViewModel extends AndroidViewModel {
     LiveData<List<Category>> getAllCategories() { return mAllCategories; }
 
     public void insert(Category category) { mCategory.insert(category); }
+
 }
