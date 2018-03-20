@@ -1,14 +1,19 @@
 package com.example.nohai.moneytracker;
+
+import android.arch.persistence.room.Room;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+
 import android.widget.Toast;
 import com.davidmiguel.numberkeyboard.NumberKeyboard;
 import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
+
+import static java.lang.Float.parseFloat;
 
 
 public class NewExpense extends AppCompatActivity {
@@ -16,7 +21,7 @@ public class NewExpense extends AppCompatActivity {
     EditText myNumber;
     String nr;
     Expense newExpense= new Expense();
-    ExpenseDao mExpenseDao;
+    AppDatabase db;
 
     public boolean isNumeric(String s) {
         return s != null && s.matches("[-+]?\\d*\\.?\\d+");
@@ -24,6 +29,7 @@ public class NewExpense extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_expense);
 
@@ -39,10 +45,16 @@ public class NewExpense extends AppCompatActivity {
         numberKeyboard=findViewById(R.id.numberKeyboard);
         myNumber=findViewById(R.id.myNumber);
         String categoryId = getIntent().getStringExtra("id");
-        Toast.makeText(this, "TEST"+categoryId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "TEST"+categoryId, Toast.LENGTH_SHORT).show();
+
 
         newExpense.setCategoryId(Integer.parseInt(categoryId));
-        //mExpenseDao.insert(newExpense);
+
+
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class,"Database")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
 
 
         numberKeyboard.setListener(new NumberKeyboardListener() {
@@ -60,7 +72,7 @@ public class NewExpense extends AppCompatActivity {
 
                 if(nr.length()>0&&isNumeric(nr))
                 {
-                    myNumber.setText(nr+",");
+                    myNumber.setText(nr+".");
                 }
             }
 
@@ -85,6 +97,22 @@ public class NewExpense extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onClickButton(View view)
+    {
+        String myTextPrice=myNumber.getText().toString();
+
+
+        if(!myTextPrice.equals("")) {
+            newExpense.price = parseFloat(myTextPrice);
+            db.expenseDao().insert(newExpense);
+            Toast.makeText(this, "Expense added!", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+          else
+            Toast.makeText(this, "Sum cant be null", Toast.LENGTH_SHORT).show();
+
     }
 
 

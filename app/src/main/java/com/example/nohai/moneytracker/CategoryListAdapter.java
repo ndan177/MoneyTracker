@@ -21,17 +21,18 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryItemView;
-
+        private final TextView totalExpensesItemView;
         private CategoryViewHolder(View itemView) {
             super(itemView);
             categoryItemView = itemView.findViewById(R.id.textView);
+            totalExpensesItemView=itemView.findViewById(R.id.expenses);
         }
     }
 
 
 
     private final LayoutInflater mInflater;
-    private List<Category> mCategories; // Cached copy of words
+    private List<Category> mCategories; // Cached copy of categories
 
     CategoryListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
@@ -46,6 +47,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void onBindViewHolder(CategoryViewHolder holder, int position) {
         Category current = mCategories.get(position);
         holder.categoryItemView.setText(current.getCategory());
+        holder.totalExpensesItemView.setText(String.valueOf(current.expensesCost));
     }
 
     void setCategories(List<Category> categories){

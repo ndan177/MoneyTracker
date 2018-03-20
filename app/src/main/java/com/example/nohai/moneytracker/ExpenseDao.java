@@ -18,4 +18,7 @@ public interface  ExpenseDao {
 
         @Query("DELETE FROM expense_table")
         void deleteAll();
+
+        @Query("select sum(price) FROM expense_table")
+        double getPriceSum();
     }

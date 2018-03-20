@@ -1,6 +1,5 @@
 package com.example.nohai.moneytracker;
 
-import android.arch.persistence.db.SimpleSQLiteQuery;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
@@ -10,14 +9,11 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import static java.sql.Types.NULL;
 
-
-@Database(entities = {Category.class,Expense.class}, version = 6)
+@Database(entities = {Category.class,Expense.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CategoryDao categoryDao();
-
     public abstract ExpenseDao expenseDao();
 
     private static AppDatabase INSTANCE;
@@ -29,7 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "Database")
                             // Wipes and rebuilds instead of migrating if no Migration object.
-                            // Migration is not part of this codelab.
+
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
                             .build();

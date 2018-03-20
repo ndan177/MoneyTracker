@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -31,6 +32,8 @@ public class Page_1 extends Fragment {
     static EditText dob;
     Category cat;
     int categoryId;
+    TextView Test;
+    AppDatabase db;
 
 
 
@@ -70,7 +73,12 @@ public class Page_1 extends Fragment {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
 
 
-
+        db = Room.databaseBuilder(getActivity().getApplicationContext(), AppDatabase.class,"Database")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+        double mySum=db.expenseDao().getPriceSum();
+        //db.categoryDao().
 
         dob = PageOne.findViewById(R.id.dob);
         dob.setText(df.format(c.getTime()));
@@ -90,13 +98,16 @@ public class Page_1 extends Fragment {
         final CategoryListAdapter adapter = new CategoryListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),4));
+
+
+
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         categoryId=mCategoryViewModel.getAllCategories().getValue().get(position).getId();
                         //Toast.makeText(getActivity(), String.valueOf(categoryId), Toast.LENGTH_SHORT).show();
-                        cat=new Category("zzzz");
-                        mCategoryViewModel.insert(cat);
+                       // cat=new Category("zzzz");
+                       // mCategoryViewModel.insert(cat);
 
                           Intent intent = new Intent(getActivity(), NewExpense.class);
                           intent.putExtra("id",String.valueOf(categoryId));
