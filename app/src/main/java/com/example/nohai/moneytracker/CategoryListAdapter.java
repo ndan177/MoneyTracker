@@ -48,8 +48,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.categoryItemView.setText(current.getCategory());
     }
 
-    void setCategories(List<Category> words){
-        mCategories = words;
+    void setCategories(List<Category> categories){
+        mCategories = categories;
         notifyDataSetChanged();
     }
 

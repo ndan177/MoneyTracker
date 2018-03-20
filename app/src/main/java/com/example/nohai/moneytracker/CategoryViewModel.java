@@ -1,4 +1,4 @@
-package com.example.nohai.moneytracker.Database;
+package com.example.nohai.moneytracker;
 
 /**
  * Created by nohai on 3/16/2018.
@@ -7,9 +7,6 @@ package com.example.nohai.moneytracker.Database;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-
-import com.example.nohai.moneytracker.Database.Category;
-import com.example.nohai.moneytracker.Database.CategoryRepository;
 
 import java.util.List;
 

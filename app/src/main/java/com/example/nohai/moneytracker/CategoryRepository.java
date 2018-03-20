@@ -1,4 +1,4 @@
-package com.example.nohai.moneytracker.Database;
+package com.example.nohai.moneytracker;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;

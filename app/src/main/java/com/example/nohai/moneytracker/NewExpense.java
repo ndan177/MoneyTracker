@@ -14,7 +14,9 @@ import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
 public class NewExpense extends AppCompatActivity {
     NumberKeyboard numberKeyboard;
     EditText myNumber;
-    String nr=new String();
+    String nr;
+    Expense newExpense= new Expense();
+    ExpenseDao mExpenseDao;
 
     public boolean isNumeric(String s) {
         return s != null && s.matches("[-+]?\\d*\\.?\\d+");
@@ -30,16 +32,25 @@ public class NewExpense extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle("New Expense");
         actionbar.setDisplayHomeAsUpEnabled(true);
+
+
+
         //listener for keyboard
         numberKeyboard=findViewById(R.id.numberKeyboard);
-        myNumber=findViewById(R.id.myNumber);;
+        myNumber=findViewById(R.id.myNumber);
+        String categoryId = getIntent().getStringExtra("id");
+        Toast.makeText(this, "TEST"+categoryId, Toast.LENGTH_SHORT).show();
+
+        newExpense.setCategoryId(Integer.parseInt(categoryId));
+        //mExpenseDao.insert(newExpense);
+
 
         numberKeyboard.setListener(new NumberKeyboardListener() {
             @Override
             public void onNumberClicked(int number) {
                 nr= myNumber.getText().toString();
                 myNumber.setText(nr + number);
-                numberKeyboard.setDrawingCacheBackgroundColor(R.color.blue);
+
             }
 
             @Override

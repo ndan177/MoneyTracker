@@ -1,6 +1,7 @@
 package com.example.nohai.moneytracker;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -28,6 +29,8 @@ import java.util.List;
 public class Page_1 extends Fragment {
     private CategoryViewModel mCategoryViewModel;
     static EditText dob;
+    Category cat;
+    int categoryId;
 
 
 
@@ -67,6 +70,8 @@ public class Page_1 extends Fragment {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
 
 
+
+
         dob = PageOne.findViewById(R.id.dob);
         dob.setText(df.format(c.getTime()));
         dob.setOnClickListener(new View.OnClickListener() {
@@ -88,11 +93,15 @@ public class Page_1 extends Fragment {
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        // do whatever
+                        categoryId=mCategoryViewModel.getAllCategories().getValue().get(position).getId();
+                        //Toast.makeText(getActivity(), String.valueOf(categoryId), Toast.LENGTH_SHORT).show();
+                        cat=new Category("zzzz");
+                        mCategoryViewModel.insert(cat);
 
-                        Intent intent = new Intent(getActivity(), NewExpense.class);
-                        startActivity(intent);
-                        Toast.makeText(getActivity(), position+" ", Toast.LENGTH_SHORT).show();
+                          Intent intent = new Intent(getActivity(), NewExpense.class);
+                          intent.putExtra("id",String.valueOf(categoryId));
+                           startActivity(intent);
+                        //Toast.makeText(getActivity(), position+" ", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override public void onLongItemClick(View view, int position) {

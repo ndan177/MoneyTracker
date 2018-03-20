@@ -1,21 +1,24 @@
-package com.example.nohai.moneytracker.Database;
+package com.example.nohai.moneytracker;
 
+import android.arch.persistence.db.SimpleSQLiteQuery;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.example.nohai.moneytracker.Category;
-import com.example.nohai.moneytracker.CategoryDao;
+import static java.sql.Types.NULL;
 
 
-@Database(entities = {Category.class}, version = 5)
+@Database(entities = {Category.class,Expense.class}, version = 6)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CategoryDao categoryDao();
+
+    public abstract ExpenseDao expenseDao();
 
     private static AppDatabase INSTANCE;
 
@@ -24,7 +27,7 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "category_database")
+                            AppDatabase.class, "Database")
                             // Wipes and rebuilds instead of migrating if no Migration object.
                             // Migration is not part of this codelab.
                             .fallbackToDestructiveMigration()
@@ -45,9 +48,13 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void onOpen (@NonNull SupportSQLiteDatabase db){
             super.onOpen(db);
-            // If you want to keep the data through app restarts,
-            // comment out the following line.
-            new PopulateDbAsync(INSTANCE).execute();
+
+               Cursor mcursor = db.query("SELECT count(*) FROM category_table", null);
+               mcursor.moveToFirst();
+               int icount = mcursor.getInt(0);
+               if (icount<1)
+                   new PopulateDbAsync(INSTANCE).execute();
+
         }
     };
 
@@ -67,7 +74,7 @@ public abstract class AppDatabase extends RoomDatabase {
         protected Void doInBackground(final Void... params) {
             // Start the app with a clean database every time.
             // Not needed if you only populate on creation.
-            mDao.deleteAll();
+           mDao.deleteAll();
 
             Category category = new Category("Food");
             mDao.insert(category);
@@ -83,7 +90,6 @@ public abstract class AppDatabase extends RoomDatabase {
             mDao.insert(category);
             category = new Category("Home");
             mDao.insert(category);
-
 
             return null;
         }
