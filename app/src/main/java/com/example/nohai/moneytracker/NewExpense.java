@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.davidmiguel.numberkeyboard.NumberKeyboard;
 import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import static java.lang.Float.parseFloat;
 
 
@@ -47,9 +51,11 @@ public class NewExpense extends AppCompatActivity {
         String categoryId = getIntent().getStringExtra("id");
         //Toast.makeText(this, "TEST"+categoryId, Toast.LENGTH_SHORT).show();
 
+        Date c = Calendar.getInstance().getTime();
+        java.sql.Date sqlDate = new java.sql.Date(c.getTime());
 
         newExpense.setCategoryId(Integer.parseInt(categoryId));
-
+        newExpense.setDate(sqlDate);
 
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class,"Database")
                 .fallbackToDestructiveMigration()

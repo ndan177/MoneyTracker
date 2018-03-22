@@ -5,10 +5,13 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+
+import java.sql.Date;
 import java.util.List;
 
 @Dao
 public interface  ExpenseDao {
+
 
         @Query("SELECT * from expense_table ORDER BY id DESC")
         List<Expense> getExpenses();
@@ -19,6 +22,6 @@ public interface  ExpenseDao {
         @Query("DELETE FROM expense_table")
         void deleteAll();
 
-        @Query("select sum(price) FROM expense_table")
-        double getPriceSum();
+        @Query("select sum(price) FROM expense_table where Date(date)=Date(:theDate)")
+        double getPriceSum(Date theDate);
     }

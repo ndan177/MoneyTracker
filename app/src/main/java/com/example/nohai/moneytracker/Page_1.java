@@ -32,7 +32,7 @@ public class Page_1 extends Fragment {
     static EditText dob;
     Category cat;
     int categoryId;
-    TextView Test;
+    TextView expenses;
     AppDatabase db;
 
 
@@ -77,8 +77,11 @@ public class Page_1 extends Fragment {
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
-        double mySum=db.expenseDao().getPriceSum();
-        //db.categoryDao().
+
+        java.sql.Date sqlDate = new java.sql.Date(c.getTime());
+        double mySum=db.expenseDao().getPriceSum(sqlDate);
+        expenses=PageOne.findViewById(R.id.expenses);
+        expenses.setText(String.valueOf(mySum));
 
         dob = PageOne.findViewById(R.id.dob);
         dob.setText(df.format(c.getTime()));
