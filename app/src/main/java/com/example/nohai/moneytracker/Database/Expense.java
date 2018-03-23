@@ -1,13 +1,15 @@
-package com.example.nohai.moneytracker;
+package com.example.nohai.moneytracker.Database;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
-import java.sql.Date;
+import com.example.nohai.moneytracker.Utils.DateConverter;
+import com.example.nohai.moneytracker.Database.Category;
+
+import java.util.Date;
 
 
 /**
@@ -31,7 +33,7 @@ public class Expense {
     public double price;
 
     @NonNull
-
+    @TypeConverters({DateConverter.class})
     public Date date;
 
     public String notes;

@@ -4,15 +4,19 @@ import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.example.nohai.moneytracker.Database.Category;
+import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.dao.CategoryDao;
+import com.example.nohai.moneytracker.dao.ExpenseDao;
+
 
 @Database(entities = {Category.class,Expense.class}, version = 1)
-@TypeConverters({Converters.class})
+
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CategoryDao categoryDao();

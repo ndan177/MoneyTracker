@@ -1,4 +1,4 @@
-package com.example.nohai.moneytracker;
+package com.example.nohai.moneytracker.UI;
 
 import android.arch.persistence.room.Room;
 import android.support.v4.app.NavUtils;
@@ -12,8 +12,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.davidmiguel.numberkeyboard.NumberKeyboard;
 import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
+import com.example.nohai.moneytracker.AppDatabase;
+import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.R;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 

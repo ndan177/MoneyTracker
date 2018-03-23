@@ -8,6 +8,8 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
+import com.example.nohai.moneytracker.Database.Category;
+
 import java.util.List;
 
 /**

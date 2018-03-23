@@ -1,11 +1,9 @@
 package com.example.nohai.moneytracker;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,9 +17,12 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
+import com.example.nohai.moneytracker.Database.Category;
+import com.example.nohai.moneytracker.UI.NewExpense;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,15 +72,16 @@ public class Page_1 extends Fragment {
         View PageOne = inflater.inflate(R.layout.page1, container, false);
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-
+        DateFormat dformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
 
         db = Room.databaseBuilder(getActivity().getApplicationContext(), AppDatabase.class,"Database")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
 
-        java.sql.Date sqlDate = new java.sql.Date(c.getTime());
-        double mySum=db.expenseDao().getPriceSum(sqlDate);
+
+        String reportDate = dformat.format(c);
+        double mySum=db.expenseDao().getPriceSum(reportDate);
         expenses=PageOne.findViewById(R.id.expenses);
         expenses.setText(String.valueOf(mySum));
 

@@ -1,4 +1,4 @@
-package com.example.nohai.moneytracker;
+package com.example.nohai.moneytracker.UI;
 
 import android.os.Bundle;
 
@@ -17,6 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+
+import com.example.nohai.moneytracker.Page_1;
+import com.example.nohai.moneytracker.Page_2;
+import com.example.nohai.moneytracker.Page_3;
+import com.example.nohai.moneytracker.Page_4;
+import com.example.nohai.moneytracker.R;
 
 import java.util.ArrayList;
 import java.util.List;
