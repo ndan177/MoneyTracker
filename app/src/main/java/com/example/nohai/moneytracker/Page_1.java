@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.nohai.moneytracker.Database.Category;
@@ -28,19 +31,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.DateFormatSymbols;
 import java.util.List;
+
 public class Page_1 extends Fragment {
     private CategoryViewModel mCategoryViewModel;
     static EditText dob;
-    Category cat;
     int categoryId;
     TextView expenses;
     AppDatabase db;
+    static int counter=0;
 
 
 
     public static String getMonthName(int month) {
 
-        return new DateFormatSymbols().getMonths()[month-1];
+        return new DateFormatSymbols().getShortMonths()[month-1];
     }
 
     public static class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -86,7 +90,18 @@ public class Page_1 extends Fragment {
         expenses.setText(String.valueOf(mySum));
 
         dob = PageOne.findViewById(R.id.dob);
-        dob.setText(df.format(c.getTime()));
+       if(counter==0) {
+           dob.setText(df.format(c.getTime()));//set current day
+            counter=1;
+       }
+       else
+       {
+           SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+           String defaultValue = getResources().getString(R.string.saved_date);
+           String myDate = sharedPref.getString(getString(R.string.saved_date), defaultValue);
+            dob.setText(myDate);
+       }
+
         dob.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -110,19 +125,22 @@ public class Page_1 extends Fragment {
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         categoryId=mCategoryViewModel.getAllCategories().getValue().get(position).getId();
-                        //Toast.makeText(getActivity(), String.valueOf(categoryId), Toast.LENGTH_SHORT).show();
-                       // cat=new Category("zzzz");
-                       // mCategoryViewModel.insert(cat);
 
+                        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(getString(R.string.saved_date), dob.getText().toString());
+                        editor.commit();
                           Intent intent = new Intent(getActivity(), NewExpense.class);
                           intent.putExtra("id",String.valueOf(categoryId));
+                              // TODO: Pass date through
+                       // intent.putExtra("date",);
                            startActivity(intent);
-                        //Toast.makeText(getActivity(), position+" ", Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
                         // do whatever
-                    }
+                }
                 })
         );
 
@@ -143,5 +161,22 @@ public class Page_1 extends Fragment {
         });
 
         return PageOne;
+    }
+    @Override
+    public void onResume() {
+
+        DateFormat dformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
+         String myDate=dob.getText().toString();
+        Date date1;
+        try {
+          date1 = new SimpleDateFormat("dd-MMM-yyyy").parse(myDate);
+            String reportDate = dformat.format( date1);
+            double mySum=db.expenseDao().getPriceSum(reportDate);
+            expenses.setText(String.valueOf(mySum));
+       }catch(Exception Ex){}
+
+
+
+        super.onResume();
     }
 }
