@@ -11,8 +11,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.GetChars;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +38,11 @@ import java.util.List;
 
 public class Page_1 extends Fragment {
     private CategoryViewModel mCategoryViewModel;
-    static EditText dob;
+    static EditText dateChooser;
     int categoryId;
     TextView expenses;
     AppDatabase db;
-    static int counter=0;
-
-
+    static int fragmentLoadedCounter =0;
 
     public static String getMonthName(int month) {
 
@@ -58,13 +60,18 @@ public class Page_1 extends Fragment {
             return new DatePickerDialog(getActivity(), this, yy, mm, dd);
         }
 
+
         public void onDateSet(DatePicker view, int yy, int mm, int dd) {
             populateSetDate(yy, mm+1, dd);
+
+
         }
         public void populateSetDate(int year, int month, int day) {
             String month_name=getMonthName(month);
-            dob.setText(day+"-"+month_name+"-"+year);
+            dateChooser.setText(day+"-"+month_name+"-"+year);
+
         }
+
 
     }
     //Constructor default
@@ -74,42 +81,56 @@ public class Page_1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View PageOne = inflater.inflate(R.layout.page1, container, false);
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        DateFormat dformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
+        Date currentDay = Calendar.getInstance().getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+        DateFormat dbDateFormat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
 
         db = Room.databaseBuilder(getActivity().getApplicationContext(), AppDatabase.class,"Database")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
 
+        String dbDateString = dbDateFormat.format(currentDay);
+        double expensesSum=db.expenseDao().getPriceSum(dbDateString);
 
-        String reportDate = dformat.format(c);
-        double mySum=db.expenseDao().getPriceSum(reportDate);
         expenses=PageOne.findViewById(R.id.expenses);
-        expenses.setText(String.valueOf(mySum));
+        expenses.setText(String.valueOf(expensesSum));
 
-        dob = PageOne.findViewById(R.id.dob);
-       if(counter==0) {
-           dob.setText(df.format(c.getTime()));//set current day
-            counter=1;
+        dateChooser = PageOne.findViewById(R.id.date);
+        dateChooser.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                onResume();
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+       if(fragmentLoadedCounter ==0) { //if it is the first time, set current day
+           dateChooser.setText(simpleDateFormat.format(currentDay.getTime()));//set current day
+            fragmentLoadedCounter =1;
        }
-       else
+       else  //set saved date
        {
-           SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+           SharedPreferences sharedPref = getActivity().getSharedPreferences("DATE",Context.MODE_PRIVATE);
            String defaultValue = getResources().getString(R.string.saved_date);
            String myDate = sharedPref.getString(getString(R.string.saved_date), defaultValue);
-            dob.setText(myDate);
+            dateChooser.setText(myDate);
        }
 
-        dob.setOnClickListener(new View.OnClickListener() {
+        dateChooser.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
 
                 DialogFragment newFragment = new SelectDateFragment();
-                newFragment.show(getFragmentManager(), "DatePicker");
 
+                newFragment.show(getFragmentManager(), "DatePicker");
             }
         });
 
@@ -126,14 +147,15 @@ public class Page_1 extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         categoryId=mCategoryViewModel.getAllCategories().getValue().get(position).getId();
 
-                        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences sharedPref = getActivity().getSharedPreferences("DATE",Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString(getString(R.string.saved_date), dob.getText().toString());
+                        editor.putString(getString(R.string.saved_date), dateChooser.getText().toString());
                         editor.commit();
+
                           Intent intent = new Intent(getActivity(), NewExpense.class);
                           intent.putExtra("id",String.valueOf(categoryId));
                               // TODO: Pass date through
-                       // intent.putExtra("date",);
+                          intent.putExtra("date",dateChooser.getText().toString());
                            startActivity(intent);
 
                     }
@@ -165,18 +187,19 @@ public class Page_1 extends Fragment {
     @Override
     public void onResume() {
 
-        DateFormat dformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
-         String myDate=dob.getText().toString();
+        DateFormat dateformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
+        String myDate= dateChooser.getText().toString();
         Date date1;
         try {
-          date1 = new SimpleDateFormat("dd-MMM-yyyy").parse(myDate);
-            String reportDate = dformat.format( date1);
+            date1 = new SimpleDateFormat("dd-MMM-yyyy").parse(myDate);
+            String reportDate = dateformat.format( date1);
             double mySum=db.expenseDao().getPriceSum(reportDate);
             expenses.setText(String.valueOf(mySum));
-       }catch(Exception Ex){}
-
-
+        }catch(Exception Ex){}
 
         super.onResume();
     }
+
+
+
 }

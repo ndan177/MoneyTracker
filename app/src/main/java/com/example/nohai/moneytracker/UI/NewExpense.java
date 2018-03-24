@@ -1,12 +1,20 @@
 package com.example.nohai.moneytracker.UI;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.FragmentManager;
 import android.arch.persistence.room.Room;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import android.widget.Toast;
@@ -14,8 +22,11 @@ import com.davidmiguel.numberkeyboard.NumberKeyboard;
 import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
 import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.Page_1;
 import com.example.nohai.moneytracker.R;
 
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,6 +39,39 @@ public class NewExpense extends AppCompatActivity {
     String nr;
     Expense newExpense= new Expense();
     AppDatabase db;
+    static EditText dateChooser;
+
+    public static String getMonthName(int month) {
+
+        return new DateFormatSymbols().getShortMonths()[month-1];
+    }
+
+    public static class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int yy = calendar.get(Calendar.YEAR);
+            int mm = calendar.get(Calendar.MONTH);
+            int dd = calendar.get(Calendar.DAY_OF_MONTH);
+            return new DatePickerDialog(getActivity(), this, yy, mm, dd);
+        }
+
+
+        public void onDateSet(DatePicker view, int yy, int mm, int dd) {
+            populateSetDate(yy, mm+1, dd);
+
+
+        }
+        public void populateSetDate(int year, int month, int day) {
+            String month_name=getMonthName(month);
+            dateChooser.setText(day+"-"+month_name+"-"+year);
+
+        }
+
+
+    }
+
 
     public boolean isNumeric(String s) {
         return s != null && s.matches("[-+]?\\d*\\.?\\d+");
@@ -45,6 +89,10 @@ public class NewExpense extends AppCompatActivity {
         actionbar.setTitle("New Expense");
         actionbar.setDisplayHomeAsUpEnabled(true);
 
+        dateChooser=findViewById(R.id.date);
+
+        String myDate = getIntent().getStringExtra("date");
+        dateChooser.setText(myDate);
 
 
         //listener for keyboard
@@ -54,15 +102,28 @@ public class NewExpense extends AppCompatActivity {
         //Toast.makeText(this, "TEST"+categoryId, Toast.LENGTH_SHORT).show();
 
         Date c = Calendar.getInstance().getTime();
-        java.sql.Date sqlDate = new java.sql.Date(c.getTime());
 
         newExpense.setCategoryId(Integer.parseInt(categoryId));
-        newExpense.setDate(sqlDate);
+
+
+
+       // java.sql.Date sqlDate = new java.sql.Date(c);
+
 
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class,"Database")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
+        dateChooser.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                DialogFragment newFragment = new SelectDateFragment();
+
+                newFragment.show( getSupportFragmentManager(),"DatePicker");
+            }
+        });
 
 
         numberKeyboard.setListener(new NumberKeyboardListener() {
@@ -114,6 +175,11 @@ public class NewExpense extends AppCompatActivity {
 
         if(!myTextPrice.equals("")) {
             newExpense.price = parseFloat(myTextPrice);
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+                Date parsed = format.parse(dateChooser.getText().toString());
+                newExpense.setDate(parsed);
+            }catch (Exception Ex){}
             db.expenseDao().insert(newExpense);
             Toast.makeText(this, "Expense added!", Toast.LENGTH_SHORT).show();
             finish();

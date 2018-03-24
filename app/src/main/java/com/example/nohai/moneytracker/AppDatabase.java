@@ -21,7 +21,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CategoryDao categoryDao();
     public abstract ExpenseDao expenseDao();
-
+    public static String DATABASE_NAME = "Database";
     private static AppDatabase INSTANCE;
 
     static AppDatabase getDatabase(final Context context) {
@@ -29,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "Database")
+                            AppDatabase.class, DATABASE_NAME )
                             // Wipes and rebuilds instead of migrating if no Migration object.
 
                             .fallbackToDestructiveMigration()
