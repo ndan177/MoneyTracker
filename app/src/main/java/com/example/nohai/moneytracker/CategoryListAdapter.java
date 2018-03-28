@@ -47,7 +47,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void onBindViewHolder(CategoryViewHolder holder, int position) {
         Category current = mCategories.get(position);
         holder.categoryItemView.setText(current.getCategory());
-        holder.totalExpensesItemView.setText(String.valueOf(current.expensesCost));
+         holder.totalExpensesItemView.setText(String.valueOf(current.expensesCost));
     }
 
     void setCategories(List<Category> categories){

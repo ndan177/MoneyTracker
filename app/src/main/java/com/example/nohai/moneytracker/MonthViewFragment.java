@@ -6,21 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-public class Page_2 extends Fragment {
-    AppDatabase db;
+public class MonthViewFragment extends Fragment {
 
     //Constructor default
-    public Page_2(){};
+    public MonthViewFragment(){};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View PageTwo = inflater.inflate(R.layout.page2, container, false);
+        View PageTree = inflater.inflate(R.layout.page3, container, false);
 
 
 
-
-
-        return PageTwo;
+        return PageTree;
     }
 }

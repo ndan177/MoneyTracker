@@ -19,9 +19,12 @@ public interface  ExpenseDao {
         @Insert
         void insert(Expense expense);
 
-        @Query("DELETE FROM expense_table")
-        void deleteAll();
+//        @Query("DELETE FROM expense_table")
+//        void deleteAll();
 
         @Query("select sum(price) FROM expense_table where  Date(date)=Date(:theDate)")
         double getPriceSum(String theDate);
+
+        @Query("select sum(price) FROM expense_table where  Date(date)=Date(:theDate) and categoryId=:catId")
+        double getPriceSumByCategory(int catId,String theDate);
     }

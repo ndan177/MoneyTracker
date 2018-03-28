@@ -3,7 +3,6 @@ package com.example.nohai.moneytracker.UI;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.arch.persistence.room.Room;
-import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -13,12 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
 import android.widget.Toast;
+
 import com.davidmiguel.numberkeyboard.NumberKeyboard;
 import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
 import com.example.nohai.moneytracker.AppDatabase;
-import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.Database.Income;
 import com.example.nohai.moneytracker.R;
 
 import java.text.DateFormatSymbols;
@@ -28,12 +27,12 @@ import java.util.Date;
 
 import static java.lang.Float.parseFloat;
 
-//TODO: populate spinner with categories
-public class NewExpense extends AppCompatActivity {
+public class NewIncome extends AppCompatActivity {
+
     NumberKeyboard numberKeyboard;
     EditText myNumber;
     String nr;
-    Expense newExpense= new Expense();
+    Income newIncome= new Income();
     AppDatabase db;
     static EditText dateChooser;
 
@@ -77,37 +76,23 @@ public class NewExpense extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_expense);
+        setContentView(R.layout.activity_new_income);
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle("New Expense");
+        actionbar.setTitle("New Income");
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         Date currentDay = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
         dateChooser=findViewById(R.id.date);
+        dateChooser.setText(simpleDateFormat.format(currentDay.getTime()));//set current day
 
-        String myDate = getIntent().getStringExtra("date");
-        if(!(myDate==null))
-            dateChooser.setText(myDate);
-        else
-        {
-            dateChooser.setText(simpleDateFormat.format(currentDay.getTime()));//set current day
-        }
-
-//
-//
         //listener for keyboard
         numberKeyboard=findViewById(R.id.numberKeyboard);
         myNumber=findViewById(R.id.myNumber);
-        String categoryId = getIntent().getStringExtra("id");
-
-        if(!(categoryId==null))
-            newExpense.setCategoryId(Integer.parseInt(categoryId));
-
 
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class,"Database")
                 .fallbackToDestructiveMigration()
@@ -118,7 +103,7 @@ public class NewExpense extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
 
-                DialogFragment newFragment = new SelectDateFragment();
+                DialogFragment newFragment = new NewIncome.SelectDateFragment();
 
                 newFragment.show( getSupportFragmentManager(),"DatePicker");
             }
@@ -170,25 +155,22 @@ public class NewExpense extends AppCompatActivity {
     public void onClickButton(View view)
     {
         String myTextPrice = myNumber.getText().toString();
-        int myCategory = newExpense.getCategoryId();
 
 
         if(!myTextPrice.equals(""))
         {
-            newExpense.price = parseFloat(myTextPrice);
+            newIncome.price = parseFloat(myTextPrice);
             try
             {
                 SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
                 Date parsed = format.parse(dateChooser.getText().toString());
-                newExpense.setDate(parsed);
+                newIncome.setDate(parsed);
             } catch (Exception Ex) {}
-            if(myCategory==0)
-                Toast.makeText(this, "Select a category", Toast.LENGTH_SHORT).show();
-            else {
-                db.expenseDao().insert(newExpense);
-                Toast.makeText(this, "Expense added!", Toast.LENGTH_SHORT).show();
+
+                db.incomeDao().insert(newIncome);
+                Toast.makeText(this, "Income added!", Toast.LENGTH_SHORT).show();
                 finish();
-            }
+
         }
         else
         {

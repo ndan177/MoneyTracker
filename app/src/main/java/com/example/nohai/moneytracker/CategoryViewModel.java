@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * View Model to keep a reference to the word repository and
- * an up-to-date list of all words.
+ * an up-to-date list of all categories.
  */
 
 public class CategoryViewModel extends AndroidViewModel {

@@ -6,14 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Page_3 extends Fragment {
+/**
+ * Created by nohai on 3/13/2018.
+ */
+
+public class YearViewFragment extends Fragment {
 
     //Constructor default
-    public Page_3(){};
+    public YearViewFragment(){};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View PageTree = inflater.inflate(R.layout.page3, container, false);
+        View PageTree = inflater.inflate(R.layout.page4, container, false);
 
 
 

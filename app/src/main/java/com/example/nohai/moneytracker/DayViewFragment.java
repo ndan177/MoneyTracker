@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -36,7 +37,7 @@ import java.util.Date;
 import java.text.DateFormatSymbols;
 import java.util.List;
 
-public class Page_1 extends Fragment {
+public class DayViewFragment extends Fragment {
     private CategoryViewModel mCategoryViewModel;
     static EditText dateChooser;
     int categoryId;
@@ -69,13 +70,12 @@ public class Page_1 extends Fragment {
         public void populateSetDate(int year, int month, int day) {
             String month_name=getMonthName(month);
             dateChooser.setText(day+"-"+month_name+"-"+year);
-
         }
 
 
     }
     //Constructor default
-    public Page_1(){};
+    public DayViewFragment(){};
 
 
     @Override
@@ -101,6 +101,7 @@ public class Page_1 extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 onResume();
+
             }
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -174,16 +175,34 @@ public class Page_1 extends Fragment {
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-        mCategoryViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
+
+        mCategoryViewModel.getAllCategories().observe(this,new Observer<List<Category>>() {
+
             @Override
             public void onChanged(@Nullable final List<Category> categories) {
-                // Update the cached copy of the words in the adapter.
+                // Update the cached copy of the categories in the adapter.
+                for(int i=0;i<categories.size();i++)
+                {
+                    DateFormat dateformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
+                    String myDate= dateChooser.getText().toString();
+                    Date date1;
+                    try {
+                        date1 = new SimpleDateFormat("dd-MMM-yyyy").parse(myDate);
+                        String reportDate = dateformat.format( date1);
+                        double mySum=db.expenseDao().getPriceSumByCategory( categories.get(i).getId(),reportDate);
+                        categories.get(i).expensesCost=mySum;
+                    }catch(Exception Ex){}
+                    Toast.makeText(getActivity(), "onChanged()", Toast.LENGTH_LONG).show();
+                }
+
                 adapter.setCategories(categories);
             }
+
         });
 
         return PageOne;
     }
+
     @Override
     public void onResume() {
 
@@ -196,6 +215,13 @@ public class Page_1 extends Fragment {
             double mySum=db.expenseDao().getPriceSum(reportDate);
             expenses.setText(String.valueOf(mySum));
         }catch(Exception Ex){}
+        mCategoryViewModel=ViewModelProviders.of(this).get(CategoryViewModel.class);
+        synchronized(mCategoryViewModel){
+            mCategoryViewModel.notify();
+        }
+
+
+
 
         super.onResume();
     }

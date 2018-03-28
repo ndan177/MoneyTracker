@@ -1,5 +1,6 @@
 package com.example.nohai.moneytracker.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -16,13 +17,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 
-import com.example.nohai.moneytracker.Page_1;
-import com.example.nohai.moneytracker.Page_2;
-import com.example.nohai.moneytracker.Page_3;
-import com.example.nohai.moneytracker.Page_4;
+import com.example.nohai.moneytracker.DayViewFragment;
+import com.example.nohai.moneytracker.WeekViewFragment;
+import com.example.nohai.moneytracker.MonthViewFragment;
+import com.example.nohai.moneytracker.YearViewFragment;
 import com.example.nohai.moneytracker.R;
 
 import java.util.ArrayList;
@@ -117,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
     public void SetUpViewPager (ViewPager viewpage){
         MyViewPageAdapter Adapter = new MyViewPageAdapter(getSupportFragmentManager());
 
-        Adapter.AddFragmentPage(new Page_1(), "Day");
-        Adapter.AddFragmentPage(new Page_2(), "Week");
-        Adapter.AddFragmentPage(new Page_3(), "Month");
-        Adapter.AddFragmentPage(new Page_4(), "Year");
+        Adapter.AddFragmentPage(new DayViewFragment(), "Day");
+        Adapter.AddFragmentPage(new WeekViewFragment(), "Week");
+        Adapter.AddFragmentPage(new MonthViewFragment(), "Month");
+        Adapter.AddFragmentPage(new YearViewFragment(), "Year");
         //We Need Fragment class now
 
         viewpage.setAdapter(Adapter);
@@ -162,6 +162,15 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+    public void openExpense(View view) {
+        Intent intent = new Intent(this, NewExpense.class);
+        startActivity(intent);
+    }
+    public void openIncome(View view) {
+        Intent intent = new Intent(this, NewIncome.class);
+        startActivity(intent);
+    }
+
 
 
 
