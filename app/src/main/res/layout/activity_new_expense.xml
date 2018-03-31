@@ -34,9 +34,9 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/blue"
+            android:background="@layout/border"
             android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+            android:drawableTint="@android:color/background_dark"
             android:editable="false"
             android:ems="10"
             android:gravity="center"
@@ -51,21 +51,22 @@
         <EditText
             android:id="@+id/myNumber"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/blue"
-            android:drawableLeft="@drawable/ic_attach_money_black_24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:drawableLeft="@drawable/icons8_paper_money_50"
+            android:drawableTint="@color/green"
+            android:background="@layout/border"
             android:editable="false"
             android:ems="10"
             android:gravity="center"
             android:inputType="none"
             android:labelFor="@+id/sum"
             android:selectAllOnFocus="false"
-            android:textColorLink="@color/blue"
+            android:singleLine="false"
+            app:layout_constraintBottom_toTopOf="@+id/numberKeyboard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.davidmiguel.numberkeyboard.NumberKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:keyboard="http://schemas.android.com/apk/res-auto"
@@ -91,43 +92,46 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="52dp"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_marginBottom="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:onClick="onClickButton"
             android:text="Add Expense"
+            app:layout_constraintBottom_toTopOf="@+id/myNumber"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="219dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
+            android:id="@+id/editText"
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/icons8_pencil_50"
+            android:drawableTint="@color/dark"
             android:ems="10"
             android:hint="Write a note"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myNumber" />
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="180dp"
-            android:layout_height="21dp"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/numberKeyboard"
+            app:layout_constraintBottom_toTopOf="@+id/editText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button"
-            app:layout_constraintVertical_bias="0.612" />
+            app:layout_constraintTop_toBottomOf="@+id/date" />
+
 
     </android.support.constraint.ConstraintLayout>
 

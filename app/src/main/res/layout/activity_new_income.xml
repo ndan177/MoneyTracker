@@ -34,9 +34,9 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/blue"
+            android:background="@layout/border"
             android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+            android:drawableTint="@android:color/background_dark"
             android:editable="false"
             android:ems="10"
             android:gravity="center"
@@ -51,10 +51,11 @@
         <EditText
             android:id="@+id/myNumber"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:drawableLeft="@drawable/ic_attach_money_black_24dp"
+            android:drawableLeft="@drawable/icons8_paper_money_50"
+            android:drawableTint="@color/green"
             android:editable="false"
             android:ems="10"
             android:gravity="center"
@@ -62,56 +63,62 @@
             android:labelFor="@+id/sum"
             android:selectAllOnFocus="false"
             android:textColorLink="@color/blue"
+            app:layout_constraintBottom_toTopOf="@+id/numberKeyboard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
-
+            app:layout_constraintStart_toStartOf="parent" />
         <com.davidmiguel.numberkeyboard.NumberKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:keyboard="http://schemas.android.com/apk/res-auto"
             android:id="@+id/numberKeyboard"
             android:layout_width="match_parent"
-            android:layout_height="290dp"
+            android:layout_height="220dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            keyboard:keyHeight="50dp"
+            keyboard:keyWidth="50dp"
             keyboard:keyboardType="decimal"
             keyboard:layout_constraintBottom_toBottomOf="parent"
             keyboard:layout_constraintEnd_toEndOf="parent"
+
             keyboard:layout_constraintHorizontal_bias="0.0"
             keyboard:layout_constraintStart_toStartOf="parent"
-
-            keyboard:numberKeyTextColor="@color/blue" />
-
+            keyboard:numberKeyTextColor="@color/blue"
+            keyboard:numberKeyTextSize="20dp" />
 
         <Button
             android:id="@+id/button"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="52dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:onClick="onClickButton"
             android:text="Add Income"
-            app:layout_constraintBottom_toTopOf="@+id/numberKeyboard"
+            app:layout_constraintBottom_toTopOf="@+id/myNumber"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
         <EditText
+            android:id="@+id/editText2"
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/icons8_pencil_50"
+            android:drawableTint="@color/blue"
             android:ems="10"
             android:hint="Write a note"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/date" />
 
     </android.support.constraint.ConstraintLayout>
 

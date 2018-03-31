@@ -14,6 +14,10 @@ public interface CategoryDao {
 
     @Query("SELECT * from category_table ORDER BY category ASC")
     List<Category> getCategories();
+
+    @Query("SELECT category from category_table ORDER BY category ASC")
+    List<String> getCategoriesName();
+
     // LiveData is a data holder class that can be observed within a given lifecycle.
     // Always holds/caches latest version of data. Notifies its active observers when the
     // data has changed. Since we are getting all the contents of the database,

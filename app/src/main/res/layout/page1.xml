@@ -13,6 +13,7 @@
 
         <EditText
             android:id="@+id/date"
+            android:background="@layout/border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@android:drawable/ic_menu_my_calendar"
@@ -28,16 +29,33 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
+            android:id="@+id/incomes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date" />
+
+        <TextView
             android:id="@+id/expenses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="?attr/colorError"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            app:layout_constraintTop_toBottomOf="@+id/incomes" />
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
@@ -55,7 +73,7 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <android.support.design.widget.FloatingActionButton
+            <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,10 +81,11 @@
             android:layout_marginEnd="8dp"
             android:clickable="true"
             android:onClick="openExpense"
-            app:backgroundTint="@color/green"
+            app:backgroundTint="@android:color/holo_red_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@drawable/ic_remove_black_24dp"
+            />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton2"
@@ -76,10 +95,11 @@
             android:layout_marginStart="8dp"
             android:clickable="true"
             android:onClick="openIncome"
-            app:backgroundTint="@android:color/holo_red_dark"
+            app:backgroundTint="@color/green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@android:drawable/bottom_bar" />
+            app:srcCompat="@android:drawable/ic_input_add"
+           />
 
     </android.support.constraint.ConstraintLayout>
 

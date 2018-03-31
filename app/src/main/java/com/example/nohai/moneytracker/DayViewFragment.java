@@ -42,6 +42,7 @@ public class DayViewFragment extends Fragment {
     static EditText dateChooser;
     int categoryId;
     TextView expenses;
+    TextView incomes;
     AppDatabase db;
     static int fragmentLoadedCounter =0;
 
@@ -83,7 +84,7 @@ public class DayViewFragment extends Fragment {
         View PageOne = inflater.inflate(R.layout.page1, container, false);
         Date currentDay = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-        DateFormat dbDateFormat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
+        DateFormat dbDateFormat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses an incomes
 
         db = Room.databaseBuilder(getActivity().getApplicationContext(), AppDatabase.class,"Database")
                 .fallbackToDestructiveMigration()
@@ -92,9 +93,13 @@ public class DayViewFragment extends Fragment {
 
         String dbDateString = dbDateFormat.format(currentDay);
         double expensesSum=db.expenseDao().getPriceSum(dbDateString);
+        double incomesSum=db.incomeDao().getPriceSum(dbDateString);
 
         expenses=PageOne.findViewById(R.id.expenses);
         expenses.setText(String.valueOf(expensesSum));
+
+        incomes=PageOne.findViewById(R.id.incomes);
+        incomes.setText(String.valueOf(incomesSum));
 
         dateChooser = PageOne.findViewById(R.id.date);
         dateChooser.addTextChangedListener(new TextWatcher() {
@@ -214,14 +219,13 @@ public class DayViewFragment extends Fragment {
             String reportDate = dateformat.format( date1);
             double mySum=db.expenseDao().getPriceSum(reportDate);
             expenses.setText(String.valueOf(mySum));
+            double mySumIncome=db.incomeDao().getPriceSum(reportDate);
+            incomes.setText(String.valueOf(mySumIncome));
         }catch(Exception Ex){}
         mCategoryViewModel=ViewModelProviders.of(this).get(CategoryViewModel.class);
         synchronized(mCategoryViewModel){
             mCategoryViewModel.notify();
         }
-
-
-
 
         super.onResume();
     }

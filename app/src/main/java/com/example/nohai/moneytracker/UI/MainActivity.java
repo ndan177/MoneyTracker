@@ -1,6 +1,9 @@
 package com.example.nohai.moneytracker.UI;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -17,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.example.nohai.moneytracker.DayViewFragment;
@@ -58,8 +62,32 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
+                        int id = menuItem.getItemId();
+                        switch (id) {
+                            case R.id.nav_item1:
+                                Intent intent = new Intent(getApplicationContext(), NewExpense.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.nav_item2:
+                                Intent intent2 = new Intent(getApplicationContext(), NewIncome.class);
+                                startActivity(intent2);
+                                break;
+                            case R.id.nav_item3:
+                                ConnectivityManager cm =
+                                  (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                                boolean isConnected = activeNetwork != null &&
+                                        activeNetwork.isConnectedOrConnecting();
+                                if(isConnected==false)
+                                    Toast.makeText(MainActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                                break;
+
+
+                        }
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
+                       // Toast.makeText(MainActivity.this, ""+menuItem.p), Toast.LENGTH_SHORT).show();
                         mDrawerLayout.closeDrawers();
 
                         // Add code here to update the UI based on the item selected

@@ -11,31 +11,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.davidmiguel.numberkeyboard.NumberKeyboard;
 import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
 import com.example.nohai.moneytracker.AppDatabase;
+import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.Database.Expense;
 import com.example.nohai.moneytracker.R;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static java.lang.Float.parseFloat;
 
 //TODO: populate spinner with categories
-public class NewExpense extends AppCompatActivity {
+public class NewExpense extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
     NumberKeyboard numberKeyboard;
     EditText myNumber;
     String nr;
     Expense newExpense= new Expense();
     AppDatabase db;
     static EditText dateChooser;
+    Spinner spinner;
 
     public static String getMonthName(int month) {
 
@@ -113,6 +120,15 @@ public class NewExpense extends AppCompatActivity {
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
+
+
+        //spinner
+        spinner = findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
+        // Loading spinner data from database
+        loadSpinnerData();
+        //
+
         dateChooser.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -194,6 +210,42 @@ public class NewExpense extends AppCompatActivity {
         {
             Toast.makeText(this, "Sum can't be null", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void loadSpinnerData() {
+
+        //List<String> labels = db.categoryDao().getCategoriesName();
+        List<Category> categories=db.categoryDao().getCategories();
+
+        List<String> categoriesNames=new ArrayList<>();
+        categoriesNames.add("Select a category");
+
+        for(Category a: categories){
+            categoriesNames.add(String.valueOf(a.getCategory()));
+        }
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, categoriesNames);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position,
+                               long id) {
+        int myId;
+        List<Category> categories = db.categoryDao().getCategories();
+        if (position != 0) {
+            myId = categories.get(position - 1).getId();
+            newExpense.setCategoryId(myId);
+        }
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+
     }
 
 }
