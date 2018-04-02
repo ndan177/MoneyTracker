@@ -12,7 +12,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/green">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -36,13 +37,12 @@
             android:layout_height="wrap_content"
             android:background="@layout/border"
             android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-            android:drawableTint="@android:color/background_dark"
             android:editable="false"
             android:ems="10"
             android:gravity="center"
             android:inputType="none"
             android:labelFor="@+id/date"
-            android:textColorLink="@color/blue"
+            android:textColorLink="@color/green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,9 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:drawableLeft="@drawable/icons8_paper_money_50"
-            android:drawableTint="@color/green"
             android:background="@layout/border"
+            android:drawableLeft="@drawable/icons8_paper_money_50"
+            android:drawableTint="@color/colorPrimaryDark"
             android:editable="false"
             android:ems="10"
             android:gravity="center"
@@ -76,23 +76,27 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:alwaysDrawnWithCache="false"
+            android:backgroundTint="@color/white"
+            android:backgroundTintMode="src_in"
+            android:foregroundTintMode="multiply"
+            android:theme="@style/Base.TextAppearance.AppCompat.Inverse"
             keyboard:keyHeight="50dp"
             keyboard:keyWidth="50dp"
             keyboard:keyboardType="decimal"
             keyboard:layout_constraintBottom_toBottomOf="parent"
             keyboard:layout_constraintEnd_toEndOf="parent"
-
             keyboard:layout_constraintHorizontal_bias="0.0"
             keyboard:layout_constraintStart_toStartOf="parent"
-            keyboard:numberKeyTextColor="@color/blue"
+            keyboard:numberKeyTextColor="@color/colorPrimaryDark"
             keyboard:numberKeyTextSize="20dp" />
 
 
         <Button
             android:id="@+id/button"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="52dp"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_marginBottom="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -111,7 +115,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:drawableLeft="@drawable/icons8_pencil_50"
-            android:drawableTint="@color/dark"
+            android:drawableTint="@color/colorPrimaryDark"
             android:ems="10"
             android:hint="Write a note"
             android:inputType="textPersonName"

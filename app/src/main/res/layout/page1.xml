@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightBlue"
+    android:background="@color/green"
     android:orientation="vertical">
 
 
@@ -23,7 +23,7 @@
             android:inputType="none"
 
             android:labelFor="@+id/date"
-            android:textColorLink="@color/blue"
+            android:textColorLink="@color/green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
@@ -36,7 +36,7 @@
             android:layout_marginStart="8dp"
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@android:color/holo_green_light"
+            android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
 
         </android.support.v7.widget.RecyclerView>
 
-            <android.support.design.widget.FloatingActionButton
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,11 +81,11 @@
             android:layout_marginEnd="8dp"
             android:clickable="true"
             android:onClick="openExpense"
-            app:backgroundTint="@android:color/holo_red_dark"
+            android:tint="@color/white"
+            app:backgroundTint="@color/red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_remove_black_24dp"
-            />
+            app:srcCompat="@drawable/ic_remove_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton2"
@@ -95,11 +95,11 @@
             android:layout_marginStart="8dp"
             android:clickable="true"
             android:onClick="openIncome"
-            app:backgroundTint="@color/green"
+            android:tint="@color/white"
+            app:backgroundTint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@android:drawable/ic_input_add"
-           />
+            app:srcCompat="@android:drawable/ic_input_add" />
 
     </android.support.constraint.ConstraintLayout>
 

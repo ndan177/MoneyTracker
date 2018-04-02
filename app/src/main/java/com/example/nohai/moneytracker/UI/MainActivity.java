@@ -81,8 +81,17 @@ public class MainActivity extends AppCompatActivity {
                                         activeNetwork.isConnectedOrConnecting();
                                 if(isConnected==false)
                                     Toast.makeText(MainActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
-                                break;
+                                else
+                                {
+                                    Intent intent3 = new Intent(getApplicationContext(), Currency.class);
+                                    startActivity(intent3);
 
+                                }
+
+
+
+
+                                break;
 
                         }
                         menuItem.setChecked(true);

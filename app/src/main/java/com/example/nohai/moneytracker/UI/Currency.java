@@ -1,8 +1,9 @@
-package com.example.nohai.moneytracker;
+package com.example.nohai.moneytracker.UI;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -12,8 +13,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.nohai.moneytracker.CategoryListAdapter;
+
 import com.example.nohai.moneytracker.R;
+import com.example.nohai.moneytracker.Rate;
+import com.example.nohai.moneytracker.RateAdapter;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,15 +33,21 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class Currency extends AppCompatActivity {
    private final String myURL="http://www.bnr.ro/nbrfxrates.xml";
-    ListView listView ;
+   private final String myTitle="Currency";
+   ListView listView ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency);
 
+        setToolbar();
+
         listView = findViewById(R.id.lvItems);
 
-        //final TextView mTextView =  findViewById(R.id.text);
+        final TextView mTextView =  findViewById(R.id.publisher);
+        final TextView pTextView =  findViewById(R.id.publishingDate);
+        final TextView cTextView =  findViewById(R.id.currency);
 
         // Construct the data source
         final ArrayList<Rate> arrayOfRates = new ArrayList<Rate>();
@@ -52,10 +61,7 @@ public class Currency extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                       // mTextView.setText("Response is: "+ response.substring(0,500));
 
-                        //
                         try {
 
                             InputStream is = new ByteArrayInputStream(response.getBytes(StandardCharsets.UTF_8));
@@ -70,6 +76,26 @@ public class Currency extends AppCompatActivity {
 
                             NodeList nList = doc.getElementsByTagName("Rate");
 
+                            //get publisher
+                            NodeList publisherList = doc.getElementsByTagName("Publisher");
+                            Node publisher=publisherList.item(0);
+                            mTextView.setText(publisher.getFirstChild().getNodeValue());
+
+                            //get publishing date
+                            NodeList publishingDateList = doc.getElementsByTagName("PublishingDate");
+                            Node publishingDate = publishingDateList.item(0);
+                            pTextView.setText(publishingDate.getFirstChild().getNodeValue());
+
+                            //get Origin Currency
+                            NodeList currencyList = doc.getElementsByTagName("OrigCurrency");
+                            Node currency = currencyList.item(0);
+                            cTextView.setText(currency.getFirstChild().getNodeValue());
+
+
+
+
+                            mTextView.setText(publisher.getFirstChild().getNodeValue());
+
                             for (int i=0; i<nList.getLength(); i++) {
 
                                 Node node = nList.item(i);
@@ -81,15 +107,11 @@ public class Currency extends AppCompatActivity {
                                         multiplier = node.getAttributes().getNamedItem("multiplier").getNodeValue();
                                     }catch (Exception ex) {}
 
+                                    if(!multiplier.equals("")) multiplier="Multiplier "+multiplier;
                                     String name = node.getFirstChild().getNodeValue();
 
                                     Rate rate = new Rate(value, name, multiplier);
                                     arrayOfRates.add(rate);
-
-
-//                                    Element element2 = (Element) node;
-//                                    mTextView.setText(mT  extView.getText()+"\nName : " + getValue("name", element2)+"\n");
-                                  //  mTextView.setText(nList.item(i).getFirstChild().getNodeValue());
 
                                 }
                             }
@@ -99,12 +121,12 @@ public class Currency extends AppCompatActivity {
                             // Attach the adapter to a ListView
                             listView.setAdapter(adapter);
                         } catch (Exception e) {e.printStackTrace();}
-                        //
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               // mTextView.setText("That didn't work!");
+                mTextView.setText("Couldn't receive data!");
             }
         });
 
@@ -112,10 +134,13 @@ public class Currency extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
-    private static String getValue(String tag, Element element) {
-        NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
-        Node node = nodeList.item(0);
-        return node.getNodeValue();
+
+    private  void setToolbar(){
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setTitle(myTitle);
+        actionbar.setDisplayHomeAsUpEnabled(true);
     }
 
 

@@ -17,6 +17,16 @@
             android:icon="@drawable/icons8_paper_money_50"
             android:iconTint="@color/green"
             android:title="Currency" />
+        <item
+            android:id="@+id/nav_item4"
+            android:icon="@drawable/icons8_list_24"
+            android:iconTint="@color/green"
+            android:title="Expenses" />
+        <item
+            android:id="@+id/nav_item5"
+            android:icon="@drawable/icons8_list_24"
+            android:iconTint="@color/green"
+            android:title="Incomes" />
 
     </group>
 </menu>
