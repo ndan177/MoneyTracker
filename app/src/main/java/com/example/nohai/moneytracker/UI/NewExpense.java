@@ -34,10 +34,11 @@ import java.util.List;
 
 import static java.lang.Float.parseFloat;
 
-//TODO: populate spinner with categories
+
 public class NewExpense extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
     NumberKeyboard numberKeyboard;
     EditText myNumber;
+    EditText myNotes;
     String nr;
     Expense newExpense= new Expense();
     AppDatabase db;
@@ -96,17 +97,19 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
         dateChooser=findViewById(R.id.date);
+        myNotes=findViewById(R.id.notes);
 
         String myDate = getIntent().getStringExtra("date");
-        if(!(myDate==null))
+        String myPos = getIntent().getStringExtra("position");
+
+        if(myDate != null)
             dateChooser.setText(myDate);
         else
         {
             dateChooser.setText(simpleDateFormat.format(currentDay.getTime()));//set current day
         }
 
-//
-//
+
         //listener for keyboard
         numberKeyboard=findViewById(R.id.numberKeyboard);
         myNumber=findViewById(R.id.myNumber);
@@ -125,9 +128,15 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         //spinner
         spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
-        // Loading spinner data from database
-        loadSpinnerData();
-        //
+
+        loadSpinnerData();         // Loading spinner data from database
+
+
+        if(myPos !=null)
+        {
+            spinner.setSelection( Integer.parseInt(myPos)+1);
+        }
+
 
         dateChooser.setOnClickListener(new View.OnClickListener() {
 
@@ -192,6 +201,7 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         if(!myTextPrice.equals(""))
         {
             newExpense.price = parseFloat(myTextPrice);
+            newExpense.notes  = myNotes.getText().toString();
             try
             {
                 SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
@@ -213,7 +223,8 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
     }
     private void loadSpinnerData() {
 
-        //List<String> labels = db.categoryDao().getCategoriesName();
+
+
         List<Category> categories=db.categoryDao().getCategories();
 
         List<String> categoriesNames=new ArrayList<>();

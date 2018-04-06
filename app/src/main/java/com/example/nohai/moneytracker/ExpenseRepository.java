@@ -1,6 +1,7 @@
 package com.example.nohai.moneytracker;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.nohai.moneytracker.Database.Expense;
@@ -16,7 +17,7 @@ public class ExpenseRepository {
 
 
         private ExpenseDao mExpenseDao;
-        private List<Expense> mAllExpenses;
+         private LiveData<List<Expense>> mAllExpenses;
 
         // Note that in order to unit test the WordRepository, you have to remove the Application
         // dependency. This adds complexity and much more code, and this sample is not about testing.
@@ -26,14 +27,15 @@ public class ExpenseRepository {
         ExpenseRepository(Application application) {
             AppDatabase db = AppDatabase.getDatabase(application);
             mExpenseDao = db.expenseDao();
-            mAllExpenses = mExpenseDao.getExpenses();
+            mAllExpenses = mExpenseDao.getChronologicalExpenses();
         }
 
         // Room executes all queries on a separate thread.
         // Observed LiveData will notify the observer when the data has changed.
-        List<Expense> getAllExpenses() {
-            return mAllExpenses;
-        }
+
+    LiveData<List<Expense>> getAllExpenses() {
+        return mAllExpenses;
+    }
 
         double getSum(String myDate){return mExpenseDao.getPriceSum(myDate); }
 
@@ -41,7 +43,7 @@ public class ExpenseRepository {
         // Like this, Room ensures that you're not doing any long running operations on the main
         // thread, blocking the UI.
         public void insert (Expense expense) {
-            new com.example.nohai.moneytracker.ExpenseRepository.insertAsyncTask(mExpenseDao).execute(expense);
+            new insertAsyncTask(mExpenseDao).execute(expense);
         }
 
         private static class insertAsyncTask extends AsyncTask<Expense, Void, Void> {

@@ -34,5 +34,8 @@ public interface CategoryDao {
     @Query("DELETE FROM category_table")
     void deleteAll();
 
+    @Query("select category from  category_table where id=(:myId) ")
+    String getCategoryName(int myId);
+
 
 }

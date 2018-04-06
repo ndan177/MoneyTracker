@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 
 import com.example.nohai.moneytracker.DayViewFragment;
+import com.example.nohai.moneytracker.ExpenseList;
 import com.example.nohai.moneytracker.WeekViewFragment;
 import com.example.nohai.moneytracker.MonthViewFragment;
 import com.example.nohai.moneytracker.YearViewFragment;
@@ -91,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+                                break;
+                            case R.id.nav_item4:
+                                Intent intent4 = new Intent(getApplicationContext(), ExpenseList.class);
+                                startActivity(intent4);
                                 break;
 
                         }

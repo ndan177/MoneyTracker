@@ -31,9 +31,9 @@ public class CategoryRepository {
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    LiveData<List<Category>> getAllCategories() {
-        return mAllCategories;
-    }
+        LiveData<List<Category>> getAllCategories() {
+            return mAllCategories;
+        }
 
     // You must call this on a non-UI thread or your app will crash.
     // Like this, Room ensures that you're not doing any long running operations on the main

@@ -25,7 +25,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private CategoryViewHolder(View itemView) {
             super(itemView);
             categoryItemView = itemView.findViewById(R.id.textView);
-            totalExpensesItemView=itemView.findViewById(R.id.expenses);
+            totalExpensesItemView = itemView.findViewById(R.id.expenses);
         }
     }
 
@@ -45,8 +45,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, int position) {
-        Category current = mCategories.get(position);
-        holder.categoryItemView.setText(current.getCategory());
+         Category current = mCategories.get(position);
+         holder.categoryItemView.setText(current.getCategory());
          holder.totalExpensesItemView.setText(String.valueOf(current.expensesCost));
     }
 

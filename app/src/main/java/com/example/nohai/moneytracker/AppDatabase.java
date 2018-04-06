@@ -21,7 +21,7 @@ import com.example.nohai.moneytracker.dao.ExpenseDao;
 import com.example.nohai.moneytracker.dao.IncomeDao;
 
 
-@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class}, version = 3)
+@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class}, version = 5)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -61,10 +61,12 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onOpen(db);
 
                Cursor mCursor = db.query("SELECT count(*) FROM category_table", null);
+              // db.query("update expense_table set categoryName='asd' ", null);
                mCursor.moveToFirst();
                int counter = mCursor.getInt(0);
                if (counter<1)
                    new PopulateDbAsync(INSTANCE).execute();
+
 
         }
     };
@@ -106,7 +108,6 @@ public abstract class AppDatabase extends RoomDatabase {
             //
 //           CategoryIcon categoryIcon=new CategoryIcon();
 //           mIconDao.insert(categoryIcon);
-
 
             Category category = new Category("Food");
             mDao.insert(category);

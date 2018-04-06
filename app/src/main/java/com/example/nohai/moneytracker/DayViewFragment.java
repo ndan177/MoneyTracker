@@ -8,15 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.GetChars;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.UI.NewExpense;
+import com.example.nohai.moneytracker.Utils.RecyclerItemClickListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -141,7 +139,7 @@ public class DayViewFragment extends Fragment {
         });
 
 
-        RecyclerView recyclerView = PageOne.findViewById(R.id.recyclerview);
+        final RecyclerView recyclerView = PageOne.findViewById(R.id.recyclerview);
         final CategoryListAdapter adapter = new CategoryListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),4));
@@ -152,7 +150,6 @@ public class DayViewFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         categoryId=mCategoryViewModel.getAllCategories().getValue().get(position).getId();
-
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("DATE",Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString(getString(R.string.saved_date), dateChooser.getText().toString());
@@ -160,7 +157,8 @@ public class DayViewFragment extends Fragment {
 
                           Intent intent = new Intent(getActivity(), NewExpense.class);
                           intent.putExtra("id",String.valueOf(categoryId));
-                              // TODO: Pass date through
+
+                          intent.putExtra("position",String.valueOf(position));
                           intent.putExtra("date",dateChooser.getText().toString());
                            startActivity(intent);
 
@@ -197,7 +195,7 @@ public class DayViewFragment extends Fragment {
                         double mySum=db.expenseDao().getPriceSumByCategory( categories.get(i).getId(),reportDate);
                         categories.get(i).expensesCost=mySum;
                     }catch(Exception Ex){}
-                    Toast.makeText(getActivity(), "onChanged()", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), "onChanged()", Toast.LENGTH_LONG).show();
                 }
 
                 adapter.setCategories(categories);

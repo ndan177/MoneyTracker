@@ -1,4 +1,4 @@
-package com.example.nohai.moneytracker;
+package com.example.nohai.moneytracker.Utils;
 
 /**
  * Created by nohai on 3/16/2018.
@@ -13,9 +13,9 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+         void onItemClick(View view, int position);
 
-        public void onLongItemClick(View view, int position);
+         void onLongItemClick(View view, int position);
     }
 
     GestureDetector mGestureDetector;

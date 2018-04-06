@@ -13,7 +13,7 @@ import com.example.nohai.moneytracker.Database.Category;
 import java.util.List;
 
 /**
- * View Model to keep a reference to the word repository and
+ * View Model to keep a reference to the category repository and
  * an up-to-date list of all categories.
  */
 
