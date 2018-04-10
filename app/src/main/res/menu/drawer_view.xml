@@ -27,6 +27,11 @@
             android:icon="@drawable/icons8_list_24"
             android:iconTint="@color/green"
             android:title="Incomes" />
+        <item
+            android:id="@+id/nav_item6"
+            android:icon="@drawable/icons8_list_24"
+            android:iconTint="@color/green"
+            android:title="Icons" />
 
     </group>
 </menu>

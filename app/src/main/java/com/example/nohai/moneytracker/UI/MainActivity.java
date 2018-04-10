@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.example.nohai.moneytracker.Database.CategoryIcon;
 import com.example.nohai.moneytracker.DayViewFragment;
 import com.example.nohai.moneytracker.ExpenseList;
 import com.example.nohai.moneytracker.WeekViewFragment;
@@ -96,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_item4:
                                 Intent intent4 = new Intent(getApplicationContext(), ExpenseList.class);
                                 startActivity(intent4);
+                                break;
+                            case R.id.nav_item6:
+                                Intent intent6 = new Intent(getApplicationContext(), CategoryIcons.class);
+                                startActivity(intent6);
                                 break;
 
                         }

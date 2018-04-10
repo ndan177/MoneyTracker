@@ -5,9 +5,10 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-
 import android.database.Cursor;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
@@ -19,19 +20,23 @@ import com.example.nohai.moneytracker.dao.CategoryDao;
 import com.example.nohai.moneytracker.dao.CategoryIconDao;
 import com.example.nohai.moneytracker.dao.ExpenseDao;
 import com.example.nohai.moneytracker.dao.IncomeDao;
+import java.io.ByteArrayOutputStream;
 
 
-@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class}, version = 5)
+
+@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class}, version = 6)
 
 public abstract class AppDatabase extends RoomDatabase {
+
 
     public abstract CategoryDao categoryDao();
     public abstract ExpenseDao expenseDao();
     public abstract CategoryIconDao categoryIconDao();
     public abstract IncomeDao incomeDao();
     public static String DATABASE_NAME = "Database";
-
     private static AppDatabase INSTANCE;
+    public  static Context myContext;
+
 
     static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
@@ -47,12 +52,13 @@ public abstract class AppDatabase extends RoomDatabase {
                 }
             }
         }
+        myContext=context;
         return INSTANCE;
     }
 
     /**
      * Override the onOpen method to populate the database.
-     * For this sample, we clear the database every time it is created or opened.
+     * For this sample, we clear the database every time it is created .
      */
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback(){
 
@@ -61,12 +67,11 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onOpen(db);
 
                Cursor mCursor = db.query("SELECT count(*) FROM category_table", null);
-              // db.query("update expense_table set categoryName='asd' ", null);
+
                mCursor.moveToFirst();
                int counter = mCursor.getInt(0);
                if (counter<1)
                    new PopulateDbAsync(INSTANCE).execute();
-
 
         }
     };
@@ -75,55 +80,60 @@ public abstract class AppDatabase extends RoomDatabase {
      * Populate the database in the background.
      * If you want to start with more categories, just add them.
      */
+
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
         private final CategoryDao mDao;
         private final CategoryIconDao mIconDao;
+        Bitmap bmp;
+        ByteArrayOutputStream stream;
+        byte[] byteArray;
+        CategoryIcon categoryIcon;
+
 
         PopulateDbAsync(AppDatabase db) {
             mDao = db.categoryDao();
             mIconDao = db.categoryIconDao();
         }
+        void insertIcon(int drawable)
+        {
+            bmp = BitmapFactory.decodeResource(myContext.getResources(),drawable);
+            stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+            bmp.recycle();
+            categoryIcon = new CategoryIcon(byteArray);
+            mIconDao.insert(categoryIcon);
+        }
 
         @Override
         protected Void doInBackground(final Void... params) {
-            // Start the app with a clean database every time.
-            // Not needed if you only populate on creation.
-           mDao.deleteAll();
-           mIconDao.deleteAll();
-            //
-//            int i;
-//            for(i=0;i<1;i++)
-//                int home = R.drawable.databaseIcons;
-//            context.getResources().getXml(R.xml.samplexml);
-//            Resources res = getActivity().getApplicationContext()
-//            Bitmap image = BitmapFactory.decodeResource(R.id.s
-//                    // convert bitmap to byte
-//
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//
-//            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//
-//            byte imageInByte[] = stream.toByteArray();
-            //
-//           CategoryIcon categoryIcon=new CategoryIcon();
-//           mIconDao.insert(categoryIcon);
+            mDao.deleteAll();
+            mIconDao.deleteAll();
 
-            Category category = new Category("Food");
-            mDao.insert(category);
-            category = new Category("Car");
-            mDao.insert(category);
-            category = new Category("Beauty");
-            mDao.insert(category);
-            category = new Category("Health");
-            mDao.insert(category);
-            category = new Category("Clothes");
-            mDao.insert(category);
-            category = new Category("Transport");
-            mDao.insert(category);
-            category = new Category("Home");
-            mDao.insert(category);
+            insertIcon(R.drawable.icons8_ingredients_48);
+            insertIcon(R.drawable.icons8_car_48);
+            insertIcon(R.drawable.icons8_hair_brush_48);
+            insertIcon(R.drawable.icons8_stethoscope_48);
+            insertIcon(R.drawable.icons8_clothes_48);
+            insertIcon(R.drawable.icons8_gas_station_48);
+            insertIcon(R.drawable.icons8_home_48);
 
+
+            Category category = new Category("Food",1);
+            mDao.insert(category);
+            category = new Category("Car",2);
+            mDao.insert(category);
+            category = new Category("Beauty",3);
+            mDao.insert(category);
+            category = new Category("Health",4);
+            mDao.insert(category);
+            category = new Category("Clothes",5);
+            mDao.insert(category);
+            category = new Category("Transport",6);
+            mDao.insert(category);
+            category = new Category("Home",7);
+            mDao.insert(category);
             return null;
         }
     }

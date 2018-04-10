@@ -1,5 +1,6 @@
 package com.example.nohai.moneytracker;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class ExpenseListAdapter extends
         RecyclerView.Adapter<ExpenseListAdapter.ExpenseViewHolder> {
+    AppDatabase db;
 
         class ExpenseViewHolder extends RecyclerView.ViewHolder {
             private final TextView expenseItemView;
@@ -35,7 +37,7 @@ public class ExpenseListAdapter extends
                   expenseItemView = itemView.findViewById(R.id.textView);//price
                   expenseItemViewDate= itemView.findViewById(R.id.date);//date
                   expenseItemViewCategory=itemView.findViewById(R.id.category);//category
-                  expenseItemViewNotes =  itemView.findViewById(R.id.notes);//category
+                  expenseItemViewNotes =  itemView.findViewById(R.id.notes);//notes
                   imageButton = itemView.findViewById(R.id.img);//arrow image
             }
         }
@@ -45,7 +47,12 @@ public class ExpenseListAdapter extends
         private final LayoutInflater mInflater;
         private List<Expense> mExpenses; // Cached copy of categories
 
-        ExpenseListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+        ExpenseListAdapter(Context context) { mInflater = LayoutInflater.from(context);
+            db = Room.databaseBuilder(context, AppDatabase.class,"Database")
+                    .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
+                    .build();
+        }
 
     @Override
     public ExpenseListAdapter.ExpenseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -60,7 +67,7 @@ public class ExpenseListAdapter extends
 
         holder.expenseItemView.setText(String.valueOf((current.price)));
         holder.expenseItemViewDate.setText(String.valueOf((current.date)).substring(0,10));
-        holder.expenseItemViewCategory.setText(String.valueOf(current.getCategoryId()));
+        holder.expenseItemViewCategory.setText(db.categoryDao().getCategoryName(current.getCategoryId()));
         if(current.notes!=null) {
             holder.expenseItemViewNotes.setText(String.valueOf(current.notes));
             holder.imageButton.setOnClickListener(new View.OnClickListener()

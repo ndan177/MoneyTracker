@@ -76,7 +76,6 @@ public class DayViewFragment extends Fragment {
     //Constructor default
     public DayViewFragment(){};
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View PageOne = inflater.inflate(R.layout.page1, container, false);
@@ -161,7 +160,6 @@ public class DayViewFragment extends Fragment {
                           intent.putExtra("position",String.valueOf(position));
                           intent.putExtra("date",dateChooser.getText().toString());
                            startActivity(intent);
-
                     }
 
                     @Override public void onLongItemClick(View view, int position) {

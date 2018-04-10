@@ -3,11 +3,10 @@ package com.example.nohai.moneytracker.Database;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
-/**
- * Created by nohai on 3/25/2018.
- */
+import com.example.nohai.moneytracker.Utils.DbBitmapUtility;
 
 @Entity(tableName = "category_icon_table")
 public class CategoryIcon {
@@ -15,11 +14,12 @@ public class CategoryIcon {
     private int id;
 
     @NonNull
-    @ColumnInfo(name = "categoryIcon")
-    private byte mCategoryIcon;
+    @TypeConverters({DbBitmapUtility.class})
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB,name = "categoryIcon")
+    private byte[] mCategoryIcon;
 
 
-    public CategoryIcon( @NonNull byte  mCategoryIcon) {
+    public CategoryIcon( @NonNull byte[]  mCategoryIcon) {
         this.mCategoryIcon = mCategoryIcon;
     }
 
@@ -31,6 +31,6 @@ public class CategoryIcon {
         this.id = id;
     }
 
-    public byte getCategoryIcon(){return this.mCategoryIcon;}
+    public byte[] getCategoryIcon(){return this.mCategoryIcon;}
 
 }
