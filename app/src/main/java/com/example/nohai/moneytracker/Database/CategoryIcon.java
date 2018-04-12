@@ -13,14 +13,22 @@ public class CategoryIcon {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+//    @NonNull
+//    @TypeConverters({DbBitmapUtility.class})
+//    @ColumnInfo(typeAffinity = ColumnInfo.BLOB,name = "categoryIcon")
+//    private byte[] mCategoryIcon;
+
     @NonNull
-    @TypeConverters({DbBitmapUtility.class})
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB,name = "categoryIcon")
-    private byte[] mCategoryIcon;
+    @ColumnInfo(name = "categoryIconId")
+    public int mCategoryIconId;
 
 
-    public CategoryIcon( @NonNull byte[]  mCategoryIcon) {
-        this.mCategoryIcon = mCategoryIcon;
+//    public CategoryIcon( @NonNull byte[]  mCategoryIcon) {
+//        this.mCategoryIcon = mCategoryIcon;
+//    }
+
+        public CategoryIcon( @NonNull int  mCategoryIconId) {
+        this.mCategoryIconId = mCategoryIconId;
     }
 
     public int getId() {
@@ -31,6 +39,6 @@ public class CategoryIcon {
         this.id = id;
     }
 
-    public byte[] getCategoryIcon(){return this.mCategoryIcon;}
+//    public byte[] getCategoryIcon(){return this.mCategoryIcon;}
 
 }

@@ -3,7 +3,6 @@ package com.example.nohai.moneytracker.UI;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.arch.persistence.room.Room;
-import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -17,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.davidmiguel.numberkeyboard.NumberKeyboard;
 import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
@@ -24,6 +24,8 @@ import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.Database.Expense;
 import com.example.nohai.moneytracker.R;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -37,12 +39,12 @@ import static java.lang.Float.parseFloat;
 
 public class NewExpense extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
     NumberKeyboard numberKeyboard;
-    EditText myNumber;
+    TextView myNumber;
     EditText myNotes;
     String nr;
     Expense newExpense= new Expense();
     AppDatabase db;
-    static EditText dateChooser;
+    static TextView dateChooser;
     Spinner spinner;
 
     public static String getMonthName(int month) {

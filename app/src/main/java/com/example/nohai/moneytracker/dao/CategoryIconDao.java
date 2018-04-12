@@ -19,6 +19,9 @@ public interface CategoryIconDao {
     @Query("DELETE FROM category_icon_table")
     void deleteAll();
 
-    @Query("select categoryIcon  FROM category_icon_table where id=:categoryId")
-    byte[] getFirst(int categoryId);
+//    @Query("select categoryIcon  FROM category_icon_table where id=:categoryId")
+//    byte[] getIcon(int categoryId);
+
+    @Query("select categoryIconId  FROM category_icon_table where id=:categoryId")
+    int  getIconId (int categoryId);
 }

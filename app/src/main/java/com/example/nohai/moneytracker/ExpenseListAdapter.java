@@ -6,20 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.example.nohai.moneytracker.Database.Expense;
-
-
 import java.util.List;
-
-/**
- * Created by nohai on 4/4/2018.
- */
 
 public class ExpenseListAdapter extends
         RecyclerView.Adapter<ExpenseListAdapter.ExpenseViewHolder> {
@@ -68,7 +58,7 @@ public class ExpenseListAdapter extends
         holder.expenseItemView.setText(String.valueOf((current.price)));
         holder.expenseItemViewDate.setText(String.valueOf((current.date)).substring(0,10));
         holder.expenseItemViewCategory.setText(db.categoryDao().getCategoryName(current.getCategoryId()));
-        if(current.notes!=null) {
+        if(!current.notes.equals("")) {
             holder.expenseItemViewNotes.setText(String.valueOf(current.notes));
             holder.imageButton.setOnClickListener(new View.OnClickListener()
             {

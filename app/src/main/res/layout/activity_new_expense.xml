@@ -31,13 +31,12 @@
             app:tabMode="fixed" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@layout/border"
-            android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-            android:editable="false"
+            android:drawableStart="@android:drawable/ic_menu_my_calendar"
             android:ems="10"
             android:gravity="center"
             android:inputType="none"
@@ -48,15 +47,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <EditText
+        <TextView
             android:id="@+id/myNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:background="@layout/border"
-            android:drawableLeft="@drawable/icons8_paper_money_50"
+            android:drawableStart="@drawable/icons8_paper_money_50"
             android:drawableTint="@color/colorPrimaryDark"
-            android:editable="false"
             android:ems="10"
             android:gravity="center"
             android:inputType="none"

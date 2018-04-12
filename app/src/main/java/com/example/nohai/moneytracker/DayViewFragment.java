@@ -37,7 +37,7 @@ import java.util.List;
 
 public class DayViewFragment extends Fragment {
     private CategoryViewModel mCategoryViewModel;
-    static EditText dateChooser;
+    static TextView dateChooser;
     int categoryId;
     TextView expenses;
     TextView incomes;

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.davidmiguel.numberkeyboard.NumberKeyboard;
@@ -30,11 +31,11 @@ import static java.lang.Float.parseFloat;
 public class NewIncome extends AppCompatActivity {
 
     NumberKeyboard numberKeyboard;
-    EditText myNumber;
+    TextView myNumber;
     String nr;
     Income newIncome= new Income();
     AppDatabase db;
-    static EditText dateChooser;
+    static TextView dateChooser;
 
     public static String getMonthName(int month) {
 
@@ -63,8 +64,6 @@ public class NewIncome extends AppCompatActivity {
             dateChooser.setText(day+"-"+month_name+"-"+year);
 
         }
-
-
     }
 
 
@@ -170,7 +169,6 @@ public class NewIncome extends AppCompatActivity {
                 db.incomeDao().insert(newIncome);
                 Toast.makeText(this, "Income added!", Toast.LENGTH_SHORT).show();
                 finish();
-
         }
         else
         {

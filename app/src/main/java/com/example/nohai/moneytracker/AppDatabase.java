@@ -85,9 +85,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
         private final CategoryDao mDao;
         private final CategoryIconDao mIconDao;
-        Bitmap bmp;
-        ByteArrayOutputStream stream;
-        byte[] byteArray;
+//        Bitmap bmp;
+//        ByteArrayOutputStream stream;
+//        byte[] byteArray;
         CategoryIcon categoryIcon;
 
 
@@ -97,12 +97,14 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         void insertIcon(int drawable)
         {
-            bmp = BitmapFactory.decodeResource(myContext.getResources(),drawable);
-            stream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byteArray = stream.toByteArray();
-            bmp.recycle();
-            categoryIcon = new CategoryIcon(byteArray);
+//            bmp = BitmapFactory.decodeResource(myContext.getResources(),drawable);
+//            stream = new ByteArrayOutputStream();
+//            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//            byteArray = stream.toByteArray();
+//            bmp.recycle();
+//            categoryIcon = new CategoryIcon(byteArray);
+
+            categoryIcon = new CategoryIcon(drawable);
             mIconDao.insert(categoryIcon);
         }
 

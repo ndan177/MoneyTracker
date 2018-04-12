@@ -23,6 +23,7 @@ import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
   AppDatabase db;
+  Context myContext;
 
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryItemView;
@@ -48,6 +49,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
+        myContext=context;
     }
 
     @Override
@@ -62,9 +64,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
          Category current = mCategories.get(position);
          holder.categoryItemView.setText(current.getCategory());
          holder.totalExpensesItemView.setText(String.valueOf(current.expensesCost));
-         byte[] blob = db.categoryIconDao().getFirst(current.getCategoryIcon());
-         Bitmap bmp= BitmapFactory.decodeByteArray(blob,0,blob.length);
-         holder.iconItemView.setImageBitmap(bmp);
+//         byte[] blob = db.categoryIconDao().getIcon(current.getCategoryIcon());
+//         Bitmap bmp= BitmapFactory.decodeByteArray(blob,0,blob.length);
+//
+        holder.iconItemView.setImageDrawable(myContext.getResources().getDrawable(db.categoryIconDao().getIconId((current.getCategoryIcon()))));
+        // holder.iconItemView.setImageBitmap(bmp);
     }
 
     void setCategories(List<Category> categories){
