@@ -3,8 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="pick_date">Open Time Picker</string>
     <string name="saved_date"></string>
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="saved_currency"></string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_currency">Currency</string>
 
 </resources>

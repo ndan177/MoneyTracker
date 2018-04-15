@@ -1,5 +1,6 @@
 package com.example.nohai.moneytracker.UI;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +43,11 @@ public class Currency extends AppCompatActivity {
         setContentView(R.layout.activity_currency);
 
         setToolbar();
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.setInverseBackgroundForced(false);
+        dialog.show();
 
         listView = findViewById(R.id.lvItems);
 
@@ -54,7 +60,7 @@ public class Currency extends AppCompatActivity {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url =myURL;
+        String url = myURL;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -91,9 +97,6 @@ public class Currency extends AppCompatActivity {
                             Node currency = currencyList.item(0);
                             cTextView.setText(currency.getFirstChild().getNodeValue());
 
-
-
-
                             mTextView.setText(publisher.getFirstChild().getNodeValue());
 
                             for (int i=0; i<nList.getLength(); i++) {
@@ -120,6 +123,7 @@ public class Currency extends AppCompatActivity {
 
                             // Attach the adapter to a ListView
                             listView.setAdapter(adapter);
+                            dialog.hide();
                         } catch (Exception e) {e.printStackTrace();}
 
                     }
@@ -127,6 +131,7 @@ public class Currency extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mTextView.setText("Couldn't receive data!");
+                dialog.hide();
             }
         });
 
@@ -134,7 +139,6 @@ public class Currency extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
-
     private  void setToolbar(){
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -142,6 +146,5 @@ public class Currency extends AppCompatActivity {
         actionbar.setTitle(myTitle);
         actionbar.setDisplayHomeAsUpEnabled(true);
     }
-
 
 }

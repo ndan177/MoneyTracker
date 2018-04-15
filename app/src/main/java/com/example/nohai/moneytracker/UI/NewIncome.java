@@ -36,6 +36,7 @@ public class NewIncome extends AppCompatActivity {
     Income newIncome= new Income();
     AppDatabase db;
     static TextView dateChooser;
+    static final int MAX_INPUT = 9;
 
     public static String getMonthName(int month) {
 
@@ -56,13 +57,11 @@ public class NewIncome extends AppCompatActivity {
 
         public void onDateSet(DatePicker view, int yy, int mm, int dd) {
             populateSetDate(yy, mm+1, dd);
-
-
         }
+
         public void populateSetDate(int year, int month, int day) {
             String month_name=getMonthName(month);
             dateChooser.setText(day+"-"+month_name+"-"+year);
-
         }
     }
 
@@ -112,19 +111,24 @@ public class NewIncome extends AppCompatActivity {
         numberKeyboard.setListener(new NumberKeyboardListener() {
             @Override
             public void onNumberClicked(int number) {
-                nr= myNumber.getText().toString();
-                myNumber.setText(nr + number);
+                nr = myNumber.getText().toString();
 
+                if(nr.indexOf('.')<0)
+                {if(nr.length()< MAX_INPUT )  myNumber.setText(nr + number);}
+                else {
+                    if (nr.length() - nr.indexOf('.') <= 2)
+                        if (nr.length() < MAX_INPUT) myNumber.setText(nr + number);
+                }
             }
 
             @Override
             public void onLeftAuxButtonClicked() {
 
-                nr= myNumber.getText().toString();
+                nr = myNumber.getText().toString();
 
-                if(nr.length()>0&&isNumeric(nr))
+                if(nr.length()>0 && isNumeric(nr) && nr.indexOf('.')<0)
                 {
-                    myNumber.setText(nr+".");
+                    if(nr.length()< MAX_INPUT ) myNumber.setText(nr+".");
                 }
             }
 
@@ -137,8 +141,6 @@ public class NewIncome extends AppCompatActivity {
                 }
             }
         });
-
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -175,5 +177,4 @@ public class NewIncome extends AppCompatActivity {
             Toast.makeText(this, "Sum can't be null", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

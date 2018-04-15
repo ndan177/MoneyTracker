@@ -2,6 +2,7 @@ package com.example.nohai.moneytracker.UI;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.Database.CategoryIcon;
 import com.example.nohai.moneytracker.DayViewFragment;
 import com.example.nohai.moneytracker.ExpenseList;
@@ -30,9 +32,13 @@ import com.example.nohai.moneytracker.WeekViewFragment;
 import com.example.nohai.moneytracker.MonthViewFragment;
 import com.example.nohai.moneytracker.YearViewFragment;
 import com.example.nohai.moneytracker.R;
+import com.mynameismidori.currencypicker.CurrencyPicker;
+import com.mynameismidori.currencypicker.CurrencyPickerListener;
+import com.mynameismidori.currencypicker.ExtendedCurrency;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -68,10 +74,12 @@ public class MainActivity extends AppCompatActivity {
                         switch (id) {
                             case R.id.nav_item1:
                                 Intent intent = new Intent(getApplicationContext(), NewExpense.class);
+                                intent.putExtra("currency",getCurrency());
                                 startActivity(intent);
                                 break;
                             case R.id.nav_item2:
                                 Intent intent2 = new Intent(getApplicationContext(), NewIncome.class);
+                                intent2.putExtra("currency",getCurrency());
                                 startActivity(intent2);
                                 break;
                             case R.id.nav_item3:
@@ -86,20 +94,20 @@ public class MainActivity extends AppCompatActivity {
                                 else
                                 {
                                     Intent intent3 = new Intent(getApplicationContext(), Currency.class);
+                                    intent3.putExtra("currency",getCurrency());
                                     startActivity(intent3);
 
                                 }
 
-
-
-
                                 break;
                             case R.id.nav_item4:
                                 Intent intent4 = new Intent(getApplicationContext(), ExpenseList.class);
+                                intent4.putExtra("currency",getCurrency());
                                 startActivity(intent4);
                                 break;
                             case R.id.nav_item6:
                                 Intent intent6 = new Intent(getApplicationContext(), CategoryIcons.class);
+                                intent6.putExtra("currency",getCurrency());
                                 startActivity(intent6);
                                 break;
 
@@ -132,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDrawerClosed(View drawerView) {
                         // Respond when the drawer is closed
-
                     }
 
                     @Override
@@ -142,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -155,13 +161,24 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+           final CurrencyPicker picker = CurrencyPicker.newInstance("Select Currency");
+            picker.show(getSupportFragmentManager(), "CURRENCY_PICKER");
+            picker.setListener(new CurrencyPickerListener() {
+                @Override
+                public void onSelectCurrency(String name, String code, String dialCode, int flagDrawableResID) {
+
+                    saveCurrency(code);
+                   try{ TimeUnit.MILLISECONDS.sleep(400);}catch (Exception ex){}
+                    picker.dismiss();
+                }
+            });
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void SetUpViewPager (ViewPager viewpage){
+    public void SetUpViewPager (ViewPager viewPager){
         MyViewPageAdapter Adapter = new MyViewPageAdapter(getSupportFragmentManager());
 
         Adapter.AddFragmentPage(new DayViewFragment(), "Day");
@@ -170,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         Adapter.AddFragmentPage(new YearViewFragment(), "Year");
         //We Need Fragment class now
 
-        viewpage.setAdapter(Adapter);
+        viewPager.setAdapter(Adapter);
 
     }
 
@@ -207,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
     public void openExpense(View view) {
@@ -218,22 +236,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    void saveCurrency(String code)
+    {
+        SharedPreferences sharedPref = getSharedPreferences("CURRENCY",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("",code);
+        editor.commit();
+        SetUpViewPager(MyPage);//to reload currency
+    }
+    String getCurrency()
+    {
+        SharedPreferences sharedPref = this.getSharedPreferences("CURRENCY",Context.MODE_PRIVATE);
+        String defaultValue = getResources().getString(R.string.saved_currency);
+        String myCurrency = sharedPref.getString(getString(R.string.saved_currency), defaultValue);
+        return myCurrency;
+    }
 }
 

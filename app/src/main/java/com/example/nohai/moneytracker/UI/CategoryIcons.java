@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.R;
+import com.mynameismidori.currencypicker.CurrencyPicker;
+import com.mynameismidori.currencypicker.CurrencyPickerListener;
+
 
 public class CategoryIcons extends AppCompatActivity {
     AppDatabase db;
@@ -18,9 +21,6 @@ public class CategoryIcons extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-//        byte[] blob = db.categoryIconDao().getIcon(1);
-//        Bitmap bmp= BitmapFactory.decodeByteArray(blob,0,blob.length);
-//        ImageView image = findViewById(R.id.imgIcon);
-//        image.setImageBitmap(bmp);
+
     }
 }

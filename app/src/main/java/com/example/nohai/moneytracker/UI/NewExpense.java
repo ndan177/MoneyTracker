@@ -46,6 +46,7 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
     AppDatabase db;
     static TextView dateChooser;
     Spinner spinner;
+    static final int MAX_INPUT = 9;
 
     public static String getMonthName(int month) {
 
@@ -66,18 +67,13 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
 
         public void onDateSet(DatePicker view, int yy, int mm, int dd) {
             populateSetDate(yy, mm+1, dd);
-
-
         }
+
         public void populateSetDate(int year, int month, int day) {
             String month_name=getMonthName(month);
             dateChooser.setText(day+"-"+month_name+"-"+year);
-
         }
-
-
     }
-
 
     public boolean isNumeric(String s) {
         return s != null && s.matches("[-+]?\\d*\\.?\\d+");
@@ -98,8 +94,8 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         Date currentDay = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
-        dateChooser=findViewById(R.id.date);
-        myNotes=findViewById(R.id.notes);
+        dateChooser = findViewById(R.id.date);
+        myNotes = findViewById(R.id.notes);
 
         String myDate = getIntent().getStringExtra("date");
         String myPos = getIntent().getStringExtra("position");
@@ -110,7 +106,6 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         {
             dateChooser.setText(simpleDateFormat.format(currentDay.getTime()));//set current day
         }
-
 
         //listener for keyboard
         numberKeyboard=findViewById(R.id.numberKeyboard);
@@ -133,12 +128,10 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
 
         loadSpinnerData();         // Loading spinner data from database
 
-
         if(myPos !=null)
         {
             spinner.setSelection( Integer.parseInt(myPos)+1);
         }
-
 
         dateChooser.setOnClickListener(new View.OnClickListener() {
 
@@ -151,23 +144,27 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
             }
         });
 
-
         numberKeyboard.setListener(new NumberKeyboardListener() {
             @Override
             public void onNumberClicked(int number) {
-                nr= myNumber.getText().toString();
-                myNumber.setText(nr + number);
+                nr = myNumber.getText().toString();
 
+                if(nr.indexOf('.')<0)
+                {if(nr.length()< MAX_INPUT )  myNumber.setText(nr + number);}
+                else {
+                    if (nr.length() - nr.indexOf('.') <= 2)
+                        if (nr.length() < MAX_INPUT) myNumber.setText(nr + number);
+                }
             }
 
             @Override
             public void onLeftAuxButtonClicked() {
 
-                nr= myNumber.getText().toString();
+                nr = myNumber.getText().toString();
 
-                if(nr.length()>0&&isNumeric(nr))
+                if(nr.length()>0 && isNumeric(nr) && nr.indexOf('.')<0)
                 {
-                    myNumber.setText(nr+".");
+                    if(nr.length()< MAX_INPUT ) myNumber.setText(nr+".");
                 }
             }
 
@@ -180,8 +177,6 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
                 }
             }
         });
-
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -199,10 +194,9 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         String myTextPrice = myNumber.getText().toString();
         int myCategory = newExpense.getCategoryId();
 
-
         if(!myTextPrice.equals(""))
         {
-            newExpense.price = parseFloat(myTextPrice);
+            newExpense.price = Double.parseDouble(myTextPrice);
             newExpense.notes  = myNotes.getText().toString();
             try
             {
@@ -210,6 +204,7 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
                 Date parsed = format.parse(dateChooser.getText().toString());
                 newExpense.setDate(parsed);
             } catch (Exception Ex) {}
+
             if(myCategory==0)
                 Toast.makeText(this, "Select a category", Toast.LENGTH_SHORT).show();
             else {
