@@ -48,6 +48,7 @@ public class Currency extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.setInverseBackgroundForced(false);
         dialog.show();
+        //Todo: close dialog after 10 seconds
 
         listView = findViewById(R.id.lvItems);
 

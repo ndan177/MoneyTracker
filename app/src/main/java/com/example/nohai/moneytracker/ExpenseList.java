@@ -18,7 +18,6 @@ import java.util.List;
 public class ExpenseList extends AppCompatActivity {
 
     private ExpenseViewModel mExpenseViewModel;
-    private LinearLayout myList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

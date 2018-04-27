@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
+<menu
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_item1"
-            android:icon="@android:drawable/ic_input_add"
-            android:tint="@color/green"
+            android:icon="@drawable/minus_red"
             android:title="New Expense" />
         <item
             android:id="@+id/nav_item2"
-            android:icon="@drawable/ic_remove_black_24dp"
-
+            android:icon="@drawable/plus_green"
             android:title="New Income" />
         <item
             android:id="@+id/nav_item3"
-            android:icon="@drawable/icons8_paper_money_50"
-            android:iconTint="@color/green"
+            android:icon="@drawable/paper_money_48"
             android:title="Currency" />
         <item
             android:id="@+id/nav_item4"
-            android:icon="@drawable/icons8_list_24"
+            android:icon="@drawable/red_list"
             android:iconTint="@color/green"
             android:title="Expenses" />
         <item
             android:id="@+id/nav_item5"
-            android:icon="@drawable/icons8_list_24"
-            android:iconTint="@color/green"
+            android:icon="@drawable/green_list"
             android:title="Incomes" />
         <item
             android:id="@+id/nav_item6"
-            android:icon="@drawable/icons8_list_24"
-            android:iconTint="@color/green"
+            android:icon="@drawable/green_list"
+
             android:title="Icons" />
+        <item
+            android:id="@+id/nav_item7"
+            android:icon="@drawable/ic_search"
+            android:iconTint="@color/green"
+            android:title="Debts" />
 
     </group>
 </menu>

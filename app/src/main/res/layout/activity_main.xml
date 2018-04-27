@@ -42,15 +42,14 @@
                         android:layout_height="?attr/actionBarSize"
                         app:tabGravity="center"
                         app:tabIndicatorColor="@color/white"
-                        app:tabSelectedTextColor="@color/white" />
+                        app:tabSelectedTextColor="@color/white"
+                        app:tabTextAppearance="@style/TextAppearance.AppCompat.Caption" />
 
 
                 </android.support.design.widget.AppBarLayout>
 
                 <include
-                    layout="@layout/content_main"
-
-                     />
+                    layout="@layout/content_main" />
 
             </android.support.design.widget.CoordinatorLayout>
         </LinearLayout>

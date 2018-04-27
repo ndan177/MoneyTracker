@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.UI.MainActivity;
 import com.example.nohai.moneytracker.UI.NewExpense;
 import com.example.nohai.moneytracker.Utils.RecyclerItemClickListener;
 
@@ -37,13 +38,16 @@ import java.text.DateFormatSymbols;
 import java.util.List;
 
 public class DayViewFragment extends Fragment {
+
+
+
     private CategoryViewModel mCategoryViewModel;
     static TextView dateChooser;
     private TextView expenses;
     private TextView incomes;
     private AppDatabase db;
     static int fragmentLoadedCounter =0;
-    private CategoryListAdapter adapter;
+    public   CategoryListAdapter adapter;
     private TextView  currencyText;
     private TextView  currencyText2;
     public static String getMonthName(int month) {
@@ -105,6 +109,10 @@ public class DayViewFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 saveDate();//shared Preferences
                 onResume();
+               try {
+                   ((MainActivity) getActivity()).loadViewPager();
+                   Toast.makeText(getActivity(), "PAGER", Toast.LENGTH_SHORT).show();
+               }catch(Exception ex){}
             }
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -117,14 +125,10 @@ public class DayViewFragment extends Fragment {
 
        if(fragmentLoadedCounter ==0) { //if it is the first time, set current day
            dateChooser.setText(simpleDateFormat.format(currentDay.getTime()));//set current day
-
        }
        else  //set saved date
        {
-           SharedPreferences sharedPref = getActivity().getSharedPreferences("DATE",Context.MODE_PRIVATE);
-           String defaultValue = getResources().getString(R.string.saved_date);
-           String myDate = sharedPref.getString(getString(R.string.saved_date), defaultValue);
-           dateChooser.setText(myDate);
+           dateChooser.setText(((MainActivity) getActivity()).getSharedDate());
        }
 
         dateChooser.setOnClickListener(new View.OnClickListener() {
@@ -147,14 +151,11 @@ public class DayViewFragment extends Fragment {
                           int categoryId = mCategoryViewModel.getAllCategories().getValue().get(position).getId();
                           saveDate();
                           Intent intent = new Intent(getActivity(), NewExpense.class);
-                          intent.putExtra("id",String.valueOf(categoryId));
-
-                          intent.putExtra("position",String.valueOf(position));
+                          intent.putExtra("id",categoryId);
+                          intent.putExtra("position",position);
                           intent.putExtra("date",dateChooser.getText().toString());
-                           startActivity(intent);
-
+                          startActivity(intent);
                     }
-
                     @Override public void onLongItemClick(View view, int position) {
                         // do whatever
                 }
@@ -167,8 +168,6 @@ public class DayViewFragment extends Fragment {
         // Add an observer on the LiveData returned by getAllCategories.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-
-
           return PageOne;
     }
 
@@ -211,12 +210,13 @@ public class DayViewFragment extends Fragment {
             }
         });
         }catch (Exception Ex ){}
+
         loadCurrency();
 
         super.onResume();
     }
 
-    void saveDate()//shared preferences
+   private void saveDate()//shared preferences
     {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("DATE",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -226,21 +226,12 @@ public class DayViewFragment extends Fragment {
     }
     void loadCurrency()
     {
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("CURRENCY",Context.MODE_PRIVATE);
-        String defaultValue = getResources().getString(R.string.saved_currency);
-        String myCurrency = sharedPref.getString(getString(R.string.saved_currency), defaultValue);
+        String myCurrency =   ((MainActivity)getActivity()).getCurrency();
         currencyText.setText(myCurrency);
         currencyText2.setText(myCurrency);
-        if(myCurrency.equals(""))saveCurrency("EUR");
-    }
-
-    void saveCurrency(String code)
-    {
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("CURRENCY",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("",code);
-        editor.commit();
-
+        if(myCurrency.equals(""))//saveCurrency("EUR");
+            ((MainActivity)getActivity()).saveCurrency("EUR");
     }
 
 }
+//TODO:SAVE DATE WHEN SELECT FROM CALENDAR

@@ -31,8 +31,16 @@ public interface  ExpenseDao {
         @Query("select sum(price) FROM expense_table where  Date(date)=Date(:theDate)")
         double getPriceSum(String theDate);
 
+        @Query("select sum(price) FROM expense_table " +
+                "where  Date(date) between Date(:startDate) and Date(:endDate)")
+        double getPriceSumBetween(String startDate,String endDate);
+
         @Query("select sum(price) FROM expense_table where  Date(date)=Date(:theDate) and categoryId=:catId")
         double getPriceSumByCategory(int catId,String theDate);
+
+        @Query("select sum(price) FROM expense_table where  " +
+                "Date(date) between Date(:startDate) and Date(:endDate) and categoryId=:catId")
+        double getPriceSumBetweenByCategory(int catId,String startDate, String endDate);
 
 //        @Query("update expense_category set categoryName=(:name) where categoryId=(:myId)")
 //        void setCategoryName(String name, int myId)

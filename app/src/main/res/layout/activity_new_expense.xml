@@ -51,7 +51,7 @@
             android:id="@+id/myNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:background="@layout/border"
             android:drawableStart="@drawable/icons8_paper_money_50"
             android:drawableTint="@color/colorPrimaryDark"

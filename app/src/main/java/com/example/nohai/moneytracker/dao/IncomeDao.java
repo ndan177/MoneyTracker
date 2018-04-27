@@ -20,6 +20,10 @@ public interface IncomeDao {
     @Query("select sum(price) FROM income_table where  Date(date)=Date(:theDate)")
     double getPriceSum(String theDate);
 
+    @Query("select sum(price) FROM income_table " +
+            "where  Date(date) between Date(:startDate) and Date(:endDate)")
+    double getPriceSumBetween(String startDate,String endDate);
+
     @Insert
     void insert(Income income);
 }

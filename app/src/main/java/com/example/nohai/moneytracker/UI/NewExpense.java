@@ -98,7 +98,8 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         myNotes = findViewById(R.id.notes);
 
         String myDate = getIntent().getStringExtra("date");
-        String myPos = getIntent().getStringExtra("position");
+
+        int myPos = getIntent().getIntExtra("position",-1);
 
         if(myDate != null)
             dateChooser.setText(myDate);
@@ -110,10 +111,12 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         //listener for keyboard
         numberKeyboard=findViewById(R.id.numberKeyboard);
         myNumber=findViewById(R.id.myNumber);
-        String categoryId = getIntent().getStringExtra("id");
 
-        if(!(categoryId==null))
-            newExpense.setCategoryId(Integer.parseInt(categoryId));
+        int categoryId = getIntent().getIntExtra("id",-1);
+
+        if(categoryId != -1)
+           newExpense.setCategoryId(categoryId);
+
 
 
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class,"Database")
@@ -128,9 +131,9 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
 
         loadSpinnerData();         // Loading spinner data from database
 
-        if(myPos !=null)
+        if(myPos != -1)
         {
-            spinner.setSelection( Integer.parseInt(myPos)+1);
+            spinner.setSelection( myPos+1);
         }
 
         dateChooser.setOnClickListener(new View.OnClickListener() {
@@ -222,7 +225,7 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
 
 
 
-        List<Category> categories=db.categoryDao().getCategories();
+        List<Category> categories = db.categoryDao().getCategories();
 
         List<String> categoriesNames=new ArrayList<>();
         categoriesNames.add("Select a category");

@@ -24,7 +24,7 @@ import java.io.ByteArrayOutputStream;
 
 
 
-@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class}, version = 6)
+@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class}, version = 7)
 
 public abstract class AppDatabase extends RoomDatabase {
 

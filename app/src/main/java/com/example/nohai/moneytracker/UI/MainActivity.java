@@ -24,6 +24,9 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.ToxicBakery.viewpager.transforms.CubeInTransformer;
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
+import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
 import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.Database.CategoryIcon;
 import com.example.nohai.moneytracker.DayViewFragment;
@@ -40,10 +43,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
     TabLayout MyTabs;
     ViewPager MyPage;
+    NavigationView navigationView;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
+
+
+        navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -96,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                                     Intent intent3 = new Intent(getApplicationContext(), Currency.class);
                                     intent3.putExtra("currency",getCurrency());
                                     startActivity(intent3);
-
                                 }
 
                                 break;
@@ -110,9 +120,13 @@ public class MainActivity extends AppCompatActivity {
                                 intent6.putExtra("currency",getCurrency());
                                 startActivity(intent6);
                                 break;
-
+                            case R.id.nav_item7:
+                                Intent intent7 = new Intent(getApplicationContext(), Debts.class);
+                                intent7.putExtra("currency",getCurrency());
+                                startActivity(intent7);
+                                break;
                         }
-                        menuItem.setChecked(true);
+                       // menuItem.setChecked(true);
                         // close drawer when item is tapped
                        // Toast.makeText(MainActivity.this, ""+menuItem.p), Toast.LENGTH_SHORT).show();
                         mDrawerLayout.closeDrawers();
@@ -168,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onSelectCurrency(String name, String code, String dialCode, int flagDrawableResID) {
 
                     saveCurrency(code);
+                    loadViewPager();
                    try{ TimeUnit.MILLISECONDS.sleep(400);}catch (Exception ex){}
                     picker.dismiss();
                 }
@@ -188,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
         //We Need Fragment class now
 
         viewPager.setAdapter(Adapter);
+        viewPager.setPageTransformer(true, new CubeOutTransformer());
 
     }
 
@@ -236,20 +252,33 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void saveCurrency(String code)
+    public void saveCurrency(String code)
     {
         SharedPreferences sharedPref = getSharedPreferences("CURRENCY",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("",code);
         editor.commit();
-        SetUpViewPager(MyPage);//to reload currency
     }
-    String getCurrency()
+
+    public String getCurrency()
     {
         SharedPreferences sharedPref = this.getSharedPreferences("CURRENCY",Context.MODE_PRIVATE);
         String defaultValue = getResources().getString(R.string.saved_currency);
         String myCurrency = sharedPref.getString(getString(R.string.saved_currency), defaultValue);
+        //if (myCurrency.equals("")){saveCurrency("EUR");return "EUR";}
         return myCurrency;
     }
+    public String getSharedDate()
+    {
+        SharedPreferences sharedPref = getSharedPreferences("DATE",Context.MODE_PRIVATE);
+        String defaultValue = getResources().getString(R.string.saved_date);
+        String myDate = sharedPref.getString(getString(R.string.saved_date), defaultValue);
+        return myDate;
+    }
+    public void loadViewPager()
+    {
+        SetUpViewPager(MyPage);
+    }
+
 }
 

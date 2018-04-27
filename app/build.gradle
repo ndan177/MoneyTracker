@@ -41,4 +41,5 @@ dependencies {
     compile 'com.github.davidmigloz:number-keyboard:1.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.midorikocak:currency-picker-android:1.1.9'
+    compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
 }
