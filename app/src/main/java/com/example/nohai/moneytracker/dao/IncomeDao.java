@@ -24,6 +24,10 @@ public interface IncomeDao {
             "where  Date(date) between Date(:startDate) and Date(:endDate)")
     double getPriceSumBetween(String startDate,String endDate);
 
+    @Query("SELECT sum(price) FROM income_table " +
+            "where strftime('%m',Date(date)) = strftime('%m',Date(:theDate)) ;")
+    double getPriceSumForMonth(String theDate);
+
     @Insert
     void insert(Income income);
 }

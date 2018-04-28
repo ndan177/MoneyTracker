@@ -21,7 +21,6 @@ public interface  ExpenseDao {
         @Query("SELECT * from expense_table ORDER BY date DESC")
         LiveData<List<Expense>> getChronologicalExpenses();
 
-
         @Insert
         void insert(Expense expense);
 
@@ -34,6 +33,14 @@ public interface  ExpenseDao {
         @Query("select sum(price) FROM expense_table " +
                 "where  Date(date) between Date(:startDate) and Date(:endDate)")
         double getPriceSumBetween(String startDate,String endDate);
+
+        @Query("SELECT sum(price) FROM expense_table " +
+                "where strftime('%m',Date(date)) = strftime('%m',Date(:theDate)) ;")
+        double getPriceSumForMonth(String theDate);
+
+        @Query("SELECT sum(price) FROM expense_table " +
+                "where strftime('%m',Date(date)) = strftime('%m',Date(:theDate)) and categoryId=:catId")
+        double getPriceSumForMonthByCategory(int catId,String theDate);
 
         @Query("select sum(price) FROM expense_table where  Date(date)=Date(:theDate) and categoryId=:catId")
         double getPriceSumByCategory(int catId,String theDate);

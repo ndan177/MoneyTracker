@@ -156,7 +156,7 @@ public class WeekViewFragment extends Fragment {
 
             Calendar c = Calendar.getInstance();
             c.setTime(date);
-            int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek()-1;//monday
+            int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();//sunday
             c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
             weekStart = c.getTime();
 
@@ -172,7 +172,7 @@ public class WeekViewFragment extends Fragment {
             date =new SimpleDateFormat("dd-MMM-yyyy").parse(stringDate);
             Calendar c = Calendar.getInstance();
             c.setTime(date);
-            int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek()-1;//monday
+            int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();//sunday
             c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
             c.add(Calendar.DAY_OF_MONTH, 6);
             weekEnd = c.getTime();
@@ -189,5 +189,4 @@ public class WeekViewFragment extends Fragment {
     {
         return new SimpleDateFormat("dd-MMM-yyyy").format(date);
     }
-
 }
