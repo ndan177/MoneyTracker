@@ -2,8 +2,10 @@ package com.example.nohai.moneytracker.UI;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import com.example.nohai.moneytracker.DebtsHistoryFragment;
 import com.example.nohai.moneytracker.DebtsToPayFragment;
 import com.example.nohai.moneytracker.DebtsToReceiveFragment;
 import com.example.nohai.moneytracker.R;
@@ -43,7 +50,21 @@ public class Debts extends AppCompatActivity {
         mNavigationView=findViewById(R.id.bottom_navigation);
 
         mNavigationView.setItemIconTintList(null);
-
+        mNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.borrow_to:
+                                openBorrowTo();
+                                break;
+                            case R.id.borrow_from:
+                                openBorrowFrom();
+                                break;
+                        }
+                        return true;
+                    }
+                });
 
     }
 
@@ -52,8 +73,7 @@ public class Debts extends AppCompatActivity {
 
         Adapter.AddFragmentPage(new DebtsToPayFragment(), "To Pay");
         Adapter.AddFragmentPage(new DebtsToReceiveFragment(), "To Receive");
-        Adapter.AddFragmentPage(new DebtsToReceiveFragment(), "History");
-
+        Adapter.AddFragmentPage(new DebtsHistoryFragment(), "History");
         //We Need Fragment class now
 
         viewPager.setAdapter(Adapter);
@@ -85,8 +105,17 @@ public class Debts extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
-
+    void openBorrowTo()
+    {
+        Intent intent = new Intent(this, BorrowTo.class);
+        startActivity(intent);
+    }
+    void openBorrowFrom()
+    {
+        Intent intent = new Intent(this, BorrowFrom.class);
+        startActivity(intent);
+    }
 }

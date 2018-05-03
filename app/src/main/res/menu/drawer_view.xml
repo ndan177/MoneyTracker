@@ -30,7 +30,7 @@
             android:title="Icons" />
         <item
             android:id="@+id/nav_item7"
-            android:icon="@drawable/ic_search"
+            android:icon="@drawable/hand_cash"
             android:iconTint="@color/green"
             android:title="Debts" />
 

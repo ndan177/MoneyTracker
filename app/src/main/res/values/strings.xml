@@ -6,5 +6,8 @@
     <string name="saved_currency"></string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_currency">Currency</string>
+    <string name="noData">No data.</string>
+    <string name="noHistory">No history.</string>
+    <string name="title_activity_borrow_to">BorrowTo</string>
 
 </resources>

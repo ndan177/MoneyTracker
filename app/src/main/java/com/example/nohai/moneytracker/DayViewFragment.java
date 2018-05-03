@@ -150,6 +150,7 @@ public class DayViewFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                           int categoryId = mCategoryViewModel.getAllCategories().getValue().get(position).getId();
                           saveDate();
+                          view.setSelected(true);
                           Intent intent = new Intent(getActivity(), NewExpense.class);
                           intent.putExtra("id",categoryId);
                           intent.putExtra("position",position);
@@ -157,7 +158,7 @@ public class DayViewFragment extends Fragment {
                           startActivity(intent);
                     }
                     @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
+                        onItemClick(view,position);
                 }
                 })
         );

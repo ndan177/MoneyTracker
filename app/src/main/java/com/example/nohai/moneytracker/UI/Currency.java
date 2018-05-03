@@ -57,7 +57,7 @@ public class Currency extends AppCompatActivity {
         final TextView cTextView =  findViewById(R.id.currency);
 
         // Construct the data source
-        final ArrayList<Rate> arrayOfRates = new ArrayList<Rate>();
+        final ArrayList<Rate> arrayOfRates = new ArrayList();
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -68,7 +68,6 @@ public class Currency extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         try {
 
                             InputStream is = new ByteArrayInputStream(response.getBytes(StandardCharsets.UTF_8));
@@ -136,7 +135,7 @@ public class Currency extends AppCompatActivity {
             }
         });
 
-// Add the request to the RequestQueue.
+        // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
     }
@@ -147,5 +146,4 @@ public class Currency extends AppCompatActivity {
         actionbar.setTitle(myTitle);
         actionbar.setDisplayHomeAsUpEnabled(true);
     }
-
 }

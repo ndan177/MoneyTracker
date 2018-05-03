@@ -41,8 +41,6 @@ public class Expense {
 
    // public String categoryName;
 
-
-
     public int getCategoryId() {
         return categoryId;
     }
@@ -54,8 +52,6 @@ public class Expense {
     public int getId() {
         return id;
     }
-
-
 
     public void setId(int id) {
         this.id = id;

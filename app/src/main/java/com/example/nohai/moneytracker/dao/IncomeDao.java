@@ -28,6 +28,10 @@ public interface IncomeDao {
             "where strftime('%m',Date(date)) = strftime('%m',Date(:theDate)) ;")
     double getPriceSumForMonth(String theDate);
 
+    @Query("SELECT sum(price) FROM income_table " +
+            "where strftime('%Y',Date(date)) = strftime('%Y',Date(:theDate)) ;")
+    double getPriceSumForYear(String theDate);
+
     @Insert
     void insert(Income income);
 }

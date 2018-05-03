@@ -154,7 +154,6 @@ public class MonthViewFragment extends Fragment {
         return day;
     }
 
-
     String displayDateFormat(Date date)
     {
         return new SimpleDateFormat("MMMM yyyy").format(date);

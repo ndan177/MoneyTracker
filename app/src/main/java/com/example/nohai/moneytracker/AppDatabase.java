@@ -6,25 +6,21 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.database.Cursor;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-
 import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.Database.CategoryIcon;
+import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.Database.Expense;
 import com.example.nohai.moneytracker.Database.Income;
 import com.example.nohai.moneytracker.dao.CategoryDao;
 import com.example.nohai.moneytracker.dao.CategoryIconDao;
+import com.example.nohai.moneytracker.dao.DebtDao;
 import com.example.nohai.moneytracker.dao.ExpenseDao;
 import com.example.nohai.moneytracker.dao.IncomeDao;
-import java.io.ByteArrayOutputStream;
 
 
-
-@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class}, version = 7)
+@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class,Debt.class}, version = 8)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -33,6 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ExpenseDao expenseDao();
     public abstract CategoryIconDao categoryIconDao();
     public abstract IncomeDao incomeDao();
+    public abstract DebtDao debtDao();
     public static String DATABASE_NAME = "Database";
     private static AppDatabase INSTANCE;
     public  static Context myContext;

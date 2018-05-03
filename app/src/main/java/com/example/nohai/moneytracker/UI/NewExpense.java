@@ -255,7 +255,7 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
     }
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 

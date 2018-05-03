@@ -42,6 +42,14 @@ public interface  ExpenseDao {
                 "where strftime('%m',Date(date)) = strftime('%m',Date(:theDate)) and categoryId=:catId")
         double getPriceSumForMonthByCategory(int catId,String theDate);
 
+        @Query("SELECT sum(price) FROM expense_table " +
+                "where strftime('%Y',Date(date)) = strftime('%Y',Date(:theDate)) ;")
+        double getPriceSumForYear(String theDate);
+
+        @Query("SELECT sum(price) FROM expense_table " +
+                "where strftime('%Y',Date(date)) = strftime('%Y',Date(:theDate)) and categoryId=:catId")
+        double getPriceSumForYearByCategory(int catId,String theDate);
+
         @Query("select sum(price) FROM expense_table where  Date(date)=Date(:theDate) and categoryId=:catId")
         double getPriceSumByCategory(int catId,String theDate);
 
