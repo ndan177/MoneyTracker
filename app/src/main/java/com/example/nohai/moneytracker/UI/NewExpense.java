@@ -224,7 +224,6 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
     private void loadSpinnerData() {
 
 
-
         List<Category> categories = db.categoryDao().getCategories();
 
         List<String> categoriesNames=new ArrayList<>();

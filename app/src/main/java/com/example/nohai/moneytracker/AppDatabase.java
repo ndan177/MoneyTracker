@@ -20,7 +20,7 @@ import com.example.nohai.moneytracker.dao.ExpenseDao;
 import com.example.nohai.moneytracker.dao.IncomeDao;
 
 
-@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class,Debt.class}, version = 8)
+@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class,Debt.class}, version = 9)
 
 public abstract class AppDatabase extends RoomDatabase {
 

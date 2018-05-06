@@ -21,6 +21,8 @@ public class Debt {
     @TypeConverters({DateConverter.class})
     public Date date;
 
+    public int contactId;
+
     @TypeConverters({DateConverter.class})
     public Date dateLimit;
 
@@ -42,6 +44,10 @@ public class Debt {
     public Debt()
     {
         this(false);
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
 }

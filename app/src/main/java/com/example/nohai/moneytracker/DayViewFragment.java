@@ -75,7 +75,7 @@ public class DayViewFragment extends Fragment {
         }
     }
     //Constructor default
-    public DayViewFragment(){};
+    public DayViewFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
