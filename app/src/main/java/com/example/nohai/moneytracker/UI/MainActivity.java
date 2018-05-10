@@ -49,10 +49,6 @@ public class MainActivity extends AppCompatActivity{
     ViewPager MyPage;
     NavigationView navigationView;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

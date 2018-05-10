@@ -8,11 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import com.example.nohai.moneytracker.Database.Expense;
-import com.example.nohai.moneytracker.Utils.RecyclerItemClickListener;
+
 import java.util.List;
 
 public class ExpenseList extends AppCompatActivity {

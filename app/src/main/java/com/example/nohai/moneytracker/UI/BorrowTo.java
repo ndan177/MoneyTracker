@@ -17,6 +17,7 @@ import android.provider.ContactsContract.Contacts;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class BorrowTo extends AppCompatActivity {
     AppDatabase db;
     Debt newDebt= new Debt();
     static TextView dateChooser;
+    static EditText myNotes;
 
     public static String getMonthName(int month) {
         return new DateFormatSymbols().getShortMonths()[month-1];
@@ -85,6 +87,7 @@ public class BorrowTo extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(),"DatePicker");
             }
         });
+        myNotes =  findViewById(R.id.notes);
 
     }
 
@@ -130,7 +133,7 @@ public class BorrowTo extends AppCompatActivity {
                         if (cursor != null) {
                             cursor.close();
                         }
-                        TextView phoneEntry = findViewById(R.id.person);
+                        TextView phoneEntry = findViewById(R.id.category);
                         //phoneEntry.setText(phone);
                         phoneEntry.setText(id);
                         if (phone.length() == 0) {
@@ -162,6 +165,7 @@ public class BorrowTo extends AppCompatActivity {
     public void save(View view)
     {
 
+        newDebt.notes  = myNotes.getText().toString();
 
         try
         {
@@ -173,6 +177,7 @@ public class BorrowTo extends AppCompatActivity {
         } catch (Exception Ex) {}
         //Toast.makeText(this, ""+contactId, Toast.LENGTH_SHORT).show();
         if(contactId!= -1) {
+            newDebt.contactId=contactId;
             db.debtDao().insert(newDebt);
             Toast.makeText(this, "Debt added!", Toast.LENGTH_SHORT).show();
             finish();

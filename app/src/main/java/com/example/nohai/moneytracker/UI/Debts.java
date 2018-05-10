@@ -165,5 +165,9 @@ public class Debts extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+    public void loadViewPager()
+    {
+        SetUpViewPager(MyPage);
+    }
 
 }

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
 
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
 
-    android:background="@layout/rounded_bg"
     android:orientation="vertical"
+    android:background="@layout/rounded_bg"
     android:padding="5dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,7 +27,7 @@
             android:background="@color/veryLightGreen">
 
             <TextView
-                android:id="@+id/category"
+                android:id="@+id/person"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -50,10 +48,10 @@
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/date"
-                app:layout_constraintStart_toStartOf="@+id/category"
+                app:layout_constraintStart_toStartOf="@+id/person"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
-
+ory
             <TextView
                 android:id="@+id/price"
                 android:layout_width="wrap_content"

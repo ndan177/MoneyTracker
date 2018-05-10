@@ -10,9 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 import com.example.nohai.moneytracker.Database.Debt;
-import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.UI.Debts;
 
 import java.util.List;
 
@@ -26,31 +26,37 @@ public class DebtsToPayFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View PageOne = inflater.inflate(R.layout.fragment_debts_to_pay, container, false);
-
-        final RecyclerView recyclerView = PageOne.findViewById(R.id.recyclerview);
+        final RecyclerView  recyclerView = PageOne.findViewById(R.id.recyclerview);
         adapter = new DebtListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
         // Get a new or existing ViewModel from the ViewModelProvider.
-        mDebtViewModel = ViewModelProviders.of(this).get(DebtViewModel.class);
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // Add an observer on the LiveData returned by getAlphabetizedDebts.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
 
-        mDebtViewModel.getAllDebts().observe(this,new Observer<List<Debt>>() {
-
-            @Override
-            public void onChanged(@Nullable final List<Debt> debts) {
-                // Update the cached copy of the categories in the adapter.
-                adapter.setDebts(debts);
-            }
-
-        });
-
         return PageOne;
     }
+    @Override
+    public void onResume() {
+        try {
+            mDebtViewModel = ViewModelProviders.of(this).get(DebtViewModel.class);
+
+            //((Debts)getActivity()).loadViewPager();
+            mDebtViewModel.getAllDebts().observe(this, new Observer<List<Debt>>() {
+
+                @Override
+                public void onChanged(@Nullable final List<Debt> debts) {
+                    // Update the cached copy of the categories in the adapter.
+                    adapter.setDebts(debts);
+                }
+
+            });
+        }catch (Exception ex){}
+        super.onResume();
+    }
+
+
 }
 //TODO: load debts lists

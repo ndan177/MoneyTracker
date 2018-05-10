@@ -1,6 +1,5 @@
 package com.example.nohai.moneytracker.Database;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
@@ -22,6 +21,8 @@ public class Debt {
     public Date date;
 
     public int contactId;
+
+    public String notes;
 
     @TypeConverters({DateConverter.class})
     public Date dateLimit;
