@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green"
-    tools:context="com.example.nohai.moneytracker.UI.BorrowTo">
+    tools:context="com.example.nohai.moneytracker.UI.NewBorrowTo">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -27,11 +27,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:onClick="doLaunchContactPicker">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -39,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:onClick="doLaunchContactPicker"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 app:srcCompat="@drawable/contacts" />
@@ -52,24 +53,24 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:inputType="none"
+                android:onClick="doLaunchContactPicker"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"></TextView>
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="50dp"
+            <ImageView
+                android:id="@+id/imageViewExpired"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Until"
-                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                app:srcCompat="@drawable/expired" />
 
             <TextView
                 android:id="@+id/date"
@@ -94,7 +95,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+
             <TextView />
 
             <EditText

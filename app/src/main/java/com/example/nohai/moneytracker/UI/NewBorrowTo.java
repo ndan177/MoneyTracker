@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room;
 import android.content.Intent;
 
 import android.database.Cursor;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -14,10 +15,12 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.provider.ContactsContract.Contacts;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class BorrowTo extends AppCompatActivity {
+public class NewBorrowTo extends AppCompatActivity {
     private static final int CONTACT_PICKER_RESULT = 1001;
     private static String DEBUG_TAG = "My App Logging";
     private int contactId= -1;
@@ -39,6 +42,7 @@ public class BorrowTo extends AppCompatActivity {
     Debt newDebt= new Debt();
     static TextView dateChooser;
     static EditText myNotes;
+    static ImageView dateExpired;
 
     public static String getMonthName(int month) {
         return new DateFormatSymbols().getShortMonths()[month-1];
@@ -79,7 +83,17 @@ public class BorrowTo extends AppCompatActivity {
                 .build();
 
         dateChooser = findViewById(R.id.date);
+
         dateChooser.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                DialogFragment newFragment = new SelectDateFragment();
+                newFragment.show(getSupportFragmentManager(),"DatePicker");
+            }
+        });
+        dateExpired =  findViewById(R.id.imageViewExpired);
+        dateExpired.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -166,7 +180,7 @@ public class BorrowTo extends AppCompatActivity {
     {
 
         newDebt.notes  = myNotes.getText().toString();
-
+        Intent replyIntent = new Intent();
         try
         {
             Date currentDay = Calendar.getInstance().getTime();
@@ -178,10 +192,21 @@ public class BorrowTo extends AppCompatActivity {
         //Toast.makeText(this, ""+contactId, Toast.LENGTH_SHORT).show();
         if(contactId!= -1) {
             newDebt.contactId=contactId;
-            db.debtDao().insert(newDebt);
+            //db.debtDao().insert(newDebt);
+
+            replyIntent.putExtra("contactId",  newDebt.contactId);
+            replyIntent.putExtra("notes",  newDebt.notes);
+            replyIntent.putExtra("date",  newDebt.date);
+            setResult(RESULT_OK, replyIntent);
             Toast.makeText(this, "Debt added!", Toast.LENGTH_SHORT).show();
             finish();
         }
+        else{
+            Toast.makeText(this, "Please select a contact", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_CANCELED, replyIntent);
+        }
+
+
     }
 
 }

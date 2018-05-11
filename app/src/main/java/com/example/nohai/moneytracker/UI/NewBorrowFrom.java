@@ -18,7 +18,7 @@ import com.github.tamir7.contacts.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BorrowFrom extends AppCompatActivity {
+public class NewBorrowFrom extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

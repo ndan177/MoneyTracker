@@ -16,7 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.nohai.moneytracker.DebtsHistoryFragment;
@@ -32,6 +31,7 @@ public class Debts extends AppCompatActivity {
     ViewPager MyPage;
     BottomNavigationView mNavigationView;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
+    public static final int NEW_DEBT_ACTIVITY_REQUEST_CODE = 1;
 
 
     @Override
@@ -114,12 +114,13 @@ public class Debts extends AppCompatActivity {
     }
     void openBorrowTo()
     {
-        Intent intent = new Intent(this, BorrowTo.class);
-        startActivity(intent);
+        Intent intent = new Intent(this, NewBorrowTo.class);
+       // startActivity(intent);
+        startActivityForResult(intent, NEW_DEBT_ACTIVITY_REQUEST_CODE);
     }
     void openBorrowFrom()
     {
-        Intent intent = new Intent(this, BorrowFrom.class);
+        Intent intent = new Intent(this, NewBorrowFrom.class);
         startActivity(intent);
     }
     // user's contacts
@@ -165,9 +166,12 @@ public class Debts extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-    public void loadViewPager()
-    {
-        SetUpViewPager(MyPage);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NEW_DEBT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            Fragment fragment = getSupportFragmentManager().getFragments().get(0);
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }

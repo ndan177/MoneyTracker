@@ -79,14 +79,14 @@
                 android:value=".UI.MainActivity" />
         </activity>
         <activity
-            android:name=".UI.BorrowTo"
+            android:name=".UI.NewBorrowTo"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".UI.Debts">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".UI.Debts" />
         </activity>
-        <activity android:name=".UI.BorrowFrom"
+        <activity android:name=".UI.NewBorrowFrom"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".UI.Debts">
             <meta-data

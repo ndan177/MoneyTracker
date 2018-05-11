@@ -2,6 +2,7 @@ package com.example.nohai.moneytracker;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.UI.Debts;
 
+import java.util.Date;
 import java.util.List;
 
 public class DebtsToPayFragment extends Fragment{
@@ -31,6 +33,18 @@ public class DebtsToPayFragment extends Fragment{
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // Get a new or existing ViewModel from the ViewModelProvider.
+        mDebtViewModel = ViewModelProviders.of(this).get(DebtViewModel.class);
+
+        //((Debts)getActivity()).loadViewPager();
+        mDebtViewModel.getAllDebts().observe(this, new Observer<List<Debt>>() {
+
+            @Override
+            public void onChanged(@Nullable final List<Debt> debts) {
+                // Update the cached copy of the categories in the adapter.
+                adapter.setDebts(debts);
+            }
+
+        });
 
         // Add an observer on the LiveData returned by getAlphabetizedDebts.
         // The onChanged() method fires when the observed data changes and the activity is
@@ -40,21 +54,17 @@ public class DebtsToPayFragment extends Fragment{
     }
     @Override
     public void onResume() {
-        try {
-            mDebtViewModel = ViewModelProviders.of(this).get(DebtViewModel.class);
-
-            //((Debts)getActivity()).loadViewPager();
-            mDebtViewModel.getAllDebts().observe(this, new Observer<List<Debt>>() {
-
-                @Override
-                public void onChanged(@Nullable final List<Debt> debts) {
-                    // Update the cached copy of the categories in the adapter.
-                    adapter.setDebts(debts);
-                }
-
-            });
-        }catch (Exception ex){}
         super.onResume();
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Debt debt = new Debt();
+        debt.contactId= data.getIntExtra("contactId",-1);
+        debt.notes= data.getStringExtra("notes");
+        debt.date = (Date)data.getSerializableExtra("date");
+        if( debt.contactId!=-1)
+        mDebtViewModel.insert(debt);
+
     }
 
 
