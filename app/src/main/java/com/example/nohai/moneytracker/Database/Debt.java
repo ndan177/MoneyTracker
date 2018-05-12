@@ -24,6 +24,9 @@ public class Debt {
 
     public String notes;
 
+    @NonNull
+    public double price;
+
     @TypeConverters({DateConverter.class})
     public Date dateLimit;
 
@@ -49,6 +52,10 @@ public class Debt {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setDateLimit(Date dateLimit) {
+        this.dateLimit = dateLimit;
     }
 
 }

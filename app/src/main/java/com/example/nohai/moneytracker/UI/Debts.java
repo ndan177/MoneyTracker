@@ -3,8 +3,11 @@ package com.example.nohai.moneytracker.UI;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -15,13 +18,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nohai.moneytracker.DebtsHistoryFragment;
 import com.example.nohai.moneytracker.DebtsToPayFragment;
 import com.example.nohai.moneytracker.DebtsToReceiveFragment;
 import com.example.nohai.moneytracker.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +56,7 @@ public class Debts extends AppCompatActivity {
 
         MyTabs.setupWithViewPager(MyPage);
         SetUpViewPager(MyPage);
-        mNavigationView=findViewById(R.id.bottom_navigation);
+        mNavigationView = findViewById(R.id.bottom_navigation);
 
         mNavigationView.setItemIconTintList(null);
         mNavigationView.setOnNavigationItemSelectedListener(
@@ -112,17 +118,18 @@ public class Debts extends AppCompatActivity {
             return 3;
         }
     }
-    void openBorrowTo()
-    {
+
+    void openBorrowTo() {
         Intent intent = new Intent(this, NewBorrowTo.class);
-       // startActivity(intent);
+        // startActivity(intent);
         startActivityForResult(intent, NEW_DEBT_ACTIVITY_REQUEST_CODE);
     }
-    void openBorrowFrom()
-    {
+
+    void openBorrowFrom() {
         Intent intent = new Intent(this, NewBorrowFrom.class);
         startActivity(intent);
     }
+
     // user's contacts
     public void getPermissionToReadUserContacts() {
         // 1) Use the support library version ContextCompat.checkSelfPermission(...) to avoid
@@ -166,6 +173,7 @@ public class Debts extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NEW_DEBT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {

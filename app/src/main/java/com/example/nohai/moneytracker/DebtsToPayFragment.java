@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.example.nohai.moneytracker.Database.Debt;
-import com.example.nohai.moneytracker.UI.Debts;
+
 
 import java.util.Date;
 import java.util.List;
@@ -60,11 +60,13 @@ public class DebtsToPayFragment extends Fragment{
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         Debt debt = new Debt();
         debt.contactId= data.getIntExtra("contactId",-1);
+        debt.price= data.getDoubleExtra("price",-1);
         debt.notes= data.getStringExtra("notes");
         debt.date = (Date)data.getSerializableExtra("date");
-        if( debt.contactId!=-1)
+        debt.dateLimit = (Date)data.getSerializableExtra("dateLimit");
+        if( debt.contactId!=-1 && debt.price!=-1 )
         mDebtViewModel.insert(debt);
-
+        Toast.makeText(getActivity(), "Debt added!", Toast.LENGTH_SHORT).show();
     }
 
 

@@ -1,8 +1,11 @@
 package com.example.nohai.moneytracker;
 
 
+import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.nohai.moneytracker.Database.Debt;
+import com.example.nohai.moneytracker.UI.Debts;
+
 import java.util.List;
 
 public class DebtListAdapter extends
@@ -21,7 +26,9 @@ public class DebtListAdapter extends
     class DebtViewHolder extends RecyclerView.ViewHolder {
         private final TextView contactItemView;
         private final TextView dateItemView;
-        private final TextView expenseItemViewNotes;
+        private final TextView debtPriceItemView;
+        private final TextView currency;
+        private final TextView debtItemViewNotes;
         private final ImageButton imageButton;
 
 
@@ -29,9 +36,10 @@ public class DebtListAdapter extends
             super(itemView);
             contactItemView = itemView.findViewById(R.id.person);
             dateItemView = itemView.findViewById(R.id.date);
-            expenseItemViewNotes =  itemView.findViewById(R.id.notes);//notes
+            debtItemViewNotes =  itemView.findViewById(R.id.notes);//notes
             imageButton = itemView.findViewById(R.id.img);//arrow image
-
+            currency = itemView.findViewById(R.id.currency);
+            debtPriceItemView = itemView.findViewById(R.id.price);
         }
     }
 
@@ -55,11 +63,23 @@ public class DebtListAdapter extends
     @Override
     public void onBindViewHolder(DebtListAdapter.DebtViewHolder holder, int position) {
         Debt current = mDebts.get(position);
-        holder.contactItemView.setText(String.valueOf(current.contactId));
-        holder.dateItemView.setText(String.valueOf((current.date)).substring(0,10));
+        holder.contactItemView.setText(getContactName(current.contactId));
+
+
+        ///
+
+
+
+        holder.debtPriceItemView.setText(String.format ("%.2f",current.price));
+       if(current.dateLimit!=null)
+       {
+           holder.dateItemView.setText(String.valueOf((current.dateLimit)).substring(0,10));
+       }
+
+        //holder.dateItemView.setText(String.valueOf((current.date)).substring(0,10));
          try {
              if (!current.notes.equals("")) {
-                 holder.expenseItemViewNotes.setText(String.valueOf(current.notes));
+                 holder.debtItemViewNotes.setText(String.valueOf(current.notes));
                  holder.imageButton.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
@@ -73,7 +93,9 @@ public class DebtListAdapter extends
                  });
              } else
                  holder.imageButton.setVisibility(View.INVISIBLE);
-         }catch (Exception ex){   holder.imageButton.setVisibility(View.INVISIBLE);}
+         }catch (Exception ex){ holder.imageButton.setVisibility(View.INVISIBLE);}
+
+        holder.currency.setText(((Activity) myContext).getIntent().getStringExtra("currency"));
 
     }
 
@@ -90,6 +112,32 @@ public class DebtListAdapter extends
             return mDebts.size();
         else return 0;
     }
+
+    public String getContactName(int contactId) {
+
+        Cursor cursor = null;
+        String contactName = "";
+        try {
+            cursor = myContext.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)},
+                    null);
+
+            int phoneIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+
+            // let's just get the first phone
+            if (cursor.moveToFirst()) {
+                contactName = cursor.getString(phoneIdx);
+            }
+        } catch (Exception e) {
+        }   finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            return contactName;
+        }
+    }
+
+
 }
 
 

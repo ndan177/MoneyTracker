@@ -24,9 +24,12 @@
         app:tabMode="fixed" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
@@ -128,13 +131,55 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="8dp"
         android:onClick="save"
         android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/myNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+    <TextView
+        android:id="@+id/myNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="@layout/border"
+        android:drawableStart="@drawable/icons8_paper_money_50"
+        android:drawableTint="@color/colorPrimaryDark"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="none"
+        android:labelFor="@+id/sum"
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
+        app:layout_constraintBottom_toTopOf="@+id/numberKeyboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.davidmiguel.numberkeyboard.NumberKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:keyboard="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/numberKeyboard"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:alwaysDrawnWithCache="false"
+        android:backgroundTint="@color/white"
+        android:backgroundTintMode="src_in"
+        android:foregroundTintMode="multiply"
+        android:theme="@style/Base.TextAppearance.AppCompat.Inverse"
+        keyboard:keyHeight="50dp"
+        keyboard:keyWidth="50dp"
+        keyboard:keyboardType="decimal"
+        keyboard:layout_constraintBottom_toBottomOf="parent"
+        keyboard:layout_constraintEnd_toEndOf="parent"
+        keyboard:layout_constraintHorizontal_bias="0.0"
+        keyboard:layout_constraintStart_toStartOf="parent"
+        keyboard:numberKeyTextColor="@color/colorPrimaryDark"
+        keyboard:numberKeyTextSize="20dp" />
+
 
 
 </android.support.constraint.ConstraintLayout>

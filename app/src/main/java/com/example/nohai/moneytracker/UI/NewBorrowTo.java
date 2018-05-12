@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.davidmiguel.numberkeyboard.NumberKeyboard;
+import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
 import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.R;
@@ -38,14 +40,21 @@ public class NewBorrowTo extends AppCompatActivity {
     private static final int CONTACT_PICKER_RESULT = 1001;
     private static String DEBUG_TAG = "My App Logging";
     private int contactId= -1;
+    NumberKeyboard numberKeyboard;
+    TextView myNumber;
     AppDatabase db;
     Debt newDebt= new Debt();
     static TextView dateChooser;
     static EditText myNotes;
     static ImageView dateExpired;
+    static final int MAX_INPUT = 9;
+    String nr;
 
     public static String getMonthName(int month) {
         return new DateFormatSymbols().getShortMonths()[month-1];
+    }
+    public boolean isNumeric(String s) {
+        return s != null && s.matches("[-+]?\\d*\\.?\\d+");
     }
 
     public static class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -103,6 +112,42 @@ public class NewBorrowTo extends AppCompatActivity {
         });
         myNotes =  findViewById(R.id.notes);
 
+        //listener for keyboard
+        numberKeyboard=findViewById(R.id.numberKeyboard);
+        myNumber=findViewById(R.id.myNumber);
+        numberKeyboard.setListener(new NumberKeyboardListener() {
+            @Override
+            public void onNumberClicked(int number) {
+                nr = myNumber.getText().toString();
+
+                if(nr.indexOf('.')<0)
+                {if(nr.length()< MAX_INPUT )  myNumber.setText(nr + number);}
+                else {
+                    if (nr.length() - nr.indexOf('.') <= 2)
+                        if (nr.length() < MAX_INPUT) myNumber.setText(nr + number);
+                }
+            }
+
+            @Override
+            public void onLeftAuxButtonClicked() {
+
+                nr = myNumber.getText().toString();
+
+                if(nr.length()>0 && isNumeric(nr) && nr.indexOf('.')<0)
+                {
+                    if(nr.length()< MAX_INPUT ) myNumber.setText(nr+".");
+                }
+            }
+
+
+            @Override
+            public void onRightAuxButtonClicked() {
+                nr= myNumber.getText().toString();
+                if(nr.length()>0) {
+                    myNumber.setText(nr.substring(0,nr.length()-1));
+                }
+            }
+        });
     }
 
     public void doLaunchContactPicker(View view) {
@@ -178,7 +223,7 @@ public class NewBorrowTo extends AppCompatActivity {
     }
     public void save(View view)
     {
-
+        String myTextPrice = myNumber.getText().toString();
         newDebt.notes  = myNotes.getText().toString();
         Intent replyIntent = new Intent();
         try
@@ -188,23 +233,35 @@ public class NewBorrowTo extends AppCompatActivity {
             SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
             Date parsed = format.parse(simpleDateFormat.format(currentDay.getTime()).toString());
             newDebt.setDate(parsed);
+            Date parsed2 = format.parse(dateChooser.getText().toString());
+            newDebt.setDateLimit(parsed2);
         } catch (Exception Ex) {}
-        //Toast.makeText(this, ""+contactId, Toast.LENGTH_SHORT).show();
-        if(contactId!= -1) {
-            newDebt.contactId=contactId;
-            //db.debtDao().insert(newDebt);
 
-            replyIntent.putExtra("contactId",  newDebt.contactId);
-            replyIntent.putExtra("notes",  newDebt.notes);
-            replyIntent.putExtra("date",  newDebt.date);
-            setResult(RESULT_OK, replyIntent);
-            Toast.makeText(this, "Debt added!", Toast.LENGTH_SHORT).show();
-            finish();
+        if(!myTextPrice.equals(""))
+        {
+            newDebt.price = Double.parseDouble(myTextPrice);
+            if(contactId!= -1) {
+                newDebt.contactId=contactId;
+                replyIntent.putExtra("price",  newDebt.price);
+                replyIntent.putExtra("contactId",  newDebt.contactId);
+                replyIntent.putExtra("notes",  newDebt.notes);
+                replyIntent.putExtra("date",  newDebt.date);
+                replyIntent.putExtra("dateLimit",  newDebt.dateLimit);
+                setResult(RESULT_OK, replyIntent);
+
+                finish();
+            }
+            else{
+                Toast.makeText(this, "Please select a contact", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_CANCELED, replyIntent);
+            }
+
         }
-        else{
-            Toast.makeText(this, "Please select a contact", Toast.LENGTH_SHORT).show();
-            setResult(RESULT_CANCELED, replyIntent);
+        else
+        {
+            Toast.makeText(this, "Sum can't be null", Toast.LENGTH_SHORT).show();
         }
+
 
 
     }
