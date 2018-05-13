@@ -3,11 +3,8 @@ package com.example.nohai.moneytracker.UI;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -18,9 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nohai.moneytracker.DebtsHistoryFragment;
@@ -37,7 +32,9 @@ public class Debts extends AppCompatActivity {
     ViewPager MyPage;
     BottomNavigationView mNavigationView;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
-    public static final int NEW_DEBT_ACTIVITY_REQUEST_CODE = 1;
+    public static final int NEW_BORROW_FROM_ACTIVITY_REQUEST_CODE = 1;
+    public static final int NEW_BORROW_TO_ACTIVITY_REQUEST_CODE = 2;
+
 
 
     @Override
@@ -119,16 +116,18 @@ public class Debts extends AppCompatActivity {
         }
     }
 
-    void openBorrowTo() {
-        Intent intent = new Intent(this, NewBorrowTo.class);
-        // startActivity(intent);
-        startActivityForResult(intent, NEW_DEBT_ACTIVITY_REQUEST_CODE);
+    void openBorrowFrom() {
+
+        Intent intent = new Intent(this, NewBorrowFrom.class);
+        startActivityForResult(intent, NEW_BORROW_FROM_ACTIVITY_REQUEST_CODE);
     }
 
-    void openBorrowFrom() {
-        Intent intent = new Intent(this, NewBorrowFrom.class);
-        startActivity(intent);
+    void openBorrowTo() {
+        Intent intent = new Intent(this, NewBorrowTo.class);
+        startActivityForResult(intent, NEW_BORROW_TO_ACTIVITY_REQUEST_CODE);
     }
+
+
 
     // user's contacts
     public void getPermissionToReadUserContacts() {
@@ -176,8 +175,12 @@ public class Debts extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NEW_DEBT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == NEW_BORROW_FROM_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Fragment fragment = getSupportFragmentManager().getFragments().get(0);
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+        if (requestCode == NEW_BORROW_TO_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            Fragment fragment = getSupportFragmentManager().getFragments().get(1);
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }

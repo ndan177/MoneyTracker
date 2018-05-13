@@ -111,7 +111,7 @@ public class DayViewFragment extends Fragment {
                 onResume();
                try {
                    ((MainActivity) getActivity()).loadViewPager();
-                   Toast.makeText(getActivity(), "PAGER", Toast.LENGTH_SHORT).show();
+
                }catch(Exception ex){}
             }
             @Override

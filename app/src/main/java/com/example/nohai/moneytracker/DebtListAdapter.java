@@ -66,10 +66,6 @@ public class DebtListAdapter extends
         holder.contactItemView.setText(getContactName(current.contactId));
 
 
-        ///
-
-
-
         holder.debtPriceItemView.setText(String.format ("%.2f",current.price));
        if(current.dateLimit!=null)
        {

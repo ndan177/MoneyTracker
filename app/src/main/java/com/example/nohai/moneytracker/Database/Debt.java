@@ -32,6 +32,8 @@ public class Debt {
 
     public boolean resolved;
 
+    public boolean borrowTo;
+
     public int getId() {
         return id;
     }
@@ -40,14 +42,15 @@ public class Debt {
         this.id = id;
     }
 
-    public Debt(boolean resolved)
+    public Debt(boolean resolved, boolean borrowTo)
     {
         this.resolved = resolved;
+        this.borrowTo = borrowTo;
     }
 
     public Debt()
     {
-        this(false);
+        this(false,true);
     }
 
     public void setDate(Date date) {

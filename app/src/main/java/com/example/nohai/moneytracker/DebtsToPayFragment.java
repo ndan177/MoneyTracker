@@ -36,7 +36,7 @@ public class DebtsToPayFragment extends Fragment{
         mDebtViewModel = ViewModelProviders.of(this).get(DebtViewModel.class);
 
         //((Debts)getActivity()).loadViewPager();
-        mDebtViewModel.getAllDebts().observe(this, new Observer<List<Debt>>() {
+        mDebtViewModel.getAllDebtsTo().observe(this, new Observer<List<Debt>>() {
 
             @Override
             public void onChanged(@Nullable final List<Debt> debts) {
@@ -71,4 +71,4 @@ public class DebtsToPayFragment extends Fragment{
 
 
 }
-//TODO: load debts lists
+

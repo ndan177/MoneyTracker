@@ -17,4 +17,13 @@ public interface DebtDao {
     @Query("SELECT * from Debt_table ORDER BY date DESC")
     LiveData<List<Debt>> getChronologicalDebts();
 
+    @Query("SELECT * from Debt_table where borrowTo = 1 and resolved=0 ORDER BY date DESC")
+    LiveData<List<Debt>> getDebtsTo();
+
+    @Query("SELECT * from Debt_table where borrowTo = 0 and resolved=0 ORDER BY date DESC")
+    LiveData<List<Debt>> getDebtsFrom();
+
+    @Query("SELECT * from Debt_table where resolved=1 ORDER BY date DESC")
+    LiveData<List<Debt>> getResolvedDebts();
+
 }
