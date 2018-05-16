@@ -1,7 +1,9 @@
 package com.example.nohai.moneytracker.UI;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -34,8 +36,8 @@ public class Debts extends AppCompatActivity {
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
     public static final int NEW_BORROW_FROM_ACTIVITY_REQUEST_CODE = 1;
     public static final int NEW_BORROW_TO_ACTIVITY_REQUEST_CODE = 2;
-
-
+    public static String currency;
+    MyViewPageAdapter Adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,19 @@ public class Debts extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle("Debts");
         actionbar.setDisplayHomeAsUpEnabled(true);
+
+
+
+          if(getCurrency()==null)
+          {
+              currency = getIntent().getStringExtra("currency");
+              saveCurrency(currency);
+          }
+          else
+          {
+              currency=getCurrency();
+          }
+
 
         MyTabs = findViewById(R.id.MyTabs);
         MyPage = findViewById(R.id.MyPage);
@@ -76,7 +91,7 @@ public class Debts extends AppCompatActivity {
     }
 
     public void SetUpViewPager(ViewPager viewPager) {
-        MyViewPageAdapter Adapter = new MyViewPageAdapter(getSupportFragmentManager());
+         Adapter = new MyViewPageAdapter(getSupportFragmentManager());
 
         Adapter.AddFragmentPage(new DebtsToPayFragment(), "To Pay");
         Adapter.AddFragmentPage(new DebtsToReceiveFragment(), "To Receive");
@@ -86,8 +101,13 @@ public class Debts extends AppCompatActivity {
         viewPager.setAdapter(Adapter);
 
     }
+    public Fragment getFragment(int pos) {
+        return Adapter.getItem(pos);
+    }
 
-    public class MyViewPageAdapter extends FragmentPagerAdapter {
+
+
+    public static class MyViewPageAdapter extends FragmentPagerAdapter {
         private List<Fragment> MyFragment = new ArrayList<>();
         private List<String> MyPageTittle = new ArrayList<>();
 
@@ -101,7 +121,7 @@ public class Debts extends AppCompatActivity {
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public  Fragment getItem(int position) {
             return MyFragment.get(position);
         }
 
@@ -115,6 +135,8 @@ public class Debts extends AppCompatActivity {
             return 3;
         }
     }
+
+
 
     void openBorrowFrom() {
 
@@ -184,5 +206,20 @@ public class Debts extends AppCompatActivity {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
+    public void saveCurrency(String code)
+    {
+        SharedPreferences sharedPref = getSharedPreferences("CURRENCY", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("",code);
+        editor.commit();
+    }
 
+    public String getCurrency()
+    {
+        SharedPreferences sharedPref = this.getSharedPreferences("CURRENCY",Context.MODE_PRIVATE);
+        String defaultValue = getResources().getString(R.string.saved_currency);
+        String myCurrency = sharedPref.getString(getString(R.string.saved_currency), defaultValue);
+        //if (myCurrency.equals("")){saveCurrency("EUR");return "EUR";}
+        return myCurrency;
+    }
 }

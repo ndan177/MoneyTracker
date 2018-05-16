@@ -6,7 +6,9 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ public class DebtListAdapter extends
         RecyclerView.Adapter<DebtListAdapter.DebtViewHolder> {
     AppDatabase db;
     private Context myContext;
+    private SparseBooleanArray mSelectedItemsIds;
 
     class DebtViewHolder extends RecyclerView.ViewHolder {
         private final TextView contactItemView;
@@ -51,6 +54,7 @@ public class DebtListAdapter extends
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
+        mSelectedItemsIds = new SparseBooleanArray();
         myContext = context;
     }
 
@@ -91,7 +95,8 @@ public class DebtListAdapter extends
                  holder.imageButton.setVisibility(View.INVISIBLE);
          }catch (Exception ex){ holder.imageButton.setVisibility(View.INVISIBLE);}
 
-        holder.currency.setText(((Activity) myContext).getIntent().getStringExtra("currency"));
+      //  holder.currency.setText(((Activity) myContext).getIntent().getStringExtra("currency"));
+        holder.currency.setText(Debts.currency);
 
     }
 
@@ -131,6 +136,32 @@ public class DebtListAdapter extends
             }
             return contactName;
         }
+    }
+    //Remove selected selections
+    public void removeSelection() {
+        mSelectedItemsIds = new SparseBooleanArray();
+        notifyDataSetChanged();
+    }
+
+
+    //Put or delete selected position into SparseBooleanArray
+    public void selectView(int position, boolean value) {
+        if (value)
+            mSelectedItemsIds.put(position, value);
+        else
+            mSelectedItemsIds.delete(position);
+
+        notifyDataSetChanged();
+    }
+
+    //Get total selected count
+    public int getSelectedCount() {
+        return mSelectedItemsIds.size();
+    }
+
+    //Return all selected ids
+    public SparseBooleanArray getSelectedIds() {
+        return mSelectedItemsIds;
     }
 
 

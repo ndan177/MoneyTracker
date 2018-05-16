@@ -9,5 +9,6 @@
     <string name="noData">No data.</string>
     <string name="noHistory">No history.</string>
     <string name="title_activity_borrow_to">BorrowTo</string>
+    <string name="delete">Delete</string>
 
 </resources>
