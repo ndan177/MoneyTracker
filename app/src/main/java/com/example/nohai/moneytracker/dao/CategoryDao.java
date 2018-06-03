@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface CategoryDao {
 
-    @Query("SELECT * from category_table ORDER BY category ASC")
+    @Query("SELECT * from category_table ORDER BY id ASC")
     List<Category> getCategories();
 
     @Query("SELECT category from category_table ORDER BY category ASC")
@@ -22,7 +22,7 @@ public interface CategoryDao {
     // Always holds/caches latest version of data. Notifies its active observers when the
     // data has changed. Since we are getting all the contents of the database,
     // we are notified whenever any of the database contents have changed.
-    @Query("SELECT * from category_table ORDER BY category ASC")
+    @Query("SELECT * from category_table ORDER BY id ASC")
     LiveData<List<Category>> getAlphabetizedCategories();
 
     // We do not need a conflict strategy, because the word is our primary key, and you cannot

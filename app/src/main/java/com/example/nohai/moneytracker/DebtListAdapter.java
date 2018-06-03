@@ -2,21 +2,30 @@ package com.example.nohai.moneytracker;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.UI.Debts;
+import com.example.nohai.moneytracker.dao.DebtDao;
 
 import java.util.List;
 
@@ -24,7 +33,29 @@ public class DebtListAdapter extends
         RecyclerView.Adapter<DebtListAdapter.DebtViewHolder> {
     AppDatabase db;
     private Context myContext;
-    private SparseBooleanArray mSelectedItemsIds;
+    private static boolean deleteMe = false;
+    public static class FireMissilesDialogFragment extends DialogFragment {
+
+        @Override
+        public   Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Are you sure?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            deleteMe = true;
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
 
     class DebtViewHolder extends RecyclerView.ViewHolder {
         private final TextView contactItemView;
@@ -33,6 +64,7 @@ public class DebtListAdapter extends
         private final TextView currency;
         private final TextView debtItemViewNotes;
         private final ImageButton imageButton;
+        private final ImageButton moreItemView;
 
 
         private DebtViewHolder(View itemView) {
@@ -43,6 +75,8 @@ public class DebtListAdapter extends
             imageButton = itemView.findViewById(R.id.img);//arrow image
             currency = itemView.findViewById(R.id.currency);
             debtPriceItemView = itemView.findViewById(R.id.price);
+            moreItemView = itemView.findViewById(R.id.more);
+
         }
     }
 
@@ -54,7 +88,7 @@ public class DebtListAdapter extends
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
-        mSelectedItemsIds = new SparseBooleanArray();
+
         myContext = context;
     }
 
@@ -66,9 +100,8 @@ public class DebtListAdapter extends
 
     @Override
     public void onBindViewHolder(DebtListAdapter.DebtViewHolder holder, int position) {
-        Debt current = mDebts.get(position);
+        final Debt current = mDebts.get(position);
         holder.contactItemView.setText(getContactName(current.contactId));
-
 
         holder.debtPriceItemView.setText(String.format ("%.2f",current.price));
        if(current.dateLimit!=null)
@@ -97,6 +130,60 @@ public class DebtListAdapter extends
 
       //  holder.currency.setText(((Activity) myContext).getIntent().getStringExtra("currency"));
         holder.currency.setText(Debts.currency);
+        holder.moreItemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                    @Override
+                    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                        menu.add("edit").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+
+                                //do what u want
+                                return true;
+                            }
+                        });
+                        if(current.resolved)
+                            menu.add("unresolved").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+
+                                    current.resolved = false;
+                                    db.debtDao().update(current);
+                                    mDebts.remove(current);
+                                    notifyDataSetChanged();
+                                    return true;
+                                }
+                            });
+                        else
+                            menu.add("resolved").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+
+                                    current.resolved = true;
+                                    db.debtDao().update(current);
+                                    mDebts.remove(current);
+                                    notifyDataSetChanged();
+
+                                    return true;
+                                }
+                            });
+                        menu.add("delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+
+                                DialogFragment newFragment = new FireMissilesDialogFragment();
+                                newFragment.show(((Activity) myContext).getFragmentManager(), "yesNo");
+//                                if (deleteMe==true) {
+//
+//                                    db.debtDao().delete(current);
+//                                    mDebts.remove(current);
+//                                    notifyDataSetChanged();
+//                                }
+                                    //TODO:DELETE
+                                return true;
+                            }
+                        });
+                    }
+        });
 
     }
 
@@ -137,32 +224,10 @@ public class DebtListAdapter extends
             return contactName;
         }
     }
-    //Remove selected selections
-    public void removeSelection() {
-        mSelectedItemsIds = new SparseBooleanArray();
-        notifyDataSetChanged();
-    }
 
 
-    //Put or delete selected position into SparseBooleanArray
-    public void selectView(int position, boolean value) {
-        if (value)
-            mSelectedItemsIds.put(position, value);
-        else
-            mSelectedItemsIds.delete(position);
 
-        notifyDataSetChanged();
-    }
 
-    //Get total selected count
-    public int getSelectedCount() {
-        return mSelectedItemsIds.size();
-    }
-
-    //Return all selected ids
-    public SparseBooleanArray getSelectedIds() {
-        return mSelectedItemsIds;
-    }
 
 
 }

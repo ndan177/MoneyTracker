@@ -25,16 +25,12 @@ import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.Database.Expense;
 import com.example.nohai.moneytracker.R;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import static java.lang.Float.parseFloat;
 
 
 public class NewExpense extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {

@@ -23,105 +23,78 @@
         app:tabIndicatorColor="@color/white"
         app:tabMode="fixed" />
 
-    <TableLayout
-        android:id="@+id/tableLayout"
+    <TextView
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+
+        android:background="@layout/border"
+        android:drawableStart="@android:drawable/ic_menu_my_calendar"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Until"
+        android:inputType="none"
+        android:labelFor="@+id/date"
+        android:textColorLink="@color/green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/contactL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/date">
 
-        <TableRow
+        <TextView
+            android:id="@+id/contact"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/sort_down"
+            android:drawableStart="@drawable/user_24"
+            android:hint="Contact"
+            android:inputType="none"
+            android:onClick="doLaunchContactPicker"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        </TextView>
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/notesL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactL">
+
+        <EditText
+            android:id="@+id/notes"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="doLaunchContactPicker">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                app:srcCompat="@drawable/contacts" />
-
-            <TextView
-                android:id="@+id/category"
-                style="@style/Widget.AppCompat.EditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:inputType="none"
-                android:onClick="doLaunchContactPicker"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"></TextView>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imageViewExpired"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                app:srcCompat="@drawable/expired" />
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@layout/border"
-
-                android:drawableStart="@android:drawable/ic_menu_my_calendar"
-                android:ems="10"
-                android:gravity="center"
-                android:inputType="none"
-                android:labelFor="@+id/date"
-                android:textColorLink="@color/green"
-                app:layout_constraintBottom_toTopOf="@+id/save"
-                app:layout_constraintStart_toEndOf="@+id/textView"
-                app:layout_constraintTop_toBottomOf="@+id/category"
-                app:layout_constraintVertical_bias="0.169" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView />
-
-            <EditText
-                android:id="@+id/notes"
-                style="@style/Widget.AppCompat.EditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/icons8_pencil_50"
-                android:drawableTint="@color/colorPrimaryDark"
-                android:ems="10"
-                android:hint="Write a note"
-                android:inputType="textPersonName" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
-
+            android:drawableStart="@drawable/icons8_pencil_50"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:ems="10"
+            android:hint="Write a note"
+            android:inputType="textPersonName" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/save"
@@ -137,7 +110,7 @@
         app:layout_constraintBottom_toTopOf="@+id/myNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        />
     <TextView
         android:id="@+id/myNumber"
         android:layout_width="wrap_content"

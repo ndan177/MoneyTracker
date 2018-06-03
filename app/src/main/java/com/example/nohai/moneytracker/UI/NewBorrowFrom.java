@@ -6,7 +6,6 @@ import android.arch.persistence.room.Room;
 import android.content.Intent;
 
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -15,12 +14,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.provider.ContactsContract.Contacts;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +43,7 @@ public class NewBorrowFrom extends AppCompatActivity {
     Debt newDebt= new Debt();
     static TextView dateChooser;
     static EditText myNotes;
-    static ImageView dateExpired;
+
     static final int MAX_INPUT = 9;
     String nr;
 
@@ -83,7 +80,7 @@ public class NewBorrowFrom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_borrow_to);
+        setContentView(R.layout.activity_borrow);
         setToolbar();
 
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class,"Database")
@@ -101,15 +98,7 @@ public class NewBorrowFrom extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(),"DatePicker");
             }
         });
-        dateExpired =  findViewById(R.id.imageViewExpired);
-        dateExpired.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                DialogFragment newFragment = new SelectDateFragment();
-                newFragment.show(getSupportFragmentManager(),"DatePicker");
-            }
-        });
         myNotes =  findViewById(R.id.notes);
 
         //listener for keyboard
@@ -192,7 +181,7 @@ public class NewBorrowFrom extends AppCompatActivity {
                         if (cursor != null) {
                             cursor.close();
                         }
-                        TextView phoneEntry = findViewById(R.id.category);
+                        TextView phoneEntry = findViewById(R.id.contact);
                         //phoneEntry.setText(phone);
                         phoneEntry.setText(id);
                         if (phone.length() == 0) {

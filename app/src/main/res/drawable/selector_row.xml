@@ -8,8 +8,7 @@
         android:state_selected="true">
     <shape >
         <solid android:color="@color/veryLightGreen"/>
-        <corners
-            android:radius="20dp"/>
+
     </shape>
     </item>
     <!-- Standard background color -->

@@ -6,25 +6,20 @@
     android:layout_height="100dp"
     android:layout_margin="5dp"
     android:background="@drawable/selector_row"
-    android:layout_marginBottom="5dp"
-    android:layout_marginEnd="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginTop="5dp"
     android:elevation="0dp"
     android:focusableInTouchMode="true"
     android:orientation="horizontal">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
 
 
         <ImageView
 
             android:id="@+id/icon"
-            android:layout_width="101dp"
+            android:layout_width="85dp"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true" />

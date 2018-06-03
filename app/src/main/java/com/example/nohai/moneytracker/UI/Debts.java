@@ -1,6 +1,7 @@
 package com.example.nohai.moneytracker.UI;
 
 import android.Manifest;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.DebtsHistoryFragment;
 import com.example.nohai.moneytracker.DebtsToPayFragment;
 import com.example.nohai.moneytracker.DebtsToReceiveFragment;
@@ -38,6 +40,7 @@ public class Debts extends AppCompatActivity {
     public static final int NEW_BORROW_TO_ACTIVITY_REQUEST_CODE = 2;
     public static String currency;
     MyViewPageAdapter Adapter;
+    public static AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,10 @@ public class Debts extends AppCompatActivity {
         actionbar.setTitle("Debts");
         actionbar.setDisplayHomeAsUpEnabled(true);
 
+        db = Room.databaseBuilder(this, AppDatabase.class,"Database")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
 
 
           if(getCurrency()==null)
@@ -221,5 +228,9 @@ public class Debts extends AppCompatActivity {
         String myCurrency = sharedPref.getString(getString(R.string.saved_currency), defaultValue);
         //if (myCurrency.equals("")){saveCurrency("EUR");return "EUR";}
         return myCurrency;
+    }
+    public void loadViewPager()
+    {
+        SetUpViewPager(MyPage);
     }
 }

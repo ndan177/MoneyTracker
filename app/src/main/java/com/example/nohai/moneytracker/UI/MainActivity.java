@@ -28,6 +28,7 @@ import com.ToxicBakery.viewpager.transforms.CubeInTransformer;
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
 import com.example.nohai.moneytracker.AppDatabase;
+import com.example.nohai.moneytracker.Backup;
 import com.example.nohai.moneytracker.Database.CategoryIcon;
 import com.example.nohai.moneytracker.DayViewFragment;
 import com.example.nohai.moneytracker.ExpenseList;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity{
                         int id = menuItem.getItemId();
                         switch (id) {
                             case R.id.nav_item1:
-                                Intent intent = new Intent(getApplicationContext(), NewExpense.class);
+                                Intent intent = new Intent(getApplicationContext(), Charts.class);
                                 intent.putExtra("currency",getCurrency());
                                 startActivity(intent);
                                 break;
@@ -120,6 +121,11 @@ public class MainActivity extends AppCompatActivity{
                                 Intent intent7 = new Intent(getApplicationContext(), Debts.class);
                                 intent7.putExtra("currency",getCurrency());
                                 startActivity(intent7);
+                                break;
+                            case R.id.nav_item8:
+                                Intent intent8 = new Intent(getApplicationContext(), Backup.class);
+
+                                startActivity(intent8);
                                 break;
                         }
                        // menuItem.setChecked(true);
@@ -278,3 +284,6 @@ public class MainActivity extends AppCompatActivity{
 
 }
 
+
+
+//TODO: map for exchanges points?

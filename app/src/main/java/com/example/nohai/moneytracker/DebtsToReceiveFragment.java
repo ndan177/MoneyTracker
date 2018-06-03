@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.example.nohai.moneytracker.Database.Debt;
+import com.example.nohai.moneytracker.UI.Debts;
 
 
 import java.util.Date;
@@ -21,13 +22,14 @@ import java.util.List;
 public class DebtsToReceiveFragment extends Fragment{
     public   DebtListAdapter adapter;
     private DebtViewModel mDebtViewModel;
+    AppDatabase db;
 
     //Constructor default
-    public DebtsToReceiveFragment(){}
+    public DebtsToReceiveFragment(){db= Debts.db;}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View PageTwo = inflater.inflate(R.layout.fragment_debts_to_pay, container, false);
+        View PageTwo = inflater.inflate(R.layout.fragment_debts_to_receive, container, false);
         final RecyclerView  recyclerView = PageTwo.findViewById(R.id.recyclerview);
         adapter = new DebtListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
@@ -55,6 +57,9 @@ public class DebtsToReceiveFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        List<Debt> debts= db.debtDao().getDebtsFrom2();
+        adapter.setDebts(debts);
+        adapter.notifyDataSetChanged();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -73,3 +78,4 @@ public class DebtsToReceiveFragment extends Fragment{
 
 }
 
+//TODO:to receive->history transaction and resolved/unresolved check

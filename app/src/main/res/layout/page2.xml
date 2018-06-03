@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/colorAccent"
-                android:textSize="11sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/incomes"
@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp" />
         </LinearLayout>
 
 
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/red"
-                android:textSize="11sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/expenses"
@@ -75,7 +76,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/red" />
+                android:textColor="@color/red"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

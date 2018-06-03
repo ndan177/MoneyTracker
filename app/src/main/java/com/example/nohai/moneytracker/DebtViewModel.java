@@ -18,6 +18,7 @@ public class DebtViewModel extends AndroidViewModel {
         private LiveData<List<Debt>> mAllDebts;
     private LiveData<List<Debt>> mAllDebtsTo;
     private LiveData<List<Debt>> mAllDebtsFrom;
+    private LiveData<List<Debt>> mResolvedDebts;
 
         public DebtViewModel (Application application) {
             super(application);
@@ -25,6 +26,7 @@ public class DebtViewModel extends AndroidViewModel {
             mAllDebts = mDebt.getAllDebts();
             mAllDebtsTo = mDebt.getAllDebtsTo();
             mAllDebtsFrom = mDebt.getAllDebtsFrom();
+            mResolvedDebts= mDebt.getResolvedDebts();
         }
 
         LiveData<List<Debt>> getAllDebts() { return mAllDebts; }
@@ -32,6 +34,8 @@ public class DebtViewModel extends AndroidViewModel {
         LiveData<List<Debt>> getAllDebtsTo() { return mAllDebtsTo; }
 
         LiveData<List<Debt>> getAllDebtsFrom() { return mAllDebtsFrom; }
+
+       LiveData<List<Debt>> getResolvedDebts() { return mResolvedDebts; }
 
         public void insert(Debt Debt) { mDebt.insert(Debt); }
 

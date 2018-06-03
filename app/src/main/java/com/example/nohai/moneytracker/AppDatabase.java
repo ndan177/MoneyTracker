@@ -20,7 +20,7 @@ import com.example.nohai.moneytracker.dao.ExpenseDao;
 import com.example.nohai.moneytracker.dao.IncomeDao;
 
 
-@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class,Debt.class}, version = 12)
+@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class,Debt.class}, version = 16)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -117,6 +117,7 @@ public abstract class AppDatabase extends RoomDatabase {
             insertIcon(R.drawable.icons8_clothes_48);
             insertIcon(R.drawable.icons8_gas_station_48);
             insertIcon(R.drawable.icons8_home_48);
+            insertIcon(R.drawable.variation_48);
 
 
             Category category = new Category("Food",1);
@@ -132,6 +133,8 @@ public abstract class AppDatabase extends RoomDatabase {
             category = new Category("Transport",6);
             mDao.insert(category);
             category = new Category("Home",7);
+            mDao.insert(category);
+            category = new Category("Other",8);
             mDao.insert(category);
             return null;
         }

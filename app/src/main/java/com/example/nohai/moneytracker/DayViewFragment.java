@@ -28,6 +28,7 @@ import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.Database.Expense;
 import com.example.nohai.moneytracker.UI.MainActivity;
 import com.example.nohai.moneytracker.UI.NewExpense;
+import com.example.nohai.moneytracker.Utils.DateHelper;
 import com.example.nohai.moneytracker.Utils.RecyclerItemClickListener;
 
 import java.text.DateFormat;
@@ -50,9 +51,8 @@ public class DayViewFragment extends Fragment {
     public   CategoryListAdapter adapter;
     private TextView  currencyText;
     private TextView  currencyText2;
-    public static String getMonthName(int month) {
-        return new DateFormatSymbols().getShortMonths()[month-1];
-    }
+    private RecyclerView recyclerView;
+
 
     public static class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
@@ -70,7 +70,7 @@ public class DayViewFragment extends Fragment {
         }
 
         public void populateSetDate(int year, int month, int day) {
-            String month_name=getMonthName(month);
+            String month_name= DateHelper.getMonthName(month);
             dateChooser.setText(day+"-"+month_name+"-"+year);
         }
     }
@@ -136,11 +136,13 @@ public class DayViewFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 DialogFragment newFragment = new SelectDateFragment();
+
                 newFragment.show(getFragmentManager(), "DatePicker");
             }
         });
 
-        final RecyclerView recyclerView = PageOne.findViewById(R.id.recyclerview);
+
+        recyclerView = PageOne.findViewById(R.id.recyclerview);
         adapter = new CategoryListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),4));
@@ -158,7 +160,7 @@ public class DayViewFragment extends Fragment {
                           startActivity(intent);
                     }
                     @Override public void onLongItemClick(View view, int position) {
-                        onItemClick(view,position);
+                       // onItemClick(view,position);
                 }
                 })
         );
@@ -177,6 +179,8 @@ public class DayViewFragment extends Fragment {
         DateFormat dateformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
         String myDate= dateChooser.getText().toString();
         Date date1;
+       if(recyclerView!=null)
+        recyclerView.dispatchSetSelected(false);
 
         try {
             date1 = new SimpleDateFormat("dd-MMM-yyyy").parse(myDate);

@@ -14,9 +14,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.UI.MainActivity;
+import com.example.nohai.moneytracker.Utils.DateHelper;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -55,12 +56,12 @@ public class WeekViewFragment extends Fragment {
         try
         {
             dateChooser = ((MainActivity) getActivity()).getSharedDate();
-            startWeek.setText(displayDateFormat(firstDay(dateChooser)));
-            endWeek.setText(displayDateFormat(lastDay(dateChooser)));
+            startWeek.setText(displayDateFormat(DateHelper.firstWeekDay(dateChooser)));
+            endWeek.setText(displayDateFormat(DateHelper.lastWeekDay(dateChooser)));
         }catch(Exception ex){}
 
-        String dbDateStringStart = dbDateFormat.format(firstDay(dateChooser));
-        String dbDateStringEnd = dbDateFormat.format(lastDay(dateChooser));
+        String dbDateStringStart = dbDateFormat.format(DateHelper.firstWeekDay(dateChooser));
+        String dbDateStringEnd = dbDateFormat.format(DateHelper.lastWeekDay(dateChooser));
         double expensesSum = db.expenseDao().getPriceSumBetween(dbDateStringStart,dbDateStringEnd);
         double incomesSum = db.incomeDao().getPriceSumBetween(dbDateStringStart,dbDateStringEnd);
 
@@ -87,8 +88,8 @@ public class WeekViewFragment extends Fragment {
     public void onResume() {
         DateFormat dateformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
         String myDate = dateChooser;
-        String startDate= dbDateFormat(firstDay(myDate));
-        String lastDate= dbDateFormat(lastDay(myDate));
+        String startDate= dbDateFormat(DateHelper.firstWeekDay(myDate));
+        String lastDate= dbDateFormat(DateHelper.lastWeekDay(myDate));
 
         Date date1;
         Date date2;
@@ -116,8 +117,8 @@ public class WeekViewFragment extends Fragment {
                     {
                         DateFormat dateformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
                         String myDate= dateChooser;
-                        String startDate= dbDateFormat(firstDay(myDate));
-                        String lastDate= dbDateFormat(lastDay(myDate));
+                        String startDate = dbDateFormat(DateHelper.firstWeekDay(myDate));
+                        String lastDate = dbDateFormat(DateHelper.lastWeekDay(myDate));
                         Date date1;
                         Date date2;
 
@@ -147,39 +148,6 @@ public class WeekViewFragment extends Fragment {
         currencyText2.setText(myCurrency);
     }
 
-    Date firstDay(String stringDate)//return first day from week, date format
-    {
-        Date date;
-        Date weekStart=null;
-        try {
-            date =new SimpleDateFormat("dd-MMM-yyyy").parse(stringDate);
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(date);
-            int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();//sunday
-            c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
-            weekStart = c.getTime();
-
-        }catch(Exception Ex){}
-
-        return weekStart;
-   }
-    Date lastDay(String stringDate)//return last day from week, date format
-    {
-        Date date;
-        Date weekEnd=null;
-        try {
-            date =new SimpleDateFormat("dd-MMM-yyyy").parse(stringDate);
-            Calendar c = Calendar.getInstance();
-            c.setTime(date);
-            int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();//sunday
-            c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
-            c.add(Calendar.DAY_OF_MONTH, 6);
-            weekEnd = c.getTime();
-        }catch(Exception Ex){}
-
-        return weekEnd;
-    }
 
     String displayDateFormat(Date date)
     {

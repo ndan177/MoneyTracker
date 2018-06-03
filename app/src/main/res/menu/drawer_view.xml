@@ -33,6 +33,11 @@
             android:icon="@drawable/hand_cash"
             android:iconTint="@color/green"
             android:title="Debts" />
+        <item
+            android:id="@+id/nav_item8"
+            android:icon="@drawable/backup_40"
+            android:iconTint="@color/green"
+            android:title="Backup" />
 
     </group>
 </menu>

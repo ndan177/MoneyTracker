@@ -29,7 +29,7 @@ public class ExpenseListAdapter extends
                 super(itemView);
                   expenseItemView = itemView.findViewById(R.id.price);//price
                   expenseItemViewDate= itemView.findViewById(R.id.date);//date
-                  expenseItemViewCategory=itemView.findViewById(R.id.category);//category
+                  expenseItemViewCategory=itemView.findViewById(R.id.contact);//category
                   expenseItemViewNotes =  itemView.findViewById(R.id.notes);//notes
                   imageButton = itemView.findViewById(R.id.img);//arrow image
                   currency= itemView.findViewById(R.id.currency);//currency

@@ -18,6 +18,7 @@ public class DebtRepository {
     private LiveData<List<Debt>> mAllDebts;
     private LiveData<List<Debt>> mAllDebtsTo;
     private LiveData<List<Debt>> mAllDebtsFrom;
+    private LiveData<List<Debt>> mResolvedDebts;
 
     // Note that in order to unit test the WordRepository, you have to remove the Application
     // dependency. This adds complexity and much more code, and this sample is not about testing.
@@ -30,6 +31,7 @@ public class DebtRepository {
         mAllDebts = mDebtDao.getChronologicalDebts();
         mAllDebtsTo = mDebtDao.getDebtsTo();
         mAllDebtsFrom= mDebtDao.getDebtsFrom();
+        mResolvedDebts = mDebtDao.getResolvedDebts();
     }
 
     // Room executes all queries on a separate thread.
@@ -45,6 +47,10 @@ public class DebtRepository {
 
     LiveData<List<Debt>> getAllDebtsFrom() {
         return mAllDebtsFrom;
+    }
+
+    LiveData<List<Debt>> getResolvedDebts() {
+        return mResolvedDebts;
     }
 
    // double getSum(String myDate){return mDebtDao.getPriceSum(myDate); }
