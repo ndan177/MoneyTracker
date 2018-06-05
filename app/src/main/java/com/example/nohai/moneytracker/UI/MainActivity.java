@@ -21,15 +21,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.ToxicBakery.viewpager.transforms.CubeInTransformer;
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
-import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
-import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.Backup;
-import com.example.nohai.moneytracker.Database.CategoryIcon;
 import com.example.nohai.moneytracker.DayViewFragment;
 import com.example.nohai.moneytracker.ExpenseList;
 import com.example.nohai.moneytracker.WeekViewFragment;
@@ -38,7 +35,6 @@ import com.example.nohai.moneytracker.YearViewFragment;
 import com.example.nohai.moneytracker.R;
 import com.mynameismidori.currencypicker.CurrencyPicker;
 import com.mynameismidori.currencypicker.CurrencyPickerListener;
-import com.mynameismidori.currencypicker.ExtendedCurrency;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +45,13 @@ public class MainActivity extends AppCompatActivity{
     TabLayout MyTabs;
     ViewPager MyPage;
     NavigationView navigationView;
+    private static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,17 +78,17 @@ public class MainActivity extends AppCompatActivity{
                         // set item as selected to persist highlight
                         int id = menuItem.getItemId();
                         switch (id) {
-                            case R.id.nav_item1:
-                                Intent intent = new Intent(getApplicationContext(), Charts.class);
+                            case R.id.expense_chart:
+                                Intent intent = new Intent(getApplicationContext(), ExpensesChart.class);
                                 intent.putExtra("currency",getCurrency());
                                 startActivity(intent);
                                 break;
-                            case R.id.nav_item2:
-                                Intent intent2 = new Intent(getApplicationContext(), NewIncome.class);
+                            case R.id.profit_chart:
+                                Intent intent2 = new Intent(getApplicationContext(), ProfitChart.class);
                                 intent2.putExtra("currency",getCurrency());
                                 startActivity(intent2);
                                 break;
-                            case R.id.nav_item3:
+                            case R.id.currency:
                                 ConnectivityManager cm =
                                   (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -107,22 +105,18 @@ public class MainActivity extends AppCompatActivity{
                                 }
 
                                 break;
-                            case R.id.nav_item4:
+                            case R.id.expenses:
                                 Intent intent4 = new Intent(getApplicationContext(), ExpenseList.class);
                                 intent4.putExtra("currency",getCurrency());
                                 startActivity(intent4);
                                 break;
-                            case R.id.nav_item6:
-                                Intent intent6 = new Intent(getApplicationContext(), CategoryIcons.class);
-                                intent6.putExtra("currency",getCurrency());
-                                startActivity(intent6);
-                                break;
-                            case R.id.nav_item7:
+
+                            case R.id.debts:
                                 Intent intent7 = new Intent(getApplicationContext(), Debts.class);
                                 intent7.putExtra("currency",getCurrency());
                                 startActivity(intent7);
                                 break;
-                            case R.id.nav_item8:
+                            case R.id.backup:
                                 Intent intent8 = new Intent(getApplicationContext(), Backup.class);
 
                                 startActivity(intent8);
@@ -280,6 +274,21 @@ public class MainActivity extends AppCompatActivity{
     public void loadViewPager()
     {
         SetUpViewPager(MyPage);
+    }
+
+   public static void setBalanceColorRed(TextView t1, TextView t2, TextView t3)
+    {
+        int color = mContext.getColor(R.color.red);
+        t1.setTextColor(color);
+        t2.setTextColor(color);
+        t3.setTextColor(color);
+    }
+    public static void setBalanceColorGreen(TextView t1,TextView t2,TextView t3)
+    {
+        int color = mContext.getColor(R.color.colorAccent);
+        t1.setTextColor(color);
+        t2.setTextColor(color);
+        t3.setTextColor(color);
     }
 
 }

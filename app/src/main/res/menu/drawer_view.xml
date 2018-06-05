@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_item1"
-            android:icon="@drawable/minus_red"
-            android:title="New Expense" />
+            android:id="@+id/profit_chart"
+            android:icon="@drawable/profit_chart"
+            android:title="Profit Chart" />
         <item
-            android:id="@+id/nav_item2"
-            android:icon="@drawable/plus_green"
-            android:title="New Income" />
+            android:id="@+id/expense_chart"
+            android:icon="@drawable/pie_chart"
+            android:title="Expenses Chart" />
         <item
-            android:id="@+id/nav_item3"
+            android:id="@+id/currency"
             android:icon="@drawable/paper_money_48"
             android:title="Currency" />
         <item
-            android:id="@+id/nav_item4"
+            android:id="@+id/expenses"
             android:icon="@drawable/red_list"
             android:iconTint="@color/green"
             android:title="Expenses" />
         <item
-            android:id="@+id/nav_item5"
+            android:id="@+id/incomes"
             android:icon="@drawable/green_list"
             android:title="Incomes" />
-        <item
-            android:id="@+id/nav_item6"
-            android:icon="@drawable/green_list"
 
-            android:title="Icons" />
         <item
-            android:id="@+id/nav_item7"
+            android:id="@+id/debts"
             android:icon="@drawable/hand_cash"
             android:iconTint="@color/green"
             android:title="Debts" />
         <item
-            android:id="@+id/nav_item8"
+            android:id="@+id/backup"
             android:icon="@drawable/backup_40"
             android:iconTint="@color/green"
             android:title="Backup" />

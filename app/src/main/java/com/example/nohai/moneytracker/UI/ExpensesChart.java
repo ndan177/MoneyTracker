@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.arch.persistence.room.Room;
 import android.graphics.Color;
-import android.opengl.Visibility;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,13 +32,12 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class Charts extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
+public class ExpensesChart extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
     AppDatabase db;
     PieChart pieChart;
     List<Category> categories;
@@ -176,7 +174,7 @@ public class Charts extends AppCompatActivity  implements AdapterView.OnItemSele
 
     private void loadSpinnerDataYear() {
         List<Expense> expenses= db.expenseDao().getExpenses();
-        List<String> categoriesNames=new ArrayList<>();
+        List<String> categoriesNames = new ArrayList<>();
         Calendar c = Calendar.getInstance();
 
         for(Expense expense : expenses) {
@@ -261,7 +259,7 @@ public class Charts extends AppCompatActivity  implements AdapterView.OnItemSele
         DateFormat dateformat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses
         String myDate = monthSelect.getSelectedItem().toString();
         Date date1;
-        String reportDate="";
+        String reportDate = "";
 
         try {
             date1 = new SimpleDateFormat("dd-MMM-yyyy").parse("10-"+myDate);
@@ -397,7 +395,7 @@ public class Charts extends AppCompatActivity  implements AdapterView.OnItemSele
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle("Charts");
+        actionbar.setTitle("Expenses Chart");
         actionbar.setDisplayHomeAsUpEnabled(true);
     }
     private void setDatChooserListener()
@@ -407,7 +405,7 @@ public class Charts extends AppCompatActivity  implements AdapterView.OnItemSele
 
             @Override
             public void onClick(View arg0) {
-                DialogFragment newFragment = new Charts.SelectDateFragment();
+                DialogFragment newFragment = new ExpensesChart.SelectDateFragment();
 
                 newFragment.show(getSupportFragmentManager(), "DatePicker");
             }

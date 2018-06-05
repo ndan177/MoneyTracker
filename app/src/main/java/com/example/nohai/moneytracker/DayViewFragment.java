@@ -19,28 +19,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
 import com.example.nohai.moneytracker.Database.Category;
-import com.example.nohai.moneytracker.Database.Expense;
 import com.example.nohai.moneytracker.UI.MainActivity;
 import com.example.nohai.moneytracker.UI.NewExpense;
 import com.example.nohai.moneytracker.Utils.DateHelper;
 import com.example.nohai.moneytracker.Utils.RecyclerItemClickListener;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.text.DateFormatSymbols;
 import java.util.List;
 
 public class DayViewFragment extends Fragment {
-
-
 
     private CategoryViewModel mCategoryViewModel;
     static TextView dateChooser;
@@ -51,7 +42,10 @@ public class DayViewFragment extends Fragment {
     public   CategoryListAdapter adapter;
     private TextView  currencyText;
     private TextView  currencyText2;
+    private TextView  currencyText3;
     private RecyclerView recyclerView;
+    private TextView  balanceText;
+    private TextView  balanceSum;
 
 
     public static class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -102,6 +96,20 @@ public class DayViewFragment extends Fragment {
 
         currencyText = PageOne.findViewById(R.id.currencyText);
         currencyText2 = PageOne.findViewById(R.id.currencyText2);
+        currencyText3 = PageOne.findViewById(R.id.currencyText3);
+
+        double balance = incomesSum-expensesSum;
+
+        balanceText= PageOne.findViewById(R.id.balance);
+        balanceSum = PageOne.findViewById(R.id.balanceSum);
+        balanceSum.setText(String.format ("%.2f",expensesSum-incomesSum));
+
+        if(balance>=0)
+            MainActivity.setBalanceColorGreen(balanceSum,currencyText3,balanceText);
+        else
+            MainActivity.setBalanceColorRed(balanceSum,currencyText3,balanceText);
+
+
 
         dateChooser = PageOne.findViewById(R.id.date);
         dateChooser.addTextChangedListener(new TextWatcher() {
@@ -189,6 +197,12 @@ public class DayViewFragment extends Fragment {
             expenses.setText(String.format ("%.2f",mySum));
             double mySumIncome=db.incomeDao().getPriceSum(reportDate);
             incomes.setText(String.format ("%.2f",mySumIncome));
+            double balance = mySumIncome-mySum;
+            balanceSum.setText(String.format ("%.2f",balance));
+            if(balance >= 0)
+                MainActivity.setBalanceColorGreen(balanceSum,currencyText3,balanceText);
+            else
+                MainActivity.setBalanceColorRed(balanceSum,currencyText3,balanceText);
 
         }catch(Exception Ex){}
 
@@ -234,9 +248,11 @@ public class DayViewFragment extends Fragment {
         String myCurrency =   ((MainActivity)getActivity()).getCurrency();
         currencyText.setText(myCurrency);
         currencyText2.setText(myCurrency);
+        currencyText3.setText(myCurrency);
         if(myCurrency.equals(""))//saveCurrency("EUR");
             ((MainActivity)getActivity()).saveCurrency("EUR");
     }
+
 
 }
 //TODO:SAVE DATE WHEN SELECT FROM CALENDAR

@@ -30,7 +30,10 @@ public class YearViewFragment extends Fragment {
     static String dateChooser;
     private TextView  currencyText;
     private TextView  currencyText2;
+    private TextView  currencyText3;
     private TextView year;
+    private TextView  balanceText;
+    private TextView  balanceSum;
 
     //Constructor default
     public YearViewFragment(){}
@@ -48,6 +51,7 @@ public class YearViewFragment extends Fragment {
 
         currencyText = PageFour.findViewById(R.id.currencyText);
         currencyText2 = PageFour.findViewById(R.id.currencyText2);
+        currencyText3 = PageFour.findViewById(R.id.currencyText3);
         year = PageFour.findViewById(R.id.date);
 
         try
@@ -67,6 +71,18 @@ public class YearViewFragment extends Fragment {
 
         incomes = PageFour.findViewById(R.id.incomes);
         incomes.setText(String.valueOf(incomesSum));
+
+        double balance = incomesSum-expensesSum;
+
+        balanceText= PageFour.findViewById(R.id.balance);
+        balanceSum = PageFour.findViewById(R.id.balanceSum);
+        balanceSum.setText(String.format ("%.2f",expensesSum-incomesSum));
+
+        if(balance>=0)
+            MainActivity.setBalanceColorGreen(balanceSum,currencyText3,balanceText);
+        else
+            MainActivity.setBalanceColorRed(balanceSum,currencyText3,balanceText);
+
 
         final RecyclerView recyclerView = PageFour.findViewById(R.id.recyclerview);
         adapter = new CategoryListAdapter(getActivity());
@@ -97,6 +113,13 @@ public class YearViewFragment extends Fragment {
             expenses.setText(String.format ("%.2f",mySum));
             double mySumIncome=db.incomeDao().getPriceSumForYear(reportDateFirst);
             incomes.setText(String.format ("%.2f",mySumIncome));
+
+            double balance = mySumIncome-mySum;
+            balanceSum.setText(String.format ("%.2f",balance));
+            if(balance >= 0)
+                MainActivity.setBalanceColorGreen(balanceSum,currencyText3,balanceText);
+            else
+                MainActivity.setBalanceColorRed(balanceSum,currencyText3,balanceText);
 
         }catch(Exception Ex){}
 
@@ -136,6 +159,7 @@ public class YearViewFragment extends Fragment {
         String myCurrency = ((MainActivity)getActivity()).getCurrency();
         currencyText.setText(myCurrency);
         currencyText2.setText(myCurrency);
+        currencyText3.setText(myCurrency);
     }
 
     Date dayDateToString(String stringDate)//return first day from week, date format

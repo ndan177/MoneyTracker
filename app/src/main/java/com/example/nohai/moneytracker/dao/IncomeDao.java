@@ -14,8 +14,8 @@ import java.util.List;
 @Dao
 public interface IncomeDao {
 
-    @Query("SELECT * from income_table ORDER BY id DESC")
-    List<Income> getIncomings();
+    @Query("SELECT * from income_table ORDER BY date")
+    List<Income> getIncomes();
 
     @Query("select sum(price) FROM income_table where  Date(date)=Date(:theDate)")
     double getPriceSum(String theDate);

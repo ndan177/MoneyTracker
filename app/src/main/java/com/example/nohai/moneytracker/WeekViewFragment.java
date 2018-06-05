@@ -31,8 +31,11 @@ public class WeekViewFragment extends Fragment {
     static String dateChooser;
     private TextView  currencyText;
     private TextView  currencyText2;
+    private TextView  currencyText3;
     private TextView  startWeek;
     private TextView endWeek;
+    private TextView  balanceText;
+    private TextView  balanceSum;
 
     //Constructor default
     public WeekViewFragment(){}
@@ -50,6 +53,8 @@ public class WeekViewFragment extends Fragment {
 
         currencyText = PageTwo.findViewById(R.id.currencyText);
         currencyText2 = PageTwo.findViewById(R.id.currencyText2);
+        currencyText3 = PageTwo.findViewById(R.id.currencyText3);
+
         startWeek = PageTwo.findViewById(R.id.startWeek);
         endWeek = PageTwo.findViewById(R.id.endWeek);
 
@@ -70,6 +75,21 @@ public class WeekViewFragment extends Fragment {
 
         incomes = PageTwo.findViewById(R.id.incomes);
         incomes.setText(String.valueOf(incomesSum));
+
+
+        double balance = incomesSum-expensesSum;
+
+        balanceText= PageTwo.findViewById(R.id.balance);
+        balanceSum = PageTwo.findViewById(R.id.balanceSum);
+        balanceSum.setText(String.format ("%.2f",expensesSum-incomesSum));
+
+        if(balance>=0)
+            MainActivity.setBalanceColorGreen(balanceSum,currencyText3,balanceText);
+        else
+            MainActivity.setBalanceColorRed(balanceSum,currencyText3,balanceText);
+
+
+
 
         final RecyclerView recyclerView = PageTwo.findViewById(R.id.recyclerview);
         adapter = new CategoryListAdapter(getActivity());
@@ -104,6 +124,13 @@ public class WeekViewFragment extends Fragment {
             expenses.setText(String.format ("%.2f",mySum));
             double mySumIncome=db.incomeDao().getPriceSumBetween(reportDateFirst,reportDateLast);
             incomes.setText(String.format ("%.2f",mySumIncome));
+
+            double balance = mySumIncome-mySum;
+            balanceSum.setText(String.format ("%.2f",balance));
+            if(balance >= 0)
+                MainActivity.setBalanceColorGreen(balanceSum,currencyText3,balanceText);
+            else
+                MainActivity.setBalanceColorRed(balanceSum,currencyText3,balanceText);
 
         }catch(Exception Ex){}
 
@@ -146,6 +173,7 @@ public class WeekViewFragment extends Fragment {
         String myCurrency = ((MainActivity)getActivity()).getCurrency();
         currencyText.setText(myCurrency);
         currencyText2.setText(myCurrency);
+        currencyText3.setText(myCurrency);
     }
 
 

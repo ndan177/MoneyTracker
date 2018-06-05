@@ -30,14 +30,17 @@ public class MonthViewFragment extends Fragment {
     static String dateChooser;
     private TextView  currencyText;
     private TextView  currencyText2;
+    private TextView  currencyText3;
     private TextView month;
+    private TextView  balanceText;
+    private TextView  balanceSum;
 
     //Constructor default
     public MonthViewFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View PageTree = inflater.inflate(R.layout.page3, container, false);
+        View PageThree = inflater.inflate(R.layout.page3, container, false);
 
             DateFormat dbDateFormat =  new SimpleDateFormat("yyyy-MM-dd");//for expenses and incomes
 
@@ -46,9 +49,10 @@ public class MonthViewFragment extends Fragment {
                     .allowMainThreadQueries()
                     .build();
 
-            currencyText = PageTree.findViewById(R.id.currencyText);
-            currencyText2 = PageTree.findViewById(R.id.currencyText2);
-            month = PageTree.findViewById(R.id.date);
+            currencyText = PageThree.findViewById(R.id.currencyText);
+            currencyText2 = PageThree.findViewById(R.id.currencyText2);
+            currencyText3 = PageThree.findViewById(R.id.currencyText3);
+            month = PageThree.findViewById(R.id.date);
 
             try
             {
@@ -62,13 +66,25 @@ public class MonthViewFragment extends Fragment {
             double expensesSum = db.expenseDao().getPriceSumForMonth(dbDateStringStart);
             double incomesSum = db.incomeDao().getPriceSumForMonth(dbDateStringStart);
 
-            expenses = PageTree.findViewById(R.id.expenses);
+            expenses = PageThree.findViewById(R.id.expenses);
             expenses.setText(String.valueOf(expensesSum));
 
-            incomes = PageTree.findViewById(R.id.incomes);
+            incomes = PageThree.findViewById(R.id.incomes);
             incomes.setText(String.valueOf(incomesSum));
 
-            final RecyclerView recyclerView = PageTree.findViewById(R.id.recyclerview);
+
+            double balance = incomesSum-expensesSum;
+
+            balanceText= PageThree.findViewById(R.id.balance);
+            balanceSum = PageThree.findViewById(R.id.balanceSum);
+            balanceSum.setText(String.format ("%.2f",expensesSum-incomesSum));
+
+            if(balance>=0)
+                MainActivity.setBalanceColorGreen(balanceSum,currencyText3,balanceText);
+            else
+                MainActivity.setBalanceColorRed(balanceSum,currencyText3,balanceText);
+
+            final RecyclerView recyclerView = PageThree.findViewById(R.id.recyclerview);
             adapter = new CategoryListAdapter(getActivity());
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),4));
@@ -80,7 +96,7 @@ public class MonthViewFragment extends Fragment {
             // The onChanged() method fires when the observed data changes and the activity is
             // in the foreground.
 
-        return PageTree;
+        return PageThree;
     }
 
     public void onResume() {
@@ -98,6 +114,13 @@ public class MonthViewFragment extends Fragment {
             expenses.setText(String.format ("%.2f",mySum));
             double mySumIncome=db.incomeDao().getPriceSumForMonth(reportDateFirst);
             incomes.setText(String.format ("%.2f",mySumIncome));
+
+            double balance = mySumIncome-mySum;
+            balanceSum.setText(String.format ("%.2f",balance));
+            if(balance >= 0)
+                MainActivity.setBalanceColorGreen(balanceSum,currencyText3,balanceText);
+            else
+                MainActivity.setBalanceColorRed(balanceSum,currencyText3,balanceText);
 
         }catch(Exception Ex){}
 
@@ -138,6 +161,7 @@ public class MonthViewFragment extends Fragment {
         String myCurrency = ((MainActivity)getActivity()).getCurrency();
         currencyText.setText(myCurrency);
         currencyText2.setText(myCurrency);
+        currencyText3.setText(myCurrency);
     }
 
     Date dayDateToString(String stringDate)//return first day from week, date format

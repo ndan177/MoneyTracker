@@ -15,7 +15,7 @@ import java.util.List;
 public interface  ExpenseDao {
 
 
-        @Query("SELECT * from expense_table ORDER BY id DESC")
+        @Query("SELECT * from expense_table ORDER BY date")
         List<Expense> getExpenses();
 
         @Query("SELECT * from expense_table ORDER BY date DESC")
