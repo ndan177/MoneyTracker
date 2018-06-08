@@ -50,4 +50,8 @@ public class DateHelper {
     public static String getMonthName(int month) {
         return new DateFormatSymbols().getShortMonths()[month-1];
     }
+   public static String displayDateFormatList(Date date)
+    {
+        return new SimpleDateFormat("dd MMMM yyyy").format(date);
+    }
 }

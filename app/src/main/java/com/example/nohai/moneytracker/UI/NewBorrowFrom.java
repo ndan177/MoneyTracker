@@ -182,8 +182,8 @@ public class NewBorrowFrom extends AppCompatActivity {
                             cursor.close();
                         }
                         TextView phoneEntry = findViewById(R.id.contact);
-                        //phoneEntry.setText(phone);
-                        phoneEntry.setText(id);
+                        phoneEntry.setText(phone);
+                        //phoneEntry.setText(id);
                         if (phone.length() == 0) {
                             Toast.makeText(this, "No phone found for contact.",
                                     Toast.LENGTH_LONG).show();

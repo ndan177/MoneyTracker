@@ -100,9 +100,14 @@
                 android:value=".UI.Debts" />
         </activity>
         <activity
-            android:name=".Backup"
+            android:name=".UI.Backup"
             android:label="@string/title_activity_backup"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".UI.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UI.MainActivity" />
+        </activity>
         <activity
             android:name=".UI.ExpensesChart"
             android:parentActivityName=".UI.MainActivity"
@@ -119,6 +124,8 @@
                 android:value=".UI.MainActivity" />
 
         </activity>
+        <activity android:name=".CreateFileActivity" />
+        <activity android:name=".RetrieveContentsActivity" />
     </application>
 
 </manifest>

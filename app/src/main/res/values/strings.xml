@@ -21,11 +21,14 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
+    <string name="permission_rationale">Contacts permissions are needed for providing email
+        completions.
     </string>
     <string name="server_client_id">318030595605-hk6id8acus9vto2n6lscor8lueut77eo.apps.googleusercontent.com</string>
     <string name="sign_out">Sign Out</string>
     <string name="signed_out">Signed out</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="file_created">Database uploaded to drive</string>
+    <string name="file_create_error">Error, file not created</string>
+
 </resources>

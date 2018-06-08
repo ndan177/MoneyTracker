@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.Utils.DateHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ExpenseListAdapter extends
@@ -58,7 +62,7 @@ public class ExpenseListAdapter extends
         Expense current = mExpenses.get(position);
 
         holder.expenseItemView.setText(String.format ("%.2f",current.price));
-        holder.expenseItemViewDate.setText(String.valueOf((current.date)).substring(0,10));
+        holder.expenseItemViewDate.setText(String.valueOf((DateHelper.displayDateFormatList(current.date))));
         holder.expenseItemViewCategory.setText(db.categoryDao().getCategoryName(current.getCategoryId()));
         if(!current.notes.equals("")) {
             holder.expenseItemViewNotes.setText(String.valueOf(current.notes));
@@ -95,6 +99,7 @@ public class ExpenseListAdapter extends
                 return mExpenses.size();
             else return 0;
         }
+
     }
 
 

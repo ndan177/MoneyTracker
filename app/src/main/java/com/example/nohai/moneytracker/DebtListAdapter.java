@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.UI.Debts;
+import com.example.nohai.moneytracker.Utils.DateHelper;
 import com.example.nohai.moneytracker.dao.DebtDao;
 
 import java.util.List;
@@ -60,6 +61,7 @@ public class DebtListAdapter extends
     class DebtViewHolder extends RecyclerView.ViewHolder {
         private final TextView contactItemView;
         private final TextView dateItemView;
+        private final TextView dateLimitItemView;
         private final TextView debtPriceItemView;
         private final TextView currency;
         private final TextView debtItemViewNotes;
@@ -71,6 +73,7 @@ public class DebtListAdapter extends
             super(itemView);
             contactItemView = itemView.findViewById(R.id.person);
             dateItemView = itemView.findViewById(R.id.date);
+            dateLimitItemView = itemView.findViewById(R.id.dateLimit);
             debtItemViewNotes =  itemView.findViewById(R.id.notes);//notes
             imageButton = itemView.findViewById(R.id.img);//arrow image
             currency = itemView.findViewById(R.id.currency);
@@ -106,8 +109,13 @@ public class DebtListAdapter extends
         holder.debtPriceItemView.setText(String.format ("%.2f",current.price));
        if(current.dateLimit!=null)
        {
-           holder.dateItemView.setText(String.valueOf((current.dateLimit)).substring(0,10));
+           holder.dateLimitItemView.setText(String.valueOf((DateHelper.displayDateFormatList(current.dateLimit)+"(until)")));
        }
+        if(current.date!=null)
+        {
+            holder.dateItemView.setText(String.valueOf((DateHelper.displayDateFormatList(current.date))));
+        }
+
 
         //holder.dateItemView.setText(String.valueOf((current.date)).substring(0,10));
          try {
@@ -116,7 +124,7 @@ public class DebtListAdapter extends
                  holder.imageButton.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         View parent = (View) v.getParent().getParent().getParent();
+                         View parent = (View) v.getParent().getParent();
                          if (parent.findViewById(R.id.notes).getVisibility() == View.GONE)
                              parent.findViewById(R.id.notes).setVisibility(View.VISIBLE);
                          else

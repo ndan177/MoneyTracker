@@ -229,7 +229,7 @@ public class ProfitChart extends AppCompatActivity  implements AdapterView.OnIte
         barChart.setPinchZoom(true);
         //  barChart.setDrawGridBackground(false);
         barChart.getLegend().setEnabled(false);
-        barChart.getAxisLeft().setDrawLabels(false);
+        barChart.getAxisLeft().setDrawLabels(true);
         barChart.getAxisRight().setDrawLabels(false);
         barChart.animateY(1000, Easing.EasingOption.EaseInCubic);
 //        barChart.setFitBars(true);
@@ -244,6 +244,7 @@ public class ProfitChart extends AppCompatActivity  implements AdapterView.OnIte
         yAxis = barChart.getAxisRight();
         yAxis.setDrawGridLines(false);
 
+
         XAxis xAxis =  barChart.getXAxis();
         xAxis.setValueFormatter(new MyAxisValueFormatter(months));
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
@@ -252,7 +253,8 @@ public class ProfitChart extends AppCompatActivity  implements AdapterView.OnIte
         xAxis.setAxisMinimum(0);
         xAxis.setAxisMaximum(barChart.getXChartMax()+1);
     }
-    private void loadSpinnerData() {
+    private void loadSpinnerData()
+    {
 
         List<String> categoriesNames=new ArrayList<>();
         categoriesNames.add("Expenses and Incomes");

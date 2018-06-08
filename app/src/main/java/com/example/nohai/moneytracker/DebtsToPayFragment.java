@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -31,6 +32,7 @@ public class DebtsToPayFragment extends Fragment{
     public   DebtListAdapter adapter;
     private DebtViewModel mDebtViewModel;
     AppDatabase db;
+    ConstraintLayout constraintLayout;
     //Constructor default
     public DebtsToPayFragment(){db= Debts.db;}
 
@@ -41,6 +43,7 @@ public class DebtsToPayFragment extends Fragment{
         adapter = new DebtListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        constraintLayout= PageOne.findViewById(R.id.constraint);
 
 
         // Get a new or existing ViewModel from the ViewModelProvider.
@@ -66,6 +69,8 @@ public class DebtsToPayFragment extends Fragment{
     public void onResume() {
         super.onResume();
         List<Debt> debts= db.debtDao().getDebtsTo2();
+        if(debts.size()==0){constraintLayout.setVisibility(View.INVISIBLE);}
+        else {constraintLayout.setVisibility(View.VISIBLE);}
         adapter.setDebts(debts);
         adapter.notifyDataSetChanged();
 

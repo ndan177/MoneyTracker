@@ -26,9 +26,9 @@ import android.widget.Toast;
 
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
-import com.example.nohai.moneytracker.Backup;
 import com.example.nohai.moneytracker.DayViewFragment;
 import com.example.nohai.moneytracker.ExpenseList;
+import com.example.nohai.moneytracker.Utils.PersonalCubeOutTransformer;
 import com.example.nohai.moneytracker.WeekViewFragment;
 import com.example.nohai.moneytracker.MonthViewFragment;
 import com.example.nohai.moneytracker.YearViewFragment;
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity{
         //We Need Fragment class now
 
         viewPager.setAdapter(Adapter);
-        viewPager.setPageTransformer(true, new CubeOutTransformer());
+        viewPager.setPageTransformer(true, new PersonalCubeOutTransformer());
 
     }
 

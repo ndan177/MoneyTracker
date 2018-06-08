@@ -182,8 +182,8 @@ public class NewBorrowTo extends AppCompatActivity {
                             cursor.close();
                         }
                         TextView phoneEntry = findViewById(R.id.contact);
-                        //phoneEntry.setText(phone);
-                        phoneEntry.setText(id);
+                        phoneEntry.setText(phone);
+                       // phoneEntry.setText(id);
                         if (phone.length() == 0) {
                             Toast.makeText(this, "No phone found for contact.",
                                     Toast.LENGTH_LONG).show();
@@ -230,7 +230,7 @@ public class NewBorrowTo extends AppCompatActivity {
         {
             newDebt.price = Double.parseDouble(myTextPrice);
             if(contactId!= -1) {
-                newDebt.contactId=contactId;
+                newDebt.contactId = contactId;
                 replyIntent.putExtra("price",  newDebt.price);
                 replyIntent.putExtra("contactId",  newDebt.contactId);
                 replyIntent.putExtra("notes",  newDebt.notes);
