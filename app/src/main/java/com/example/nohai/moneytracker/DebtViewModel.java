@@ -16,24 +16,24 @@ public class DebtViewModel extends AndroidViewModel {
         //   the UI when the data actually changes.
         // - Repository is completely separated from the UI through the ViewModel.
         private LiveData<List<Debt>> mAllDebts;
-    private LiveData<List<Debt>> mAllDebtsTo;
-    private LiveData<List<Debt>> mAllDebtsFrom;
+    private LiveData<List<Debt>> mAllDebtsToReceive;
+    private LiveData<List<Debt>> mAllDebtsToPay;
     private LiveData<List<Debt>> mResolvedDebts;
 
         public DebtViewModel (Application application) {
             super(application);
             mDebt = new DebtRepository(application);
             mAllDebts = mDebt.getAllDebts();
-            mAllDebtsTo = mDebt.getAllDebtsTo();
-            mAllDebtsFrom = mDebt.getAllDebtsFrom();
+            mAllDebtsToReceive = mDebt.getAllDebtsToReceive();
+            mAllDebtsToPay = mDebt.getAllDebtsToPay();
             mResolvedDebts= mDebt.getResolvedDebts();
         }
 
         LiveData<List<Debt>> getAllDebts() { return mAllDebts; }
 
-        LiveData<List<Debt>> getAllDebtsTo() { return mAllDebtsTo; }
+        LiveData<List<Debt>> getAllDebtsToReceive() { return mAllDebtsToReceive; }
 
-        LiveData<List<Debt>> getAllDebtsFrom() { return mAllDebtsFrom; }
+        LiveData<List<Debt>> getAllDebtsToPay() { return mAllDebtsToPay; }
 
        LiveData<List<Debt>> getResolvedDebts() { return mResolvedDebts; }
 

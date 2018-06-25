@@ -8,8 +8,11 @@ import android.app.DialogFragment;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
@@ -25,16 +28,20 @@ import android.widget.Toast;
 
 import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.UI.Debts;
+import com.example.nohai.moneytracker.UI.NewBorrowFrom;
+import com.example.nohai.moneytracker.UI.NewBorrowTo;
 import com.example.nohai.moneytracker.Utils.DateHelper;
 import com.example.nohai.moneytracker.dao.DebtDao;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class DebtListAdapter extends
         RecyclerView.Adapter<DebtListAdapter.DebtViewHolder> {
     AppDatabase db;
-    private Context myContext;
-    private static boolean deleteMe = false;
+    private static Context myContext;
+
     public static class FireMissilesDialogFragment extends DialogFragment {
 
         @Override
@@ -44,7 +51,7 @@ public class DebtListAdapter extends
             builder.setMessage("Are you sure?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            deleteMe = true;
+
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -104,18 +111,23 @@ public class DebtListAdapter extends
     @Override
     public void onBindViewHolder(DebtListAdapter.DebtViewHolder holder, int position) {
         final Debt current = mDebts.get(position);
-        holder.contactItemView.setText(getContactName(current.contactId));
+        holder.contactItemView.setText(Debts.getContactName(current.contactId));
 
         holder.debtPriceItemView.setText(String.format ("%.2f",current.price));
        if(current.dateLimit!=null)
        {
+           Date currentDay = java.util.Calendar.getInstance().getTime();
            holder.dateLimitItemView.setText(String.valueOf((DateHelper.displayDateFormatList(current.dateLimit)+"(until)")));
+//           if(TimeUnit.MILLISECONDS.toDays(currentDay.getTime()-current.dateLimit.getTime())>0)
+//           holder.dateLimitItemView.setTextColor(myContext.getColor(R.color.red));
+//          else
+//               holder.dateLimitItemView.setTextColor(myContext.getColor(R.color.colorAccent));
+
        }
         if(current.date!=null)
         {
             holder.dateItemView.setText(String.valueOf((DateHelper.displayDateFormatList(current.date))));
         }
-
 
         //holder.dateItemView.setText(String.valueOf((current.date)).substring(0,10));
          try {
@@ -138,14 +150,24 @@ public class DebtListAdapter extends
 
       //  holder.currency.setText(((Activity) myContext).getIntent().getStringExtra("currency"));
         holder.currency.setText(Debts.currency);
+
         holder.moreItemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+
                     @Override
                     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                         menu.add("edit").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-
-                                //do what u want
+                                if(current.borrowTo) {
+                                    Intent intentBorrowTo = new Intent (myContext, NewBorrowTo.class);
+                                    intentBorrowTo.putExtra( "borrowId",current.getId());
+                                    myContext.startActivity(intentBorrowTo);
+                                }
+                                if(!current.borrowTo) {
+                                    Intent intentBorrowFrom = new Intent (myContext, NewBorrowFrom.class);
+                                    intentBorrowFrom.putExtra( "borrowId",current.getId());
+                                    myContext.startActivity(intentBorrowFrom);
+                                }
                                 return true;
                             }
                         });
@@ -177,6 +199,10 @@ public class DebtListAdapter extends
                         menu.add("delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
+/**Delete**/
+                                db.debtDao().delete(current);
+                                    mDebts.remove(current);
+                                    notifyDataSetChanged();
 
                                 DialogFragment newFragment = new FireMissilesDialogFragment();
                                 newFragment.show(((Activity) myContext).getFragmentManager(), "yesNo");
@@ -208,34 +234,6 @@ public class DebtListAdapter extends
             return mDebts.size();
         else return 0;
     }
-
-    public String getContactName(int contactId) {
-
-        Cursor cursor = null;
-        String contactName = "";
-        try {
-            cursor = myContext.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)},
-                    null);
-
-            int phoneIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-
-            // let's just get the first phone
-            if (cursor.moveToFirst()) {
-                contactName = cursor.getString(phoneIdx);
-            }
-        } catch (Exception e) {
-        }   finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            return contactName;
-        }
-    }
-
-
-
-
 
 
 }

@@ -20,7 +20,7 @@ import com.example.nohai.moneytracker.dao.ExpenseDao;
 import com.example.nohai.moneytracker.dao.IncomeDao;
 
 
-@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class,Debt.class}, version = 17)
+@Database(entities = {Category.class,Expense.class,CategoryIcon.class,Income.class,Debt.class}, version = 18)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -49,14 +49,14 @@ public abstract class AppDatabase extends RoomDatabase {
                 }
             }
         }
-        myContext=context;
+        myContext = context;
         return INSTANCE;
     }
 
 
     /**
-     * Override the onOpen method to populate the database.
-     * For this sample, we clear the database every time it is created .
+      Override the onOpen method to populate the database.
+
      */
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback(){
 
@@ -76,16 +76,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     /**
      * Populate the database in the background.
-     * If you want to start with more categories, just add them.
      */
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
         private final CategoryDao mDao;
         private final CategoryIconDao mIconDao;
-//        Bitmap bmp;
-//        ByteArrayOutputStream stream;
-//        byte[] byteArray;
         CategoryIcon categoryIcon;
 
 
@@ -95,13 +91,6 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         void insertIcon(int drawable)
         {
-//            bmp = BitmapFactory.decodeResource(myContext.getResources(),drawable);
-//            stream = new ByteArrayOutputStream();
-//            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//            byteArray = stream.toByteArray();
-//            bmp.recycle();
-//            categoryIcon = new CategoryIcon(byteArray);
-
             categoryIcon = new CategoryIcon(drawable);
             mIconDao.insert(categoryIcon);
         }
@@ -121,24 +110,23 @@ public abstract class AppDatabase extends RoomDatabase {
             insertIcon(R.drawable.variation_48);
 
 
-            Category category = new Category("Food",1);
+            Category category = new Category(myContext.getResources().getString(R.string.food),1);
             mDao.insert(category);
-            category = new Category("Car",2);
+            category = new Category(myContext.getResources().getString(R.string.car),2);
             mDao.insert(category);
-            category = new Category("Beauty",3);
+            category = new Category(myContext.getResources().getString(R.string.beauty),3);
             mDao.insert(category);
-            category = new Category("Health",4);
+            category = new Category(myContext.getResources().getString(R.string.health),4);
             mDao.insert(category);
-            category = new Category("Clothes",5);
+            category = new Category(myContext.getResources().getString(R.string.clothes),5);
             mDao.insert(category);
-            category = new Category("Transport",6);
+            category = new Category(myContext.getResources().getString(R.string.transport),6);
             mDao.insert(category);
-            category = new Category("Home",7);
+            category = new Category(myContext.getResources().getString(R.string.home),7);
             mDao.insert(category);
-            category = new Category("Other",8);
+            category = new Category(myContext.getResources().getString(R.string.other),8);
             mDao.insert(category);
             return null;
         }
     }
-
 }

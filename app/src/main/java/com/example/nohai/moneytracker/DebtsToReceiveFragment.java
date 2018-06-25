@@ -40,7 +40,7 @@ public class DebtsToReceiveFragment extends Fragment{
         mDebtViewModel = ViewModelProviders.of(this).get(DebtViewModel.class);
 
         //((Debts)getActivity()).loadViewPager();
-        mDebtViewModel.getAllDebtsFrom().observe(this, new Observer<List<Debt>>() {
+        mDebtViewModel.getAllDebtsToReceive().observe(this, new Observer<List<Debt>>() {
 
             @Override
             public void onChanged(@Nullable final List<Debt> debts) {
@@ -59,7 +59,7 @@ public class DebtsToReceiveFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        List<Debt> debts= db.debtDao().getDebtsFrom2();
+        List<Debt> debts= db.debtDao().getDebtsToReceive();
         if(debts.size()==0){constraintLayout.setVisibility(View.INVISIBLE);}
         else {constraintLayout.setVisibility(View.VISIBLE);}
         adapter.setDebts(debts);
@@ -68,7 +68,7 @@ public class DebtsToReceiveFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         Debt debt = new Debt();
-        debt.borrowTo=false;
+        debt.borrowTo = true;
         debt.contactId= data.getIntExtra("contactId",-1);
         debt.price= data.getDoubleExtra("price",-1);
         debt.notes= data.getStringExtra("notes");

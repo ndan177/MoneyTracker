@@ -27,7 +27,6 @@ public class Category {
     @Ignore
     public double expensesCost;
 
-
     public Category( @NonNull String mCategory, @NonNull int mCategoryIcon) {
         this.mCategory = mCategory;
         this.mCategoryIcon = mCategoryIcon;

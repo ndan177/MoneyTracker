@@ -76,7 +76,6 @@ public class NewBorrowTo extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +87,13 @@ public class NewBorrowTo extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
+        //for edit debt
+        if(getIntent().getIntExtra("borrowId",-1)!=-1)
+        {
+            Toast.makeText(this, "EDIT ", Toast.LENGTH_SHORT).show();
+        }
+        else
+            Toast.makeText(this, "New", Toast.LENGTH_SHORT).show();
         dateChooser = findViewById(R.id.date);
 
         dateChooser.setOnClickListener(new View.OnClickListener() {
@@ -248,7 +254,7 @@ public class NewBorrowTo extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Sum can't be null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sum field can't be empty", Toast.LENGTH_SHORT).show();
         }
 
 

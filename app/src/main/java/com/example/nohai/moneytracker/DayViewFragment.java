@@ -253,6 +253,5 @@ public class DayViewFragment extends Fragment {
             ((MainActivity)getActivity()).saveCurrency("EUR");
     }
 
-
 }
-//TODO:SAVE DATE WHEN SELECT FROM CALENDAR
+//TODO:SAVE DATE WHEN SELECT FROM 90o,

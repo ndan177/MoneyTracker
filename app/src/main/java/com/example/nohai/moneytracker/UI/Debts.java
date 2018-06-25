@@ -1,13 +1,19 @@
 package com.example.nohai.moneytracker.UI;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 
+import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -25,6 +31,7 @@ import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.DebtsHistoryFragment;
 import com.example.nohai.moneytracker.DebtsToPayFragment;
 import com.example.nohai.moneytracker.DebtsToReceiveFragment;
+import com.example.nohai.moneytracker.NotificationPublisher;
 import com.example.nohai.moneytracker.R;
 
 import java.util.ArrayList;
@@ -41,6 +48,7 @@ public class Debts extends AppCompatActivity {
     public static String currency;
     MyViewPageAdapter Adapter;
     public static AppDatabase db;
+    private static Context myContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +60,7 @@ public class Debts extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle("Debts");
         actionbar.setDisplayHomeAsUpEnabled(true);
-
+        myContext=this;
         db = Room.databaseBuilder(this, AppDatabase.class,"Database")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
@@ -153,9 +161,9 @@ public class Debts extends AppCompatActivity {
 
     void openBorrowTo() {
         Intent intent = new Intent(this, NewBorrowTo.class);
+        Toast.makeText(this, "Notify", Toast.LENGTH_SHORT).show();
         startActivityForResult(intent, NEW_BORROW_TO_ACTIVITY_REQUEST_CODE);
     }
-
 
 
     // user's contacts
@@ -233,4 +241,28 @@ public class Debts extends AppCompatActivity {
     {
         SetUpViewPager(MyPage);
     }
+    public static String getContactName(int contactId) {
+
+        Cursor cursor = null;
+        String contactName = "";
+        try {
+            cursor = myContext.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)},
+                    null);
+
+            int phoneIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+
+            // let's just get the first phone
+            if (cursor.moveToFirst()) {
+                contactName = cursor.getString(phoneIdx);
+            }
+        } catch (Exception e) {
+        }   finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            return contactName;
+        }
+    }
+
 }

@@ -34,6 +34,10 @@ public class Debt {
 
     public boolean borrowTo;
 
+    public boolean notify;
+
+    public String  notifyHour;
+
     public int getId() {
         return id;
     }

@@ -7,22 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.UI.Debts;
-import com.example.nohai.moneytracker.UI.NewBorrowTo;
-import com.example.nohai.moneytracker.UI.NewExpense;
-import com.example.nohai.moneytracker.Utils.RecyclerItemClickListener;
 
 
 import java.util.Date;
@@ -50,7 +42,7 @@ public class DebtsToPayFragment extends Fragment{
         mDebtViewModel = ViewModelProviders.of(this).get(DebtViewModel.class);
 
         //((Debts)getActivity()).loadViewPager();
-        mDebtViewModel.getAllDebtsTo().observe(this, new Observer<List<Debt>>() {
+        mDebtViewModel.getAllDebtsToPay().observe(this, new Observer<List<Debt>>() {
 
             @Override
             public void onChanged(@Nullable final List<Debt> debts) {
@@ -68,7 +60,7 @@ public class DebtsToPayFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        List<Debt> debts= db.debtDao().getDebtsTo2();
+        List<Debt> debts= db.debtDao().getDebtsToPay();
         if(debts.size()==0){constraintLayout.setVisibility(View.INVISIBLE);}
         else {constraintLayout.setVisibility(View.VISIBLE);}
         adapter.setDebts(debts);
@@ -78,6 +70,7 @@ public class DebtsToPayFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         Debt debt = new Debt();
+        debt.borrowTo = false;
         debt.contactId= data.getIntExtra("contactId",-1);
         debt.price= data.getDoubleExtra("price",-1);
         debt.notes= data.getStringExtra("notes");

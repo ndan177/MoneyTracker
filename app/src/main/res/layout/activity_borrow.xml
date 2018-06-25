@@ -153,6 +153,30 @@
         keyboard:numberKeyTextColor="@color/colorPrimaryDark"
         keyboard:numberKeyTextSize="20dp" />
 
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Notify me"
+        app:layout_constraintBottom_toTopOf="@+id/notesL"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactL" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="time"
+        android:text="12:00"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/notesL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactL" />
 
 
 </android.support.constraint.ConstraintLayout>

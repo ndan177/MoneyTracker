@@ -23,23 +23,26 @@ public interface DebtDao {
     @Delete
     void delete(Debt debt);
 
+    @Query("SELECT * from Debt_table where :id=id")
+    Debt getDebtById(int id);
+
     @Query("SELECT * from Debt_table ORDER BY date DESC")
     LiveData<List<Debt>> getChronologicalDebts();
 
     @Query("SELECT * from Debt_table where borrowTo = 1 and resolved=0 ORDER BY date DESC")
-    LiveData<List<Debt>> getDebtsTo();
+    LiveData<List<Debt>> getDebtsToReceiveLive();
 
     @Query("SELECT * from Debt_table where borrowTo = 0 and resolved=0 ORDER BY date DESC")
-    LiveData<List<Debt>> getDebtsFrom();
+    LiveData<List<Debt>> getDebtsToPayLive();
 
     @Query("SELECT * from Debt_table where resolved=1 ORDER BY date DESC")
     LiveData<List<Debt>> getResolvedDebts();
 
     @Query("SELECT * from Debt_table where borrowTo = 1 and resolved=0 ORDER BY date DESC")
-    List<Debt> getDebtsTo2();
+    List<Debt> getDebtsToReceive();
 
     @Query("SELECT * from Debt_table where borrowTo = 0 and resolved=0 ORDER BY date DESC")
-    List<Debt> getDebtsFrom2();
+    List<Debt> getDebtsToPay();
 
     @Query("SELECT * from Debt_table where resolved=1 ORDER BY date DESC")
      List<Debt> getResolvedDebts2();

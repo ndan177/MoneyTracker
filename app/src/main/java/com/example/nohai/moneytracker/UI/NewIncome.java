@@ -174,7 +174,7 @@ public class NewIncome extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Sum can't be null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sum field can't be empty", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -54,4 +54,8 @@ public class DateHelper {
     {
         return new SimpleDateFormat("dd MMMM yyyy").format(date);
     }
+    public static String dateChooserDateFormatList(Date date)
+    {
+        return new SimpleDateFormat("dd-MMM-yyyy").format(date);
+    }
 }

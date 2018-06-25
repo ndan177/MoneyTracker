@@ -214,7 +214,7 @@ public class NewExpense extends AppCompatActivity  implements AdapterView.OnItem
         }
         else
         {
-            Toast.makeText(this, "Sum can't be null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sum field can't be empty", Toast.LENGTH_SHORT).show();
         }
     }
     private void loadSpinnerData() {

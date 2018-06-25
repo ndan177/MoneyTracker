@@ -5,7 +5,6 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.nohai.moneytracker.Database.Debt;
-import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.dao.DebtDao;
 
 import java.util.List;
@@ -16,21 +15,17 @@ public class DebtRepository {
 
     private DebtDao mDebtDao;
     private LiveData<List<Debt>> mAllDebts;
-    private LiveData<List<Debt>> mAllDebtsTo;
-    private LiveData<List<Debt>> mAllDebtsFrom;
+    private LiveData<List<Debt>> mAllDebtsToReceive;
+    private LiveData<List<Debt>> mAllDebtsToPay;
     private LiveData<List<Debt>> mResolvedDebts;
 
-    // Note that in order to unit test the WordRepository, you have to remove the Application
-    // dependency. This adds complexity and much more code, and this sample is not about testing.
-    // See the BasicSample in the android-architecture-components repository at
-    // https://github.com/googlesamples
 
     DebtRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         mDebtDao = db.debtDao();
         mAllDebts = mDebtDao.getChronologicalDebts();
-        mAllDebtsTo = mDebtDao.getDebtsTo();
-        mAllDebtsFrom= mDebtDao.getDebtsFrom();
+        mAllDebtsToReceive = mDebtDao.getDebtsToReceiveLive();
+        mAllDebtsToPay = mDebtDao.getDebtsToPayLive();
         mResolvedDebts = mDebtDao.getResolvedDebts();
     }
 
@@ -41,12 +36,12 @@ public class DebtRepository {
         return mAllDebts;
     }
 
-    LiveData<List<Debt>> getAllDebtsTo() {
-        return mAllDebtsTo;
+    LiveData<List<Debt>> getAllDebtsToReceive() {
+        return mAllDebtsToReceive;
     }
 
-    LiveData<List<Debt>> getAllDebtsFrom() {
-        return mAllDebtsFrom;
+    LiveData<List<Debt>> getAllDebtsToPay() {
+        return mAllDebtsToPay;
     }
 
     LiveData<List<Debt>> getResolvedDebts() {
