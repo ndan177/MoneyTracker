@@ -71,6 +71,14 @@
                 android:value=".UI.MainActivity" />
         </activity>
         <activity
+            android:name=".IncomeList"
+            android:parentActivityName=".UI.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UI.MainActivity" />
+        </activity>
+        <activity
             android:name=".UI.IncomingList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -1,13 +1,18 @@
 package com.example.nohai.moneytracker.UI;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 
 import android.support.v4.app.DialogFragment;
@@ -16,23 +21,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.provider.ContactsContract.Contacts;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.davidmiguel.numberkeyboard.NumberKeyboard;
 import com.davidmiguel.numberkeyboard.NumberKeyboardListener;
 import com.example.nohai.moneytracker.AppDatabase;
 import com.example.nohai.moneytracker.Database.Debt;
+import com.example.nohai.moneytracker.NotificationPublisher;
 import com.example.nohai.moneytracker.R;
+import com.example.nohai.moneytracker.Utils.DateHelper;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
+import android.app.TimePickerDialog;
 
 public class NewBorrowTo extends AppCompatActivity {
     private static final int CONTACT_PICKER_RESULT = 1001;
@@ -44,8 +55,31 @@ public class NewBorrowTo extends AppCompatActivity {
     Debt newDebt= new Debt();
     static TextView dateChooser;
     static EditText myNotes;
+    static TextView timeChooser;
+    static CheckBox checkBox;
+    static TextView phoneEntry;
+
     static final int MAX_INPUT = 9;
     String nr;
+
+    public static class SelectTimeFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+        public void onTimeSet(TimePicker view, int hour, int minute){
+            populateSetTime(hour, minute);
+        }
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            int hourOfDay = 12;
+            int minute = 0;
+            return new TimePickerDialog(getActivity(), this, hourOfDay,minute,true);
+        }
+        public void populateSetTime(int hour, int minute) {
+            if(minute<10)
+                timeChooser.setText(hour+":0"+minute);
+            else
+                timeChooser.setText(hour+":"+minute);
+        }
+    }
 
     public static String getMonthName(int month) {
         return new DateFormatSymbols().getShortMonths()[month-1];
@@ -87,21 +121,33 @@ public class NewBorrowTo extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        //for edit debt
-        if(getIntent().getIntExtra("borrowId",-1)!=-1)
-        {
-            Toast.makeText(this, "EDIT ", Toast.LENGTH_SHORT).show();
-        }
-        else
-            Toast.makeText(this, "New", Toast.LENGTH_SHORT).show();
+        phoneEntry = findViewById(R.id.contact);
+        checkBox = findViewById(R.id.checkBox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    timeChooser.setVisibility(View.VISIBLE);
+                else
+                    timeChooser.setVisibility(View.GONE);
+            }
+        });
+
         dateChooser = findViewById(R.id.date);
+        timeChooser = findViewById(R.id.time);
 
         dateChooser.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
                 DialogFragment newFragment = new SelectDateFragment();
                 newFragment.show(getSupportFragmentManager(),"DatePicker");
+            }
+        });
+        timeChooser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                DialogFragment newFragment = new SelectTimeFragment();
+                newFragment.show(getSupportFragmentManager(),"TimePicker");
             }
         });
 
@@ -143,6 +189,7 @@ public class NewBorrowTo extends AppCompatActivity {
                 }
             }
         });
+        editOrNew();
     }
 
     public void doLaunchContactPicker(View view) {
@@ -164,7 +211,7 @@ public class NewBorrowTo extends AppCompatActivity {
                                 + result.toString());
 
                         // get the contact id from the Uri
-                         id = result.getLastPathSegment();
+                        id = result.getLastPathSegment();
                         contactId= Integer.parseInt(id);
 
                         // query for everything phone
@@ -187,9 +234,9 @@ public class NewBorrowTo extends AppCompatActivity {
                         if (cursor != null) {
                             cursor.close();
                         }
-                        TextView phoneEntry = findViewById(R.id.contact);
+
                         phoneEntry.setText(phone);
-                       // phoneEntry.setText(id);
+                        //phoneEntry.setText(id);
                         if (phone.length() == 0) {
                             Toast.makeText(this, "No phone found for contact.",
                                     Toast.LENGTH_LONG).show();
@@ -205,9 +252,6 @@ public class NewBorrowTo extends AppCompatActivity {
         }
     }
 
-
-
-
     void setToolbar()
     {
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
@@ -220,44 +264,125 @@ public class NewBorrowTo extends AppCompatActivity {
     {
         String myTextPrice = myNumber.getText().toString();
         newDebt.notes  = myNotes.getText().toString();
+        newDebt.notify = checkBox.isChecked();
+        newDebt.notifyHour = timeChooser.getText().toString();
         Intent replyIntent = new Intent();
+        Date parsedDate ;
+        Date parsedDateLimit=null ;
         try
         {
             Date currentDay = Calendar.getInstance().getTime();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
             SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
-            Date parsed = format.parse(simpleDateFormat.format(currentDay.getTime()).toString());
-            newDebt.setDate(parsed);
-            Date parsed2 = format.parse(dateChooser.getText().toString());
-            newDebt.setDateLimit(parsed2);
+            parsedDate = format.parse(simpleDateFormat.format(currentDay.getTime()).toString());
+            newDebt.setDate(parsedDate);
+            parsedDateLimit = format.parse(dateChooser.getText().toString());
+            newDebt.setDateLimit(parsedDateLimit);//TODO: get this date and add hour
+
         } catch (Exception Ex) {}
 
         if(!myTextPrice.equals(""))
         {
             newDebt.price = Double.parseDouble(myTextPrice);
             if(contactId!= -1) {
-                newDebt.contactId = contactId;
+                if(checkBox.isChecked()&&dateChooser.getText().toString().isEmpty())
+                {
+                    Toast.makeText(this, "Select a date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                newDebt.contactId=contactId;
                 replyIntent.putExtra("price",  newDebt.price);
                 replyIntent.putExtra("contactId",  newDebt.contactId);
                 replyIntent.putExtra("notes",  newDebt.notes);
                 replyIntent.putExtra("date",  newDebt.date);
                 replyIntent.putExtra("dateLimit",  newDebt.dateLimit);
-                setResult(RESULT_OK, replyIntent);
+                if(newDebt.getId()==0)
+                    setResult(RESULT_OK, replyIntent);
+                else
+                    db.debtDao().update(newDebt);
+                if(checkBox.isChecked())
+                {
+                    //get hour and minutes from timeChooser
+                    String[] time = timeChooser.getText().toString().split ( ":" );
+                    int hour = Integer.parseInt ( time[0].trim() );
+                    int min = Integer.parseInt ( time[1].trim() );
+                    long delay = parsedDateLimit.getTime();
+
+                    //we must parse time from timeChooser and add it here
+                    delay+= TimeUnit.HOURS.toMillis(hour);
+                    delay+= TimeUnit.MINUTES.toMillis(min);
+
+                    //get milliseconds from now on to start the notification
+                    delay-=System.currentTimeMillis();
+                    scheduleNotification(getNotification("Borrow from: "+Debts.getContactName( newDebt.contactId)), (int)(delay));
+                }
 
                 finish();
+                //RESULT OK
             }
             else{
                 Toast.makeText(this, "Please select a contact", Toast.LENGTH_SHORT).show();
                 setResult(RESULT_CANCELED, replyIntent);
             }
-
         }
         else
         {
             Toast.makeText(this, "Sum field can't be empty", Toast.LENGTH_SHORT).show();
         }
+    }
 
+    private void scheduleNotification(Notification notification, int delay) {
 
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+    private Notification getNotification(String content) {
+        Intent intent = new Intent(this, Debts.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle("Scheduled Notification");
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.ic_attach_money_black_24dp);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
+        return builder.build();
+    }
+
+    void editOrNew()
+    {
+        //for edit debt
+        int intentDebtId = getIntent().getIntExtra("borrowId",-1) ;
+        if(intentDebtId != -1)
+        {
+            newDebt = db.debtDao().getDebtById(intentDebtId);
+            editBorrow(newDebt);
+            Toast.makeText(this, "EDIT", Toast.LENGTH_SHORT).show();
+        }
+        else
+            Toast.makeText(this, "New", Toast.LENGTH_SHORT).show();
+
+    }
+    void editBorrow(Debt debt)
+    {
+        myNumber.setText(String.valueOf(debt.price));
+        myNotes.setText(debt.notes);
+        if(debt.dateLimit!=null) {
+            String dateString = DateHelper.dateChooserDateFormatList(debt.dateLimit).toString();
+            dateChooser.setText(dateString);
+        }
+        checkBox.setChecked(debt.notify);
+        if(debt.notify) timeChooser.setText(debt.notifyHour);
+        contactId = debt.contactId;
+        phoneEntry.setText( Debts.getContactName(debt.contactId));
     }
 
 }

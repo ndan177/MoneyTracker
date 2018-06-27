@@ -16,48 +16,44 @@ import java.util.List;
 public class ExpenseRepository {
 
 
-        private ExpenseDao mExpenseDao;
-         private LiveData<List<Expense>> mAllExpenses;
+    private ExpenseDao mExpenseDao;
+    private LiveData<List<Expense>> mAllExpenses;
 
-        // Note that in order to unit test the WordRepository, you have to remove the Application
-        // dependency. This adds complexity and much more code, and this sample is not about testing.
-        // See the BasicSample in the android-architecture-components repository at
-        // https://github.com/googlesamples
 
-        ExpenseRepository(Application application) {
-            AppDatabase db = AppDatabase.getDatabase(application);
-            mExpenseDao = db.expenseDao();
-            mAllExpenses = mExpenseDao.getChronologicalExpenses();
-        }
+    ExpenseRepository(Application application) {
+        AppDatabase db = AppDatabase.getDatabase(application);
+        mExpenseDao = db.expenseDao();
+        mAllExpenses = mExpenseDao.getChronologicalExpenses();
+    }
 
-        // Room executes all queries on a separate thread.
-        // Observed LiveData will notify the observer when the data has changed.
+    // Room executes all queries on a separate thread.
+    // Observed LiveData will notify the observer when the data has changed.
 
     LiveData<List<Expense>> getAllExpenses() {
         return mAllExpenses;
     }
 
-        double getSum(String myDate){return mExpenseDao.getPriceSum(myDate); }
+    double getSum(String myDate){return mExpenseDao.getPriceSum(myDate); }
 
-        // You must call this on a non-UI thread or your app will crash.
-        // Like this, Room ensures that you're not doing any long running operations on the main
-        // thread, blocking the UI.
-        public void insert (Expense expense) {
-            new insertAsyncTask(mExpenseDao).execute(expense);
+    // You must call this on a non-UI thread or your app will crash.
+    // Like this, Room ensures that you're not doing any long running operations on the main
+    // thread, blocking the UI.
+    public void insert (Expense expense) {
+        new insertAsyncTask(mExpenseDao).execute(expense);
+    }
+
+    private static class insertAsyncTask extends AsyncTask<Expense, Void, Void> {
+
+        private ExpenseDao mAsyncTaskDao;
+
+        insertAsyncTask(ExpenseDao dao) {
+            mAsyncTaskDao = dao;
         }
 
-        private static class insertAsyncTask extends AsyncTask<Expense, Void, Void> {
-
-            private ExpenseDao mAsyncTaskDao;
-
-            insertAsyncTask(ExpenseDao dao) {
-                mAsyncTaskDao = dao;
-            }
-
-            @Override
-            protected Void doInBackground(final Expense... params) {
-                mAsyncTaskDao.insert(params[0]);
-                return null;
-            }
+        @Override
+        protected Void doInBackground(final Expense... params) {
+            mAsyncTaskDao.insert(params[0]);
+            return null;
         }
     }
+}

@@ -2,11 +2,14 @@ package com.example.nohai.moneytracker.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 
 import com.example.nohai.moneytracker.Database.Category;
+import com.example.nohai.moneytracker.Database.Debt;
 import com.example.nohai.moneytracker.Database.Expense;
 
 import java.util.List;
@@ -14,12 +17,35 @@ import java.util.List;
 @Dao
 public interface  ExpenseDao {
 
+        @Update
+        void update(Expense expense);
+
+        @Delete
+        void delete(Expense expense);
+
 
         @Query("SELECT * from expense_table ORDER BY date")
         List<Expense> getExpenses();
 
         @Query("SELECT * from expense_table ORDER BY date DESC")
         LiveData<List<Expense>> getChronologicalExpenses();
+
+        @Query("SELECT * from expense_table where  Date(date)=Date(:theDate) ORDER BY date DESC")
+        List<Expense> getDayExpenses(String theDate);
+
+        @Query("SELECT *  FROM expense_table " +
+                "where  Date(date) between Date(:startDate) and Date(:endDate)  ORDER BY date DESC")
+        List<Expense> getWeekExpenses(String startDate,String endDate);
+
+        @Query("SELECT * from expense_table " +
+                "where strftime('%m',Date(date)) = strftime('%m',Date(:theDate)) and "+
+                "strftime('%Y',Date(date)) = strftime('%Y',Date(:theDate)) ORDER BY date DESC")
+        List<Expense> getMonthExpenses(String theDate);
+
+        @Query("SELECT * from expense_table " +
+                "where strftime('%Y',Date(date)) = strftime('%Y',Date(:theDate)) ORDER BY date DESC")
+        List<Expense> getYearExpenses(String theDate);
+
 
         @Insert
         void insert(Expense expense);

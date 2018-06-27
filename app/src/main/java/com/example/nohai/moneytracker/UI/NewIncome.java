@@ -33,6 +33,7 @@ public class NewIncome extends AppCompatActivity {
     NumberKeyboard numberKeyboard;
     TextView myNumber;
     String nr;
+    EditText myNotes;
     Income newIncome= new Income();
     AppDatabase db;
     static TextView dateChooser;
@@ -87,6 +88,7 @@ public class NewIncome extends AppCompatActivity {
 
         dateChooser=findViewById(R.id.date);
         dateChooser.setText(simpleDateFormat.format(currentDay.getTime()));//set current day
+        myNotes = findViewById(R.id.notes);
 
         //listener for keyboard
         numberKeyboard=findViewById(R.id.numberKeyboard);
@@ -157,10 +159,10 @@ public class NewIncome extends AppCompatActivity {
     {
         String myTextPrice = myNumber.getText().toString();
 
-
         if(!myTextPrice.equals(""))
         {
-            newIncome.price = parseFloat(myTextPrice);
+            newIncome.price = Double.parseDouble(myTextPrice);
+            newIncome.notes  = myNotes.getText().toString();
             try
             {
                 SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
@@ -169,9 +171,9 @@ public class NewIncome extends AppCompatActivity {
             } catch (Exception Ex) {}
 
                 db.incomeDao().insert(newIncome);
-                Toast.makeText(this, "Income added!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Expense added!", Toast.LENGTH_SHORT).show();
                 finish();
-        }
+                   }
         else
         {
             Toast.makeText(this, "Sum field can't be empty", Toast.LENGTH_SHORT).show();

@@ -383,8 +383,6 @@ public class NewBorrowFrom extends AppCompatActivity {
          if(debt.notify) timeChooser.setText(debt.notifyHour);
         contactId = debt.contactId;
         phoneEntry.setText( Debts.getContactName(debt.contactId));
-
-        //TODO: assign in current existing debt
     }
 
 }

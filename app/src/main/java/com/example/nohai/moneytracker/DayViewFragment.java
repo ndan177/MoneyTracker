@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.UI.MainActivity;
@@ -46,6 +47,8 @@ public class DayViewFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView  balanceText;
     private TextView  balanceSum;
+    private ImageView expenseList;
+    private ImageView incomeList;
 
 
     public static class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -179,6 +182,21 @@ public class DayViewFragment extends Fragment {
         // Add an observer on the LiveData returned by getAllCategories.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
+        expenseList= PageOne.findViewById(R.id.expenseList);
+        expenseList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                openExpenseList();
+            }
+        });
+
+        incomeList= PageOne.findViewById(R.id.incomeList);
+        incomeList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                openIncomeList();
+            }
+        });
           return PageOne;
     }
 
@@ -251,6 +269,22 @@ public class DayViewFragment extends Fragment {
         currencyText3.setText(myCurrency);
         if(myCurrency.equals(""))//saveCurrency("EUR");
             ((MainActivity)getActivity()).saveCurrency("EUR");
+    }
+    void openExpenseList()
+    {
+        Intent expenseListIntent = new Intent(getActivity(), ExpenseList.class);
+        expenseListIntent.putExtra("type",1);
+        expenseListIntent.putExtra("currency",  ((MainActivity)getActivity()).getCurrency());
+        expenseListIntent.putExtra("day",dateChooser.getText().toString());
+        startActivity(expenseListIntent);
+    }
+    void openIncomeList()
+    {
+        Intent incomeListIntent = new Intent(getActivity(), IncomeList.class);
+        incomeListIntent.putExtra("type",1);
+        incomeListIntent.putExtra("currency",  ((MainActivity)getActivity()).getCurrency());
+        incomeListIntent.putExtra("day",dateChooser.getText().toString());
+        startActivity(incomeListIntent);
     }
 
 }

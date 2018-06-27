@@ -11,7 +11,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.nohai.moneytracker.Database.Category;
-import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.Database.Income;
+import com.example.nohai.moneytracker.Database.Income;
 import com.example.nohai.moneytracker.UI.MainActivity;
 import com.example.nohai.moneytracker.Utils.DateHelper;
 
@@ -21,10 +22,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class ExpenseList extends AppCompatActivity {
+public class IncomeList extends AppCompatActivity {
 
-    private ExpenseViewModel mExpenseViewModel;
-    public  ExpenseListAdapter adapter;
+    private IncomeViewModel mIncomeViewModel;
+    public  IncomeListAdapter adapter;
     private RecyclerView recyclerView;
     private AppDatabase db;
     private int type;
@@ -37,12 +38,12 @@ public class ExpenseList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expense_list);
+        setContentView(R.layout.activity_income_list);
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle("Expenses");
+        actionbar.setTitle("Incomes");
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         db = Room.databaseBuilder(this, AppDatabase.class,"Database")
@@ -58,7 +59,7 @@ public class ExpenseList extends AppCompatActivity {
         weekEnd = getIntent().getStringExtra("weekEnd");
 
         recyclerView = findViewById(R.id.recyclerview);
-        adapter = new ExpenseListAdapter(this);
+        adapter = new IncomeListAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -69,6 +70,7 @@ public class ExpenseList extends AppCompatActivity {
             weekStart = dbDateFormat.format(DateHelper.firstWeekDay(day));
             weekEnd = dbDateFormat.format(DateHelper.lastWeekDay(day));
         }
+
     }
 
     @Override
@@ -78,12 +80,12 @@ public class ExpenseList extends AppCompatActivity {
             {
                 //all
                 case 0:
-                    mExpenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-                    mExpenseViewModel.getAllExpenses().observe(this,new Observer<List<Expense>>() {
+                    mIncomeViewModel = ViewModelProviders.of(this).get(IncomeViewModel.class);
+                    mIncomeViewModel.getAllIncomes().observe(this,new Observer<List<Income>>() {
                         @Override
-                        public void onChanged(@Nullable final List<Expense> expenses) {
+                        public void onChanged(@Nullable final List<Income> incomes) {
 
-                            adapter.setExpenses(expenses);
+                            adapter.setIncomes(incomes);
                         }
                     });
                     break;
@@ -94,12 +96,12 @@ public class ExpenseList extends AppCompatActivity {
                     Date parsed = chooserDateFormat.parse(day);
                     day = dbDateFormat.format(parsed);
 
-                    mExpenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-                    mExpenseViewModel.getAllExpenses().observe(this,new Observer<List<Expense>>() {
+                    mIncomeViewModel = ViewModelProviders.of(this).get(IncomeViewModel.class);
+                    mIncomeViewModel.getAllIncomes().observe(this,new Observer<List<Income>>() {
                         @Override
-                        public void onChanged(@Nullable final List<Expense> expenses) {
+                        public void onChanged(@Nullable final List<Income> income) {
 
-                            adapter.setExpenses(db.expenseDao().getDayExpenses(day));
+                            adapter.setIncomes(db.incomeDao().getDayIncomes(day));
                         }
                     });
                     break;
@@ -107,12 +109,12 @@ public class ExpenseList extends AppCompatActivity {
                 //week
                 case 2:
 
-                    mExpenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-                    mExpenseViewModel.getAllExpenses().observe(this,new Observer<List<Expense>>() {
+                    mIncomeViewModel = ViewModelProviders.of(this).get(IncomeViewModel.class);
+                    mIncomeViewModel.getAllIncomes().observe(this,new Observer<List<Income>>() {
                         @Override
-                        public void onChanged(@Nullable final List<Expense> expenses) {
+                        public void onChanged(@Nullable final List<Income> incomes) {
 
-                            adapter.setExpenses(db.expenseDao().getWeekExpenses(weekStart,weekEnd));
+                            adapter.setIncomes(db.incomeDao().getWeekIncomes(weekStart,weekEnd));
                         }
                     });
                     break;
@@ -122,12 +124,12 @@ public class ExpenseList extends AppCompatActivity {
                     Date parsedDate = chooserDateFormat.parse(day);
                     day = dbDateFormat.format(parsedDate);
 
-                    mExpenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-                    mExpenseViewModel.getAllExpenses().observe(this,new Observer<List<Expense>>() {
+                    mIncomeViewModel = ViewModelProviders.of(this).get(IncomeViewModel.class);
+                    mIncomeViewModel.getAllIncomes().observe(this,new Observer<List<Income>>() {
                         @Override
-                        public void onChanged(@Nullable final List<Expense> expenses) {
+                        public void onChanged(@Nullable final List<Income> Incomes) {
 
-                            adapter.setExpenses(db.expenseDao().getMonthExpenses(day));
+                            adapter.setIncomes(db.incomeDao().getMonthIncomes(day));
                         }
                     });
                     break;
@@ -137,18 +139,18 @@ public class ExpenseList extends AppCompatActivity {
                     Date parsedDateForYear = chooserDateFormat.parse(day);
                     day = dbDateFormat.format(parsedDateForYear);
 
-                    mExpenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-                    mExpenseViewModel.getAllExpenses().observe(this,new Observer<List<Expense>>() {
+                    mIncomeViewModel = ViewModelProviders.of(this).get(IncomeViewModel.class);
+                    mIncomeViewModel.getAllIncomes().observe(this,new Observer<List<Income>>() {
                         @Override
-                        public void onChanged(@Nullable final List<Expense> expenses) {
+                        public void onChanged(@Nullable final List<Income> incomes) {
 
-                            adapter.setExpenses(db.expenseDao().getYearExpenses(day));
+                            adapter.setIncomes(db.incomeDao().getYearIncomes(day));
                         }
                     });
                     break;
             }
 
-    }catch (Exception Ex ){}
+        }catch (Exception Ex ){}
 
         super.onResume();
     }

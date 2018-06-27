@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.example.nohai.moneytracker.DayViewFragment;
 import com.example.nohai.moneytracker.ExpenseList;
+import com.example.nohai.moneytracker.IncomeList;
 import com.example.nohai.moneytracker.Utils.PersonalCubeOutTransformer;
 import com.example.nohai.moneytracker.WeekViewFragment;
 import com.example.nohai.moneytracker.MonthViewFragment;
@@ -110,6 +111,13 @@ public class MainActivity extends AppCompatActivity{
                                 intent4.putExtra("currency",getCurrency());
                                 startActivity(intent4);
                                 break;
+
+                            case R.id.incomes:
+                                Intent intent5 = new Intent(getApplicationContext(), IncomeList.class);
+                                intent5.putExtra("currency",getCurrency());
+                                startActivity(intent5);
+                                break;
+
 
                             case R.id.debts:
                                 Intent intent7 = new Intent(getApplicationContext(), Debts.class);

@@ -161,7 +161,6 @@ public class Debts extends AppCompatActivity {
 
     void openBorrowTo() {
         Intent intent = new Intent(this, NewBorrowTo.class);
-        Toast.makeText(this, "Notify", Toast.LENGTH_SHORT).show();
         startActivityForResult(intent, NEW_BORROW_TO_ACTIVITY_REQUEST_CODE);
     }
 

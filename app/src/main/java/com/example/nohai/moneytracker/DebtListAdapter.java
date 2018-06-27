@@ -116,20 +116,13 @@ public class DebtListAdapter extends
         holder.debtPriceItemView.setText(String.format ("%.2f",current.price));
        if(current.dateLimit!=null)
        {
-           Date currentDay = java.util.Calendar.getInstance().getTime();
            holder.dateLimitItemView.setText(String.valueOf((DateHelper.displayDateFormatList(current.dateLimit)+"(until)")));
-//           if(TimeUnit.MILLISECONDS.toDays(currentDay.getTime()-current.dateLimit.getTime())>0)
-//           holder.dateLimitItemView.setTextColor(myContext.getColor(R.color.red));
-//          else
-//               holder.dateLimitItemView.setTextColor(myContext.getColor(R.color.colorAccent));
-
        }
         if(current.date!=null)
         {
             holder.dateItemView.setText(String.valueOf((DateHelper.displayDateFormatList(current.date))));
         }
 
-        //holder.dateItemView.setText(String.valueOf((current.date)).substring(0,10));
          try {
              if (!current.notes.equals("")) {
                  holder.debtItemViewNotes.setText(String.valueOf(current.notes));
@@ -148,7 +141,6 @@ public class DebtListAdapter extends
                  holder.imageButton.setVisibility(View.INVISIBLE);
          }catch (Exception ex){ holder.imageButton.setVisibility(View.INVISIBLE);}
 
-      //  holder.currency.setText(((Activity) myContext).getIntent().getStringExtra("currency"));
         holder.currency.setText(Debts.currency);
 
         holder.moreItemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {

@@ -3,6 +3,7 @@ package com.example.nohai.moneytracker;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.nohai.moneytracker.Database.Category;
 import com.example.nohai.moneytracker.UI.MainActivity;
@@ -34,6 +36,8 @@ public class YearViewFragment extends Fragment {
     private TextView year;
     private TextView  balanceText;
     private TextView  balanceSum;
+    private ImageView expenseList;
+    private ImageView incomeList;
 
     //Constructor default
     public YearViewFragment(){}
@@ -95,6 +99,22 @@ public class YearViewFragment extends Fragment {
         // Add an observer on the LiveData returned by getAllCategories.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
+        expenseList= PageFour.findViewById(R.id.expenseList);
+
+        expenseList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                openExpenseList();
+            }
+        });
+
+        incomeList= PageFour.findViewById(R.id.incomeList);
+        incomeList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                openIncomeList();
+            }
+        });
 
         return PageFour;
     }
@@ -184,4 +204,23 @@ public class YearViewFragment extends Fragment {
     {
         return new SimpleDateFormat("dd-MMM-yyyy").format(date);
     }
+
+    void openExpenseList()
+    {
+        Intent expenseListIntent = new Intent(getActivity(), ExpenseList.class);
+        expenseListIntent.putExtra("type",4);
+        expenseListIntent.putExtra("currency",  ((MainActivity)getActivity()).getCurrency());
+        expenseListIntent.putExtra("day",dateChooser);
+        startActivity(expenseListIntent);
+    }
+
+    void openIncomeList()
+    {
+        Intent incomeListIntent = new Intent(getActivity(), IncomeList.class);
+        incomeListIntent.putExtra("type",4);
+        incomeListIntent.putExtra("currency",  ((MainActivity)getActivity()).getCurrency());
+        incomeListIntent.putExtra("day",dateChooser);
+        startActivity(incomeListIntent);
+    }
+
 }

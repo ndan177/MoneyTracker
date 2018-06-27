@@ -1,15 +1,21 @@
 package com.example.nohai.moneytracker;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.example.nohai.moneytracker.Database.Expense;
+import com.example.nohai.moneytracker.UI.NewBorrowFrom;
+import com.example.nohai.moneytracker.UI.NewBorrowTo;
 import com.example.nohai.moneytracker.Utils.DateHelper;
 
 import java.text.SimpleDateFormat;
@@ -28,6 +34,7 @@ public class ExpenseListAdapter extends
             private final TextView currency;
             private final TextView expenseItemViewNotes;
             private final ImageButton imageButton;
+            private final ImageButton moreItemView;
 
             private ExpenseViewHolder(View itemView) {
                 super(itemView);
@@ -37,6 +44,7 @@ public class ExpenseListAdapter extends
                   expenseItemViewNotes =  itemView.findViewById(R.id.notes);//notes
                   imageButton = itemView.findViewById(R.id.img);//arrow image
                   currency= itemView.findViewById(R.id.currency);//currency
+                moreItemView = itemView.findViewById(R.id.more);
             }
         }
 
@@ -84,6 +92,34 @@ public class ExpenseListAdapter extends
             holder.imageButton.setVisibility(View.INVISIBLE);
 
         holder.currency.setText(((Activity) myContext).getIntent().getStringExtra("currency"));
+
+        holder.moreItemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add("delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+/**Delete**/
+                        db.expenseDao().delete(current);
+                        mExpenses.remove(current);
+                        notifyDataSetChanged();
+
+                        DialogFragment newFragment = new DebtListAdapter.FireMissilesDialogFragment();
+                        newFragment.show(((Activity) myContext).getFragmentManager(), "yesNo");
+//                                if (deleteMe==true) {
+//
+//                                    db.debtDao().delete(current);
+//                                    mDebts.remove(current);
+//                                    notifyDataSetChanged();
+//                                }
+                        //TODO:DELETE
+                        return true;
+                    }
+                });
+            }
+        });
+
     }
 
         void setExpenses(List<Expense> expenses){
