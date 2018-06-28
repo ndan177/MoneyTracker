@@ -315,7 +315,7 @@ public class NewBorrowTo extends AppCompatActivity {
 
                     //get milliseconds from now on to start the notification
                     delay-=System.currentTimeMillis();
-                    scheduleNotification(getNotification("Borrow from: "+Debts.getContactName( newDebt.contactId)), (int)(delay));
+                    scheduleNotification(getNotification("Borrow to: "+Debts.getContactName( newDebt.contactId)), (int)(delay));
                 }
 
                 finish();
@@ -366,10 +366,9 @@ public class NewBorrowTo extends AppCompatActivity {
         {
             newDebt = db.debtDao().getDebtById(intentDebtId);
             editBorrow(newDebt);
-            Toast.makeText(this, "EDIT", Toast.LENGTH_SHORT).show();
+
         }
-        else
-            Toast.makeText(this, "New", Toast.LENGTH_SHORT).show();
+
 
     }
     void editBorrow(Debt debt)

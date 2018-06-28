@@ -54,7 +54,7 @@ public class IncomeListAdapter extends
 
     @Override
     public IncomeListAdapter.IncomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.recyclerview_item_list, parent, false);
+        View itemView = mInflater.inflate(R.layout.recyclerview_item_list_income, parent, false);
         return new IncomeListAdapter.IncomeViewHolder(itemView);
     }
 
@@ -98,8 +98,8 @@ public class IncomeListAdapter extends
                         mIncomes.remove(current);
                         notifyDataSetChanged();
 
-                        DialogFragment newFragment = new DebtListAdapter.FireMissilesDialogFragment();
-                        newFragment.show(((Activity) myContext).getFragmentManager(), "yesNo");
+//                        DialogFragment newFragment = new DebtListAdapter.FireMissilesDialogFragment();
+//                        newFragment.show(((Activity) myContext).getFragmentManager(), "yesNo");
 //                                if (deleteMe==true) {
 //
 //                                    db.debtDao().delete(current);

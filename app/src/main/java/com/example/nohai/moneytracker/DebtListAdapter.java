@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,8 @@ public class DebtListAdapter extends
         private final TextView debtItemViewNotes;
         private final ImageButton imageButton;
         private final ImageButton moreItemView;
+        private final ImageView greenItemView;
+        private final ImageView redItemView;
 
 
         private DebtViewHolder(View itemView) {
@@ -86,7 +89,8 @@ public class DebtListAdapter extends
             currency = itemView.findViewById(R.id.currency);
             debtPriceItemView = itemView.findViewById(R.id.price);
             moreItemView = itemView.findViewById(R.id.more);
-
+            greenItemView = itemView.findViewById(R.id.green);
+            redItemView = itemView.findViewById(R.id.red);
         }
     }
 
@@ -111,6 +115,16 @@ public class DebtListAdapter extends
     @Override
     public void onBindViewHolder(DebtListAdapter.DebtViewHolder holder, int position) {
         final Debt current = mDebts.get(position);
+        if(!current.borrowTo)
+        {  holder.greenItemView.setVisibility(View.GONE);
+
+        }
+        else
+        {
+            holder.redItemView.setVisibility(View.GONE);
+        }
+
+
         holder.contactItemView.setText(Debts.getContactName(current.contactId));
 
         holder.debtPriceItemView.setText(String.format ("%.2f",current.price));

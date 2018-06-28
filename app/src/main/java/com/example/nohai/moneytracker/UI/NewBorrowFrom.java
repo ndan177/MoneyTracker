@@ -362,15 +362,10 @@ public class NewBorrowFrom extends AppCompatActivity {
     {
         //for edit debt
         int intentDebtId = getIntent().getIntExtra("borrowId",-1) ;
-        if(intentDebtId != -1)
-        {
+        if(intentDebtId != -1) {
             newDebt = db.debtDao().getDebtById(intentDebtId);
             editBorrow(newDebt);
-            Toast.makeText(this, "EDIT", Toast.LENGTH_SHORT).show();
         }
-        else
-            Toast.makeText(this, "New", Toast.LENGTH_SHORT).show();
-
     }
     void editBorrow(Debt debt)
     {

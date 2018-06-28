@@ -104,9 +104,9 @@ public class ExpenseListAdapter extends
                         db.expenseDao().delete(current);
                         mExpenses.remove(current);
                         notifyDataSetChanged();
-
-                        DialogFragment newFragment = new DebtListAdapter.FireMissilesDialogFragment();
-                        newFragment.show(((Activity) myContext).getFragmentManager(), "yesNo");
+//
+//                        DialogFragment newFragment = new DebtListAdapter.FireMissilesDialogFragment();
+//                        newFragment.show(((Activity) myContext).getFragmentManager(), "yesNo");
 //                                if (deleteMe==true) {
 //
 //                                    db.debtDao().delete(current);

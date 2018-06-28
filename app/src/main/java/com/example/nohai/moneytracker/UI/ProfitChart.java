@@ -170,7 +170,7 @@ public class ProfitChart extends AppCompatActivity  implements AdapterView.OnIte
 //        barChart.setVisibleXRangeMaximum(10);
         barChart.groupBars(0, groupSpace, barSpace);
         Description description = new Description();
-        description.setText("Expenses and Incomings");
+        description.setText("Expenses and Incomes");
         barChart.setDescription(description);
 
     }

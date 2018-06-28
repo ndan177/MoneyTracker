@@ -24,7 +24,9 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -57,6 +59,8 @@ public abstract class DriveActivity extends Activity {
      * Tracks completion of the drive picker
      */
     private TaskCompletionSource<DriveId> mOpenItemTaskSource;
+
+    private DriveId myDriveId;
 
     @Override
     protected void onStart() {
@@ -140,9 +144,11 @@ public abstract class DriveActivity extends Activity {
      * @return Task that resolves with the selected item's ID.
      */
     protected Task<DriveId> pickTextFile() {
+
         OpenFileActivityOptions openOptions =
                 new OpenFileActivityOptions.Builder()
-                        .setSelectionFilter(Filters.eq(SearchableField.MIME_TYPE, "text/plain"))
+                    .setSelectionFilter(Filters.eq(SearchableField.MIME_TYPE, "text/plain"))
+                        //.setActivityStartFolder(myDriveId)
                         .setActivityTitle("select file")
                         .build();
         return pickItem(openOptions);
@@ -154,8 +160,10 @@ public abstract class DriveActivity extends Activity {
      * @return Task that resolves with the selected item's ID.
      */
     protected Task<DriveId> pickFolder() {
+
         OpenFileActivityOptions openOptions =
                 new OpenFileActivityOptions.Builder()
+
                         .setSelectionFilter(
                                 Filters.eq(SearchableField.MIME_TYPE, DriveFolder.MIME_TYPE))
                         .setActivityTitle("select folder")
