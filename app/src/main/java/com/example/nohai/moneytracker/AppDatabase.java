@@ -101,20 +101,19 @@ public abstract class AppDatabase extends RoomDatabase {
             mIconDao.deleteAll();
 
             insertIcon(R.drawable.icons8_ingredients_48);
-            insertIcon(R.drawable.icons8_car_48);
-            insertIcon(R.drawable.icons8_hair_brush_48);
+            insertIcon(R.drawable.bill);
+            insertIcon(R.drawable.fun);
             insertIcon(R.drawable.icons8_stethoscope_48);
             insertIcon(R.drawable.icons8_clothes_48);
             insertIcon(R.drawable.icons8_gas_station_48);
             insertIcon(R.drawable.icons8_home_48);
             insertIcon(R.drawable.variation_48);
 
-
             Category category = new Category(myContext.getResources().getString(R.string.food),1);
             mDao.insert(category);
-            category = new Category(myContext.getResources().getString(R.string.car),2);
+            category = new Category(myContext.getResources().getString(R.string.bills),2);
             mDao.insert(category);
-            category = new Category(myContext.getResources().getString(R.string.beauty),3);
+            category = new Category(myContext.getResources().getString(R.string.fun),3);
             mDao.insert(category);
             category = new Category(myContext.getResources().getString(R.string.health),4);
             mDao.insert(category);

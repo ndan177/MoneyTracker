@@ -66,7 +66,6 @@ public class Debts extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-
           if(getCurrency()==null)
           {
               currency = getIntent().getStringExtra("currency");
@@ -114,13 +113,11 @@ public class Debts extends AppCompatActivity {
         //We Need Fragment class now
 
         viewPager.setAdapter(Adapter);
-
     }
+
     public Fragment getFragment(int pos) {
         return Adapter.getItem(pos);
     }
-
-
 
     public static class MyViewPageAdapter extends FragmentPagerAdapter {
         private List<Fragment> MyFragment = new ArrayList<>();

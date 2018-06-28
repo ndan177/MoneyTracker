@@ -70,14 +70,14 @@ public class DebtsToPayFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         Debt debt = new Debt();
-        debt.borrowTo = false;
+        debt.borrowTo = data.getBooleanExtra("to",false);
         debt.contactId= data.getIntExtra("contactId",-1);
         debt.price= data.getDoubleExtra("price",-1);
         debt.notes= data.getStringExtra("notes");
         debt.date = (Date)data.getSerializableExtra("date");
         debt.dateLimit = (Date)data.getSerializableExtra("dateLimit");
         if( debt.contactId!=-1 && debt.price!=-1 )
-        mDebtViewModel.insert(debt);
+            mDebtViewModel.insert(debt);
         Toast.makeText(getActivity(), "Debt added!", Toast.LENGTH_SHORT).show();
     }
 

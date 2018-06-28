@@ -68,7 +68,7 @@ public class DebtsToReceiveFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         Debt debt = new Debt();
-        debt.borrowTo = true;
+        debt.borrowTo = data.getBooleanExtra("to",false);
         debt.contactId= data.getIntExtra("contactId",-1);
         debt.price= data.getDoubleExtra("price",-1);
         debt.notes= data.getStringExtra("notes");
@@ -78,8 +78,6 @@ public class DebtsToReceiveFragment extends Fragment{
             mDebtViewModel.insert(debt);
         Toast.makeText(getActivity(), "Debt added!", Toast.LENGTH_SHORT).show();
     }
-
-
 }
 
 //TODO:to receive->history transaction and resolved/unresolved check

@@ -33,10 +33,10 @@
 
     <!-- Strings related to categories -->
     <string name="food">Food</string>
-    <string name="beauty">Beauty</string>
+    <string name="fun">Fun</string>
     <string name="health">Health</string>
     <string name="clothes">Clothes</string>
-    <string name="car">Car</string>
+    <string name="bills">Bills</string>
     <string name="transport">Transport</string>
     <string name="home">Home</string>
     <string name="other">Other</string>

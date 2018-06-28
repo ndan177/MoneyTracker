@@ -291,6 +291,7 @@ public class NewBorrowFrom extends AppCompatActivity {
                     return;
                 }
                 newDebt.contactId=contactId;
+                replyIntent.putExtra("to",  false);
                 replyIntent.putExtra("price",  newDebt.price);
                 replyIntent.putExtra("contactId",  newDebt.contactId);
                 replyIntent.putExtra("notes",  newDebt.notes);
